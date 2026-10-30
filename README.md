@@ -1,2 +1,3 @@
 # codex-monorepo
-monorepo for codex ai agents
+
+A monorepo for agents to perform automated tasks.
