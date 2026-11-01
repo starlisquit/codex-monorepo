@@ -45,8 +45,7 @@ continues through the VM stack's built-in native scrape integrations.
 
 Rook creates Ceph and CSI runtime resources after reconciliation; their service
 existence, labels, and target health must be checked in the running cluster.
-The Headlamp and Kyverno-policies charts do not provide an application metrics
-exporter switch. No nonexistent metrics endpoint or additional application is
+The Headlamp chart does not provide an application metrics exporter switch. No nonexistent metrics endpoint or additional application is
 introduced for them. Optional features such as Cilium ClusterMesh are not enabled
 just to collect their metrics. Empty alert-rule and dashboard flags are not needed
 for ingestion; collection uses one ServiceMonitor, PodMonitor, or native VM scrape
@@ -94,6 +93,6 @@ rendered StatefulSet and persistent volume settings.
 After deployment, inspect the converted VM scrape resources and VMAgent's targets
 and verify recent samples for each component. Certificate issuance, OpenBao
 initialization/unseal, exporter connectivity, runtime Ceph/CSI services, namespace
-access, and network policies still require live-cluster validation. The existing
-application network-policy examples cover only port 9090; adapt them to the actual
-metrics ports before extending default deny to infrastructure namespaces.
+access, and network policies still require live-cluster validation. Network
+policies are owned by each consuming cluster; permit the actual metrics ports
+when restricting access to infrastructure namespaces.

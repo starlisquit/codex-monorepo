@@ -21,8 +21,7 @@ It is a starting scaffold, not a deployment-ready cluster configuration.
   see its README for operator-first bootstrap on a new cluster.
 - `autoscaling/keda/`: KEDA monitoring and an excluded VictoriaMetrics scaling example.
 - `ui/headlamp/`: Kubernetes web UI with its own suspended HelmRelease.
-- `policy/cluster-policies/`: example Kyverno policies in Audit mode, scoped to `applications`.
-- `policy/network-policies/`: example policies scoped to `applications`.
+- `policy/kyverno/`: Kyverno engine only; each cluster defines its own policies.
 
 ## Before enabling a release
 
@@ -40,7 +39,7 @@ It is a starting scaffold, not a deployment-ready cluster configuration.
    checks for HelmReleases. There is deliberately no top-level deployment that
    enables every component.
 5. Remove `spec.suspend: true` from only the releases you intend to install.
-   Suspension applies to HelmReleases, not raw PostgreSQL, dashboard, or policy
+   Suspension applies to HelmReleases, not raw PostgreSQL or dashboard
    resources: include those directories only when their prerequisites are ready.
 
 Source references assume Flux permits cross-namespace references. If your Flux
@@ -54,7 +53,7 @@ Use separate Flux Kustomizations with `dependsOn` and HelmRelease health checks:
 - Rook operator -> Ceph cluster -> workloads requiring persistent volumes.
 - CloudNativePG operator + ready storage -> PostgreSQL instance.
 - Grafana Operator -> VictoriaMetrics stack (creates Grafana CRs) -> dashboards.
-- Kyverno -> Kyverno policies and custom ClusterPolicies.
+- Kyverno -> any policies defined by the consuming cluster.
 - cert-manager -> trust-manager.
 
 `kustomization.yaml` files assemble manifests; they do not enforce controller
@@ -113,26 +112,15 @@ do not replace backups. Keep database reconciliation separate, consider Flux
 `prune: false`, and define a deliberate deletion and data-retention procedure.
 Never commit plaintext credentials.
 
-## Policy examples
+## Policies
 
-Review policies before including them. Kyverno examples start in Audit mode.
-The resource policy requires CPU/memory requests and memory limits; CPU limits
-can be added according to your workload policy. The privileged-container example
-covers regular containers; use the reviewed Kyverno policy library for complete
-coverage of init containers, ephemeral containers, and other security controls.
-
-Network policies enforce immediately when applied. The default deny blocks both
-ingress and egress in `applications`. The DNS example assumes kube-dns labels;
-adjust it for NodeLocal DNS if used. Ingress assumes a controller namespace named
-`networking` and application port 8080; monitoring assumes port 9090. Adjust these
-selectors and ports for Cilium/Gateway traffic and actual application metrics.
-The OpenBao allowance assumes its standard pod label and TCP port 8200.
-Add explicit allowances for PostgreSQL, Valkey, NATS, application dependencies,
-and required external destinations before enabling default deny.
+Only the Kyverno engine is provided. Admission and network policies are owned by
+the consuming cluster; no example policy resources or bundled policy chart are
+included under `infrastructure/policy/`.
 
 ## Validation
 
-All 34 Kustomize builds and all 20 pinned Helm charts were rendered successfully
+All 31 Kustomize builds and all 19 pinned Helm charts were rendered successfully
 using a Kubernetes 1.35 validation profile. Cilium used a test-only API endpoint,
 and the traces agent used a test-only `remoteWrite[0].url`; neither test address
 is saved in these manifests. The traces agent cannot render as committed until
@@ -163,7 +151,6 @@ These are chart versions, not application image versions.
 | victoria-metrics-k8s-stack | `0.97.0` |
 | victoria-traces-agent | `0.2.1` |
 | kyverno | `3.9.2` |
-| kyverno-policies | `3.9.2` |
 | external-secrets | `2.14.0` |
 | openbao | `0.30.6` |
 | rook-ceph-cluster | `1.21.1` |
