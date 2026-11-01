@@ -33,6 +33,8 @@ hubble:
   tls:
     auto:
       enabled: false
+  ui:
+    enabled: false
   relay:
     enabled: false
     prometheus:
