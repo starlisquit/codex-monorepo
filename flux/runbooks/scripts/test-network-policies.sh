@@ -86,6 +86,29 @@ assert_access allow 'unselected destination unaffected' "$target_ns" denied "$un
 kubectl kustomize "$template_dir/namespace-default-deny" | sed \
   -e "s/namespace: applications/namespace: $target_ns/g" | kubectl apply -f - >/dev/null
 assert_access deny 'namespace baseline isolates unselected destination' "$target_ns" denied "$unselected_ip" 8080
-assert_access allow 'explicit application allow survives namespace baseline' "$target_ns" approved "$protected_ip" 8080
+assert_access deny 'ingress allow alone cannot bypass caller egress deny' "$target_ns" approved "$protected_ip" 8080
 assert_access allow 'explicit monitoring allow survives namespace baseline' "$monitor_ns" monitor "$protected_ip" 9090
+# The namespace baseline also selects the approved caller. Open its outbound
+# connection explicitly; destination ingress remains governed by the template.
+cat <<POLICY | kubectl apply -f - >/dev/null
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: approved-test-caller-egress
+  namespace: $target_ns
+spec:
+  podSelector:
+    matchLabels:
+      networking.platform/caller: approved
+  policyTypes: [Egress]
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          networking.platform/ingress: restricted
+    ports:
+    - protocol: TCP
+      port: 8080
+POLICY
+assert_access allow 'explicit ingress and egress allows survive namespace baseline' "$target_ns" approved "$protected_ip" 8080
 echo 'PASS: all ingress policy checks; removing temporary namespaces'

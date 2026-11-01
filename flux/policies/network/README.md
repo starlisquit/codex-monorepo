@@ -53,9 +53,10 @@ Pod-to-Pod policy enforcement.
 ## Optional namespace-wide baseline
 
 `namespace-default-deny/` is deliberately excluded from the parent build. It
-isolates ingress for **every** Pod in `applications`, including unlabelled Pods.
+isolates **ingress and egress for every Pod** in `applications`, including unlabelled Pods.
 Include it only after adding each workload's required allows, including ingress
-controllers and monitoring as appropriate. The selected-workload policy above
+controllers, monitoring, outbound dependencies, and DNS as appropriate. An ingress
+allow alone cannot open an egress-isolated caller's outbound connection. The selected-workload policy above
 already isolates its own destinations without this baseline.
 
 ```sh
@@ -90,7 +91,7 @@ Image pulls can take several minutes. Run detached when using a short-timeout to
 
 ## Verified in the rebuilt lab — 2026-11-01
 
-The test passed all 15 access assertions plus the outgoing DNS check against
+The earlier ingress-only baseline test passed all 15 access assertions plus the outgoing DNS check against
 Cilium in play `6ae6cfaf789ac234e32e00bf`. Before policies, both listener ports and
 cross-namespace access worked. After policies, all approved paths worked and all
 six wrong-label/namespace/port cases were blocked. Unselected Pods stayed reachable
@@ -103,3 +104,16 @@ Pod could not schedule all clients. The helper now requests 1m per Pod (8m total
 and 8 MiB memory each; this is sufficient for these short, mostly idle probes,
 not a workload sizing recommendation. The initial test namespaces were removed
 before rerunning. No permanent workload placement or resource settings changed.
+
+
+The baseline now denies egress too. The updated helper checks that an ingress
+allow alone cannot bypass the caller's egress isolation, then adds an explicit
+8080 egress allow for the approved test caller. This updated helper has been
+syntax/render checked; the earlier live result does not verify the revised test.
+The playground remains destroyed.
+
+The optional resource is now named `default-deny-all`. If you manually installed
+the former `default-deny-ingress` resource, apply the new template first. You may
+then delete the old ingress-only resource; leaving it in place is redundant and
+does not weaken the combined deny baseline. As with all standard NetworkPolicies,
+other matching allow policies can still open connections in either direction.
