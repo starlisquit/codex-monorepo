@@ -1,0 +1,64 @@
+# Optional test fixture; not included in any Flux Kustomization.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: log-severity-simulator
+  namespace: demo
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 900
+  ttlSecondsAfterFinished: 3600
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: log-severity-simulator
+    spec:
+      restartPolicy: Never
+      terminationGracePeriodSeconds: 1
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values: [node-01, node-02]
+      containers:
+      - name: emit-logs
+        image: busybox:1.37.0
+        env:
+        - name: POD_UID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.uid
+        command:
+        - sh
+        - -c
+        - |
+          # Stay alive long enough for the node collector to discover the Pod.
+          sleep 20
+          i=0
+          while [ "$i" -lt 20 ]; do
+            printf '{"level":"TRACE","message":"severity simulation trace","service.name":"log-severity-simulator","simulation_id":"%s"}\n' "$POD_UID"
+            printf '{"severity_text":"DEBUG","message":"severity simulation debug","service.name":"log-severity-simulator","simulation_id":"%s"}\n' "$POD_UID"
+            printf '{"severity":"FATAL","message":"severity simulation fatal","service.name":"log-severity-simulator","simulation_id":"%s"}\n' "$POD_UID" >&2
+            i=$((i + 1))
+            sleep 30
+          done
+        resources:
+          requests:
+            cpu: 1m
+            memory: 8Mi
+          limits:
+            memory: 24Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: [ALL]

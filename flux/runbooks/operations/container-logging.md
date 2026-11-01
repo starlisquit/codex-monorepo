@@ -45,3 +45,42 @@ Removing the collector enablement returns vlagent to push-only mode. HostPath
 checkpoints/buffers are not automatically erased; retain or remove them deliberately
 when decommissioning a node. Re-enabling with preserved checkpoints resumes from
 the saved positions, subject to runtime log rotation.
+
+## Simulate TRACE, DEBUG and FATAL logs
+
+The optional Job fixture emits three records every 30 seconds for approximately
+10 minutes, then finishes; Kubernetes removes it an hour after completion. It
+requests 1m CPU and 8 MiB RAM and runs on a worker. FATAL is a synthetic severity,
+not an intentional application crash. TRACE here is a log level, not a tracing span.
+The fixture is excluded from Flux's normal reconciliation.
+
+```sh
+kubectl apply -f flux/runbooks/examples/log-severity-job.yaml
+kubectl -n demo wait --for=jsonpath='{.status.ready}'=1 job/log-severity-simulator --timeout=3m
+kubectl -n demo logs job/log-severity-simulator --tail=6
+kubectl -n demo get pods -l job-name=log-severity-simulator
+```
+
+After the initial 20-second discovery delay and ingestion, select namespace `demo`
+and the simulator Pod in **Platform / Container logs**. Select `trace`, `debug`,
+or `fatal` and use the last 15 minutes. All summary/ranking panels follow this
+selection. The fixture intentionally exercises the three supported severity field
+names: `level=TRACE`, `severity_text=DEBUG`, and `severity=FATAL`; the dashboard
+normalizes these to `trace`, `debug` and `fatal`. Fatal writes to stderr; the other
+two write to stdout. Every record carries `simulation_id` equal to its Pod UID,
+so old test runs can be distinguished.
+
+```sh
+# Stop early, or remove a completed Job before repeating the test:
+kubectl -n demo delete job log-severity-simulator
+```
+
+Retained logs remain queryable until backend retention removes them, even after
+the Pod is deleted. Use a time range containing the run for dropdown discovery.
+
+Verified on 2026-11-01 in the rebuilt lab: the simulator Pod ran on `node-02`.
+VictoriaLogs returned TRACE/stdout, DEBUG/stdout and FATAL/stderr records with the
+same simulation ID. Grafana's actual dashboard queries returned HTTP 200 and
+nonzero results for each selected level in the log viewer, matching-record count,
+and service-ranking panels. No collector or dashboard changes were needed to
+accept these levels; the earlier absence reflected the observed log traffic.
