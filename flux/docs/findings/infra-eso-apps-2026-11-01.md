@@ -62,5 +62,7 @@ The existing centrally signed CNPG TLS tests remain documented separately.
 
 ## Teardown
 
-Publish this report/configuration to both remotes before destroying this verified
-playground. Record confirmed destruction afterwards.
+Report/configuration were published to both remotes in
+`3066fa72d7ad456dbc5a15ca24c144b672addc99` before teardown. The destroy API
+confirmed destruction at `2026-11-01T21:13:22Z`
+(2026-11-02 00:13:22 Europe/Istanbul).

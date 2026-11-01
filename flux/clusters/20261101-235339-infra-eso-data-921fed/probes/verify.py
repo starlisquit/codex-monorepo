@@ -9,7 +9,7 @@ with Forward('velero','service/s3-fixture',9000,19090) as s3:
   for part in [date,'us-east-1','s3','aws4_request']:key=hmac.new(key,part.encode(),hashlib.sha256).digest()
   sig=hmac.new(key,string.encode(),hashlib.sha256).hexdigest();auth='AWS4-HMAC-SHA256 Credential='+fixture['s3_access_key']+'/'+scope+', SignedHeaders='+signed+', Signature='+sig
   return s3.request(path,data=b'' if method=='PUT' else None,headers={'x-amz-content-sha256':payload,'x-amz-date':stamp,'Authorization':auth},method=method,statuses=(200,204))
- s3call('PUT','/velero-validation');e.record('local_authenticated_s3_bucket_created')
+ wait('S3 accepting signed requests',lambda:s3call('PUT','/velero-validation'),120);e.record('local_authenticated_s3_bucket_created')
  wait_release('velero','velero')
  wait('Velero BSL available',lambda:get('backupstoragelocation','default','velero').get('status',{}).get('phase')=='Available',300)
  e.record('velero_consumes_eso_cloud_credentials',{'bsl':'default','phase':'Available','backend':'authenticated local SeaweedFS S3 fixture'})

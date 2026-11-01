@@ -4,7 +4,9 @@
   "timezone": "Europe/Istanbul",
   "purpose": "infra-eso-apps",
   "flux_path": "./flux/clusters/20261101-235335-infra-eso-apps-2c28d0",
-  "status": "verified",
+  "status": "destroyed",
   "tested_revision": "b394d1e5176c188ee2903a2f862e2a3da751cbc7",
-  "findings": "flux/docs/findings/infra-eso-apps-2026-11-01.md"
+  "findings": "flux/docs/findings/infra-eso-apps-2026-11-01.md",
+  "destroyed_at": "2026-11-01T21:13:22Z",
+  "findings_published_revision": "3066fa72d7ad456dbc5a15ca24c144b672addc99"
 }

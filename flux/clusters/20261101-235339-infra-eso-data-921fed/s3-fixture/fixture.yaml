@@ -31,14 +31,23 @@ spec:
         - -s3.port=9000
         - -s3.config=/etc/s3/config.json
         - -dir=/data
-        - -volume.max=1
-        - -master.volumeSizeLimitMB=100
+        - -volume.max=16
+        - -master.volumeSizeLimitMB=10
         volumeMounts:
         - name: data
           mountPath: /data
         - name: s3-config
           mountPath: /etc/s3
           readOnly: true
+        startupProbe:
+          tcpSocket:
+            port: 9000
+          periodSeconds: 2
+          failureThreshold: 90
+        readinessProbe:
+          tcpSocket:
+            port: 9000
+          periodSeconds: 2
       volumes:
       - name: data
         emptyDir: {}
@@ -48,6 +57,8 @@ spec:
           items:
           - key: config.json
             path: config.json
+  strategy:
+    type: Recreate
 ---
 apiVersion: v1
 kind: Service
