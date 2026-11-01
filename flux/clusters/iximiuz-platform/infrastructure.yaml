@@ -227,7 +227,7 @@ spec:
     name: vtsingle-victoria-metrics-k8s-stack
     namespace: observability
   - apiVersion: apps/v1
-    kind: StatefulSet
+    kind: DaemonSet
     name: vlagent-victoria-metrics-k8s-stack
     namespace: observability
   - apiVersion: apps/v1
