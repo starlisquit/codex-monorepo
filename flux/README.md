@@ -19,6 +19,7 @@ unfinished work separately, including the paused API slowness investigation.
 - `policies/`: reusable admission and network policies; individual policies document their scope and Audit/Deny behavior.
 - `dashboards/`: reusable GrafanaDashboard CRs for the minimal demo, capacity, and scrape health.
 - `clusters/`: one isolated Flux configuration per playground run.
+- `infrastructure/primitives/`: native Kubernetes workload templates; Deployment with an optional Service, plus a roadmap for other primitives.
 - `infrastructure/sources/`: shared Helm repositories and OCI chart sources.
 - `infrastructure/storage/rook-ceph/csi-drivers/`: CSI Driver CRs via the separate chart; the operator chart alone does not deploy the driver workloads.
 - Each chart directory contains a HelmRelease, `values.yaml`, and a Kustomize build.
