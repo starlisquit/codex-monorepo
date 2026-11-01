@@ -174,7 +174,7 @@ spec:
   healthCheckExprs:
   - apiVersion: ceph.rook.io/v1
     kind: CephCluster
-    current: has(status) && has(status.phase) && status.phase == 'Ready' && has(status.ceph)
+    current: has(status.phase) && status.phase == 'Ready' && has(status.ceph) && has(status.ceph.health)
       && status.ceph.health == 'HEALTH_OK'
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -489,6 +489,10 @@ spec:
     kind: Cluster
     name: application-db
     namespace: databases
+  healthCheckExprs:
+  - apiVersion: postgresql.cnpg.io/v1
+    kind: Cluster
+    current: has(status.readyInstances) && status.readyInstances == 3
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
