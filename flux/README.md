@@ -14,6 +14,8 @@ unfinished work separately, including the paused API slowness investigation.
 
 - `docs/`: architecture, deployment findings, and operational responsibilities.
 - `runbooks/`: exact bootstrap/verification/recovery steps and checked-in helper scripts.
+- `policies/`: reusable Kyverno ValidatingPolicy resources, initially Audit-only for application namespaces.
+- `dashboards/`: reusable GrafanaDashboard CRs for the minimal demo, capacity, and scrape health.
 - `clusters/`: separate minimal and full-platform cluster overlays.
 - `infrastructure/sources/`: shared Helm repositories and OCI chart sources.
 - `infrastructure/storage/rook-ceph/csi-drivers/`: CSI Driver CRs via the separate chart; the operator chart alone does not deploy the driver workloads.
@@ -34,7 +36,7 @@ unfinished work separately, including the paused API slowness investigation.
 - `demo/opentelemetry-demo/`: two standalone official demo services (currency and quote), with no automatic traffic; telemetry is
   routed through native VM agents, with a Collector for SDK protocol compatibility.
 - `ui/headlamp/`: Kubernetes web UI with its own suspended HelmRelease.
-- `policy/kyverno/`: Kyverno engine only; each cluster defines its own policies.
+- `policy/kyverno/`: Kyverno engine; reusable policies live in `flux/policies/`.
 
 ## Before enabling a release
 

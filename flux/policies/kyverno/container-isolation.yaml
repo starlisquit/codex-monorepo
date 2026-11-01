@@ -1,0 +1,47 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: platform-container-isolation
+spec:
+  validationActions:
+  - Audit
+  failurePolicy: Ignore
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    namespaceSelector:
+      matchExpressions:
+      - key: kubernetes.io/metadata.name
+        operator: In
+        values:
+        - demo
+        - applications
+    resourceRules:
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      operations:
+      - CREATE
+      - UPDATE
+      resources:
+      - pods
+      - pods/ephemeralcontainers
+  variables:
+  - name: containers
+    expression: 'object.spec.containers + (has(object.spec.initContainers) ? object.spec.initContainers
+      : []) + (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : [])'
+  validations:
+  - expression: (!has(object.spec.hostNetwork) || !object.spec.hostNetwork) && (!has(object.spec.hostPID)
+      || !object.spec.hostPID) && (!has(object.spec.hostIPC) || !object.spec.hostIPC)
+    message: Do not use host network, PID or IPC namespaces.
+  - expression: variables.containers.all(c, !has(c.securityContext) || !has(c.securityContext.privileged)
+      || !c.securityContext.privileged)
+    message: Containers must not run privileged.
+  - expression: 'variables.containers.all(c, (has(c.securityContext) && has(c.securityContext.runAsNonRoot)
+      ? c.securityContext.runAsNonRoot : (has(object.spec.securityContext) && has(object.spec.securityContext.runAsNonRoot)
+      && object.spec.securityContext.runAsNonRoot)) && (!has(c.securityContext) || !has(c.securityContext.runAsUser)
+      || c.securityContext.runAsUser != 0)) && (!has(object.spec.securityContext) || !has(object.spec.securityContext.runAsUser)
+      || object.spec.securityContext.runAsUser != 0)'
+    message: Declare runAsNonRoot at Pod or container level and do not explicitly select UID 0.

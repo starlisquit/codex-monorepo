@@ -1,0 +1,196 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: platform-scrape-health
+  namespace: observability
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: platform
+  datasources:
+  - inputName: DS_PROMETHEUS
+    datasourceName: VictoriaMetrics
+  json: |
+    {
+      "uid": "platform-scrape-health",
+      "title": "Platform / Scrape health",
+      "description": "A healthy backend does not guarantee healthy scrape targets. Known control-plane TLS issues remain visible.",
+      "tags": [
+        "platform",
+        "gitops"
+      ],
+      "schemaVersion": 39,
+      "version": 1,
+      "refresh": "30s",
+      "time": {
+        "from": "now-1h",
+        "to": "now"
+      },
+      "__inputs": [
+        {
+          "name": "DS_PROMETHEUS",
+          "label": "VictoriaMetrics",
+          "type": "datasource",
+          "pluginId": "prometheus",
+          "pluginName": "Prometheus"
+        }
+      ],
+      "panels": [
+        {
+          "id": 1,
+          "title": "Targets up by job",
+          "description": "Number of reachable targets per scrape job.",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 0
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum by (job) (up)",
+              "legendFormat": "{{namespace}} {{pod}} {{container}} {{node}} {{job}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        },
+        {
+          "id": 2,
+          "title": "Targets down by job",
+          "description": "Includes known scheduler, controller-manager and etcd scrape failures.",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 0
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum by (job) (1-up)",
+              "legendFormat": "{{namespace}} {{pod}} {{container}} {{node}} {{job}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "title": "Scrape duration",
+          "description": "Longest scrape per job; compare with configured timeout.",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "max by (job) (scrape_duration_seconds)",
+              "legendFormat": "{{namespace}} {{pod}} {{container}} {{node}} {{job}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        },
+        {
+          "id": 4,
+          "title": "Samples scraped",
+          "description": "Missing or unexpected sample counts can reveal broken discovery or scrape configuration.",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum by (job) (scrape_samples_scraped)",
+              "legendFormat": "{{namespace}} {{pod}} {{container}} {{node}} {{job}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        }
+      ]
+    }
