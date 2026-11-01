@@ -29,20 +29,3 @@ spec:
     namespace: observability
   - name: cert-manager
     namespace: certificates
-  postRenderers:
-  - kustomize:
-      patches:
-      - target:
-          group: cert-manager.io
-          version: v1
-          kind: Certificate
-          name: trust-manager
-        patch: "- op: replace\n  path: /spec/issuerRef\n  value:\n    name: platform-workload-ca\n\
-          \    kind: ClusterIssuer\n    group: cert-manager.io\n"
-      - target:
-          group: cert-manager.io
-          version: v1
-          kind: Issuer
-          name: trust-manager
-        patch: "$patch: delete\napiVersion: cert-manager.io/v1\nkind: Issuer\nmetadata:\n\
-          \  name: trust-manager\n  namespace: certificates\n"

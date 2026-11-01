@@ -36,8 +36,7 @@ extraObjects:
       dashboards: platform
   spec:
     external:
-      url: http://{{ include "grafana.fullname" .Subcharts.grafana }}.{{ .Release.Namespace
-        }}.svc:{{ .Values.grafana.service.port }}
+      url: http://{{ include "grafana.fullname" .Subcharts.grafana }}.{{ .Release.Namespace }}.svc:{{ .Values.grafana.service.port }}
       adminUser:
         name: '{{ include "grafana.fullname" .Subcharts.grafana }}'
         key: admin-user
@@ -51,14 +50,6 @@ vmagent:
 victoria-metrics-operator:
   operator:
     disable_prometheus_converter: false
-  admissionWebhooks:
-    certManager:
-      enabled: true
-      issuer:
-        name: platform-workload-ca
-        kind: ClusterIssuer
-      cert:
-        duration: 2160h
 prometheus-node-exporter:
   enabled: true
   vmScrape:
@@ -94,6 +85,7 @@ vlagent:
       includePodAnnotations: false
       includeNodeLabels: false
       includeNodeAnnotations: false
+    # Explicit writable hostPath preserves checkpoints and bounded write buffers.
     tmpDataPath: /var/lib/vlagent-data
     volumes:
     - name: collector-data
@@ -109,7 +101,7 @@ vlagent:
       effect: NoSchedule
     extraArgs:
       remoteWrite.maxDiskUsagePerURL: 128MiB
-      remoteWrite.rateLimit: '262144'
+      remoteWrite.rateLimit: "262144"
     resources:
       requests:
         cpu: 25m

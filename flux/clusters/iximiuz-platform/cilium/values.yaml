@@ -6,18 +6,3 @@ operator:
   replicas: 1
 gatewayAPI:
   enabled: true
-hubble:
-  tls:
-    auto:
-      method: certmanager
-      certValidityDuration: 90
-      certManagerIssuerRef:
-        name: platform-workload-ca
-        kind: ClusterIssuer
-        group: cert-manager.io
-tls:
-  caBundle:
-    enabled: true
-    name: platform-ca
-    key: ca.crt
-    useSecret: false
