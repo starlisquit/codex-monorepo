@@ -125,6 +125,9 @@ failover, backup/restore or production load.
 
 ## Teardown
 
-Findings and configuration must be committed and pushed to both GitHub and
-GitLab before playground destruction. Confirmed destruction is recorded in a
-follow-up commit after the destroy API succeeds.
+Findings and configuration were committed as `c5ae7d3` and pushed to both
+GitHub and GitLab; both remote main commit IDs matched before teardown.
+The explicit destroy API returned `ok: true` for playground
+`6ae70fa356e9b785c32c7b89` at 2026-11-01 13:17:49 Europe/Istanbul
+(10:17:49 UTC). The playground was destroyed, not stopped. A subsequent
+listing reported it non-running during deletion propagation.
