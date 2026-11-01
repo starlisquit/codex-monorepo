@@ -1,3 +1,5 @@
+# The official demo includes hard-coded gRPC SDK exporters.
+# Keep this Collector as a protocol bridge; all storage export goes through native VM agents.
 default:
   envOverrides:
   - name: OTEL_METRICS_EXPORTER
@@ -44,11 +46,6 @@ opentelemetry-collector:
   ports:
     metrics:
       enabled: false
-    prometheus:
-      enabled: true
-      containerPort: 9464
-      servicePort: 9464
-      protocol: TCP
     jaeger-compact:
       enabled: false
     jaeger-grpc:
@@ -62,49 +59,39 @@ opentelemetry-collector:
     otlp-http:
       hostPort: null
   serviceMonitor:
-    enabled: true
-    metricsEndpoints:
-    - port: prometheus
-      interval: 15s
+    enabled: false
   config:
     receivers:
       jaeger: null
       zipkin: null
     exporters:
-      prometheus:
-        endpoint: 0.0.0.0:9464
-        enable_open_metrics: true
-        resource_to_telemetry_conversion:
-          enabled: true
-      otlp_http/victorialogs:
-        logs_endpoint: http://vlsingle-victoria-metrics-k8s-stack.observability.svc.cluster.local:9428/insert/opentelemetry/v1/logs
-      otlp_http/victoriatraces:
-        traces_endpoint: http://vtsingle-victoria-metrics-k8s-stack.observability.svc.cluster.local:10428/insert/opentelemetry/v1/traces
       otlp_grpc/jaeger: null
       otlp_http/prometheus: null
       opensearch: null
       otlp_grpc/firepit: null
+      otlp_http/vmagent:
+        metrics_endpoint: http://vmagent-victoria-metrics-k8s-stack.observability.svc.cluster.local:8429/opentelemetry/v1/metrics
+      otlp_http/vlagent:
+        logs_endpoint: http://vlagent-victoria-metrics-k8s-stack.observability.svc.cluster.local:9429/insert/opentelemetry/v1/logs
+      otlp_http/vtagent:
+        traces_endpoint: http://vtagent-victoria-traces-agent.observability.svc.cluster.local:10429/insert/opentelemetry/v1/traces
     connectors:
-      span_metrics:
-        dimensions:
-        - name: rpc.system
-        - name: rpc.system.name
-        - name: rpc.service
-        - name: rpc.method
-        - name: rpc.grpc.status_code
-        - name: rpc.response.status_code
+      span_metrics: null
     service:
       pipelines:
         traces:
           receivers:
           - otlp
           exporters:
-          - otlp_http/victoriatraces
-          - span_metrics
+          - otlp_http/vtagent
         metrics:
+          receivers:
+          - otlp
+          - kafkametrics
+          - prometheus/ad
           exporters:
-          - prometheus
+          - otlp_http/vmagent
         logs:
           exporters:
-          - otlp_http/victorialogs
+          - otlp_http/vlagent
         profiles: null

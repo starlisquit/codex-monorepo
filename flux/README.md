@@ -20,8 +20,8 @@ It is a starting scaffold, not a deployment-ready cluster configuration.
 - `gitops/flux-operator/`: Flux Operator, its bundled Web UI, and a FluxInstance;
   see its README for operator-first bootstrap on a new cluster.
 - `autoscaling/keda/`: KEDA monitoring and an excluded VictoriaMetrics scaling example.
-- `demo/opentelemetry-demo/`: instrumented application, generated traffic, and a
-  Grafana dashboard feeding metrics/logs/traces into the existing VM stack.
+- `demo/opentelemetry-demo/`: official demo application and generated traffic
+  routed through native VM agents, with a Collector for SDK protocol compatibility.
 - `ui/headlamp/`: Kubernetes web UI with its own suspended HelmRelease.
 - `policy/kyverno/`: Kyverno engine only; each cluster defines its own policies.
 
@@ -83,8 +83,8 @@ a configured SecretStore or ClusterSecretStore.
 The single `victoria-metrics-k8s-stack` release now enables its operator-managed
 VictoriaLogs and VictoriaTraces backends for the full OpenTelemetry demo. Each
 uses a 10Gi `ceph-block` volume with seven-day retention. The existing traces agent
-is configured to forward to that VictoriaTraces backend; the demo Collector sends
-OTLP directly. See the [demo guide](infrastructure/demo/opentelemetry-demo/README.md).
+is configured to forward to that VictoriaTraces backend; the demo Collector routes
+all telemetry through VMAgent, VLAgent, and VTAgent. See the [demo guide](infrastructure/demo/opentelemetry-demo/README.md).
 
 The stack's bundled Grafana remains enabled. Its `extraObjects` creates an external
 Grafana Operator binding named `platform`, labeled `dashboards: platform`, pointing

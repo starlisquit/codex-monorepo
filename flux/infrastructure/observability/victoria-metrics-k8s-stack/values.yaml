@@ -76,3 +76,8 @@ vtsingle:
       resources:
         requests:
           storage: 10Gi
+vlagent:
+  enabled: true
+  spec:
+    k8sCollector:
+      enabled: false

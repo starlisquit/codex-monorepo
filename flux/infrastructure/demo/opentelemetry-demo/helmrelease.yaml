@@ -30,3 +30,5 @@ spec:
     namespace: observability
   - name: prometheus-operator-crds
     namespace: observability
+  - name: victoria-traces-agent
+    namespace: observability

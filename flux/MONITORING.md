@@ -41,7 +41,7 @@ continues through the VM stack's built-in native scrape integrations.
 | VictoriaTraces agent | ServiceMonitor and configured VTSingle remoteWrite destination |
 | Flux Operator | Operator metrics ServiceMonitor (UI is bundled in the same chart) |
 | KEDA | Operator, metrics adapter, and admission-webhook ServiceMonitors; workload scaling can query the VM API |
-| OpenTelemetry Demo | OTLP SDK and span metrics exposed by its Collector and collected through a ServiceMonitor |
+| OpenTelemetry Demo | SDK metrics via VMAgent; OTLP logs via VLAgent; OTLP traces via VTAgent; Collector retained for protocol compatibility |
 | Blackbox Exporter | Exporter self-monitoring and a probe of the existing VictoriaMetrics `/health` endpoint |
 
 Rook creates Ceph and CSI runtime resources after reconciliation; their service
@@ -127,8 +127,9 @@ when restricting access to infrastructure namespaces.
 
 ## Full OpenTelemetry demo
 
-The [demo](infrastructure/demo/opentelemetry-demo/README.md) explicitly emits
-metrics, logs, and traces. Its Collector exposes Prometheus metrics for VMAgent
-and sends OTLP logs/traces directly to the stack's newly enabled VLSingle and
-VTSingle. Those backends and their Grafana datasources stay within the existing
-VM stack release; no separate backend chart releases are introduced.
+The [demo](infrastructure/demo/opentelemetry-demo/README.md) emits SDK metrics,
+logs, and traces. Its Collector bridges the official SDKs' protocol requirements
+and forwards through native VMAgent, VLAgent, and VTAgent rather than directly to
+storage. Span-to-metrics conversion and the associated dashboard are removed.
+VLAgent is enabled in push mode within the existing VM stack, with Kubernetes log
+tailing disabled. VLSingle, VTSingle, and their Grafana datasources remain enabled.

@@ -4,7 +4,6 @@ namespace: demo
 resources:
 - namespace.yaml
 - helmrelease.yaml
-- dashboard.yaml
 configMapGenerator:
 - name: opentelemetry-demo-values
   files:
