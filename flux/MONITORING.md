@@ -68,19 +68,45 @@ replication is not a substitute for backups. Create the `ceph-block` StorageClas
 before deploying, or adjust the storage class and capacity for your cluster.
 
 The server enables Prometheus retention and unauthenticated access to its metrics
-endpoint. Other API operations still require authentication. The existing server
-listener remains HTTP (`tls_disable = 1`); the injector certificate described below
-does not secure it. Configure server TLS and adapt the Raft join URL, client trust,
-and monitoring scheme before production. The server must be initialized and
-unsealed before normal telemetry is available.
+endpoint; other API operations still require authentication. Access uses HTTPS
+with certificate verification. The existing CA Issuer `openbao-injector-ca` signs
+both the injector and server certificates; its historical name does not restrict
+it to the injector.
 
-The injector's metrics share its HTTPS webhook listener. Its chart extraObjects
-create a namespaced cert-manager CA and serving certificate. A CA-injection
-annotation keeps the webhook trust bundle in sync. The injector ServiceMonitor
-trusts `ca.crt` from `openbao-injector-tls` and checks the service DNS name; TLS
-verification is enabled. OpenBao therefore depends on the ready cert-manager
-release as well as monitoring CRDs. Keep serving certificate DNS names, Secret
-references, and monitor selectors aligned if renaming the OpenBao release.
+The `openbao-server` Certificate creates `openbao-server-tls`. Its certificate
+covers the OpenBao Service names, individual Raft pods through wildcard internal
+Service DNS names, and loopback IPs for local CLI/readiness checks. Names assume
+the `openbao` release, `secrets` namespace, and `cluster.local` domain; update them
+when changing those settings.
+
+The server mounts its TLS Secret read-only, enables TLS on its listener, and uses
+`BAO_CACERT` for local CLI trust. Raft retry-join uses HTTPS and the mounted CA.
+The advertised API address uses each pod's internal DNS name rather than its
+uncertified dynamic IP. The server ServiceMonitor verifies the same CA and the
+active Service DNS name. OpenBao still needs initialization and unsealing before
+normal telemetry is available.
+
+The injector's own webhook/metrics certificate remains `openbao-injector-tls`.
+Its webhook trust bundle is maintained by cert-manager CA injection, and its
+ServiceMonitor verifies that certificate. A Helm post-render patch additionally
+passes the server CA from `openbao-server-tls/ca.crt` through the pinned injector's
+`AGENT_INJECT_VAULT_CACERT_BYTES` setting. This supplies CA trust to injected agents
+without copying the server private key or requiring a TLS Secret in each workload
+namespace. Workloads can still override injection settings, so keep their TLS
+annotations aligned with this configuration.
+
+A second Helm post-render patch replaces the chart's default readiness command,
+which skips TLS verification, with `bao status` using the mounted CA. Apply the
+component through its HelmRelease to retain these patches. For a manual Helm
+install or local rendering, apply the same post-render patches; chart values alone
+do not contain them.
+
+OpenBao depends on cert-manager and the monitoring CRDs. Certificate issuance,
+handshakes, and renewal behavior require live-cluster validation. After certificate
+renewal, arrange a controlled OpenBao TLS reload. CA rotation also requires
+refreshing the injector environment and reinjecting/restarting workloads that
+received the old CA. Existing workloads and external clients must trust the CA
+before switching them to HTTPS. Never copy a CA or server private key to clients.
 
 ## Validation and deployment checks
 

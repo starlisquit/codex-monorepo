@@ -71,7 +71,7 @@ The PostgreSQL and NATS examples reference `ceph-block`; create that StorageClas
 or change the examples. Other chart values default to `{}` until configured.
 In particular, configure persistence, resources, high availability, credentials,
 and exposure according to the selected chart version. OpenBao uses three HA Raft replicas with persistent storage; initialization,
-unseal, server TLS, backups, and authentication still need configuration (see
+unseal, backups, and authentication still need configuration (see
 [monitoring and OpenBao notes](MONITORING.md)). External Secrets needs
 a configured SecretStore or ClusterSecretStore.
 
