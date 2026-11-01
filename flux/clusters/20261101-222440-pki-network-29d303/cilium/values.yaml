@@ -6,6 +6,7 @@ gatewayAPI:
   enabled: false
 operator:
   replicas: 1
+  rollOutPods: true
 hubble:
   ui:
     enabled: false
@@ -19,3 +20,5 @@ hubble:
         - localhost
         extraIpAddresses:
         - 127.0.0.1
+    rollOutPods: true
+rollOutCiliumPods: true
