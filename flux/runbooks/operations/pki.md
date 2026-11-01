@@ -49,8 +49,15 @@ See the [complete template coverage and exceptions](../../docs/architecture/pki-
 
 - OpenBao server/injector, Metrics Server and trust-manager use the central issuer.
 - Hubble uses chart-native cert-manager certificates and the shared CA Bundle.
-- Kyverno uses cert-manager-controlled intermediate CAs signed by the root, with
-  its chart-supported namespaced leaf issuers.
+- Kyverno uses leaves signed directly by the central root. The pinned admission
+  controller rejects a multi-certificate `tls.crt` during readiness validation;
+  its chart's delegated CA produces precisely that chain. Helm post-rendering
+  removes those delegated issuers/CAs, points both leaves at the central issuer,
+  and sets both controllers' CA reference to public Secret `kyverno-platform-ca`.
+  Their internal certificate writers remain disabled. Trust-manager distributes
+  only the public root to that Secret, only in namespace `kyverno`. Its chart RBAC
+  grants Secret read access across its target scope and write access restricted
+  to that Secret name (creation cannot be name-restricted by Kubernetes RBAC).
 - VictoriaMetrics Operator's webhook uses its chart-native cert-manager option.
 - External Secrets uses the central issuer through its chart-native integration;
   its old certificate controller is disabled to avoid competing Secret writers.

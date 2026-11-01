@@ -6,3 +6,7 @@ app:
         enabled: true
   trust:
     namespace: certificates
+secretTargets:
+  enabled: true
+  authorizedSecrets:
+  - kyverno-platform-ca

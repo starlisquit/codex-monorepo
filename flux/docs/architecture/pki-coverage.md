@@ -15,7 +15,7 @@ operations. A Bundle does not make every client trust it automatically.
 | Metrics Server to kubelets | Kubernetes/kubeadm certificates; lab overlay still uses `--kubelet-insecure-tls` (encrypted but unverified) |
 | trust-manager serving endpoint | Certificate issuer patched to the central ClusterIssuer |
 | Hubble server/relay client | Cilium chart's cert-manager integration and shared public CA Bundle |
-| Kyverno webhooks | Central-root-signed intermediate CAs with delegated namespaced leaf issuers; last live handover was unready |
+| Kyverno webhooks | Central-root-signed leaves and public CA Secret from trust-manager; delegated chains are incompatible with the pinned admission readiness validator |
 | VictoriaMetrics Operator webhook | Chart's cert-manager integration uses the central ClusterIssuer |
 | NATS client and cluster endpoints | Central server/client-capable certificate; route peer verification configured; client-certificate enforcement not enabled on the client port |
 | Valkey client endpoint | Central server certificate, TLS-only port and verified exporter connection configured; no client-certificate requirement |

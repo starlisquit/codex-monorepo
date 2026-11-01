@@ -26,3 +26,62 @@ spec:
   dependsOn:
   - name: prometheus-operator-crds
     namespace: observability
+  postRenderers:
+  - kustomize:
+      patches:
+      - target:
+          group: cert-manager.io
+          version: v1
+          kind: Certificate
+          name: kyverno-admission-controller-ca
+        patch: "apiVersion: cert-manager.io/v1\nkind: Certificate\nmetadata:\n  name:\
+          \ kyverno-admission-controller-ca\n$patch: delete\n"
+      - target:
+          group: cert-manager.io
+          version: v1
+          kind: Issuer
+          name: kyverno-ca-issuer
+        patch: "apiVersion: cert-manager.io/v1\nkind: Issuer\nmetadata:\n  name: kyverno-ca-issuer\n\
+          $patch: delete\n"
+      - target:
+          group: cert-manager.io
+          version: v1
+          kind: Certificate
+          name: kyverno-admission-controller-tls
+        patch: "- op: replace\n  path: /spec/issuerRef\n  value:\n    name: platform-workload-ca\n\
+          \    kind: ClusterIssuer\n    group: cert-manager.io\n"
+      - target:
+          group: apps
+          version: v1
+          kind: Deployment
+          name: kyverno-admission-controller
+        patch: "- op: replace\n  path: /spec/template/spec/containers/0/args/0\n \
+          \ value: --caSecretName=kyverno-platform-ca\n"
+      - target:
+          group: cert-manager.io
+          version: v1
+          kind: Certificate
+          name: kyverno-cleanup-controller-ca
+        patch: "apiVersion: cert-manager.io/v1\nkind: Certificate\nmetadata:\n  name:\
+          \ kyverno-cleanup-controller-ca\n$patch: delete\n"
+      - target:
+          group: cert-manager.io
+          version: v1
+          kind: Issuer
+          name: kyverno-cleanup-ca-issuer
+        patch: "apiVersion: cert-manager.io/v1\nkind: Issuer\nmetadata:\n  name: kyverno-cleanup-ca-issuer\n\
+          $patch: delete\n"
+      - target:
+          group: cert-manager.io
+          version: v1
+          kind: Certificate
+          name: kyverno-cleanup-controller-tls
+        patch: "- op: replace\n  path: /spec/issuerRef\n  value:\n    name: platform-workload-ca\n\
+          \    kind: ClusterIssuer\n    group: cert-manager.io\n"
+      - target:
+          group: apps
+          version: v1
+          kind: Deployment
+          name: kyverno-cleanup-controller
+        patch: "- op: replace\n  path: /spec/template/spec/containers/0/args/0\n \
+          \ value: --caSecretName=kyverno-platform-ca\n"

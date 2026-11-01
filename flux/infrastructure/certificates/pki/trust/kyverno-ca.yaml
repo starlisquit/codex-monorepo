@@ -1,0 +1,15 @@
+apiVersion: trust.cert-manager.io/v1alpha1
+kind: Bundle
+metadata:
+  name: kyverno-platform-ca
+spec:
+  sources:
+  - secret:
+      name: platform-root-ca
+      key: tls.crt
+  target:
+    secret:
+      key: tls.crt
+    namespaceSelector:
+      matchLabels:
+        kubernetes.io/metadata.name: kyverno
