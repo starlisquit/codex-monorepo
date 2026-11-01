@@ -1,0 +1,280 @@
+{
+  "initial": {
+    "timestamp": "2026-11-01T09:58:31.420350+00:00",
+    "checks": [
+      {
+        "name": "LiteLLM readiness via verified NGINX HTTPS",
+        "actual": 200,
+        "expected": 200
+      },
+      {
+        "name": "missing API key rejected",
+        "actual": 401,
+        "expected": 401
+      },
+      {
+        "name": "invalid API key rejected in database-free mode",
+        "actual": 400,
+        "expected": 400
+      },
+      {
+        "name": "invalid key response contains only an error",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "authorized model discovery",
+        "actual": 200,
+        "expected": 200
+      },
+      {
+        "name": "configured model appears",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "routed chat completion",
+        "actual": 200,
+        "expected": 200
+      },
+      {
+        "name": "actual upstream response content",
+        "actual": "proxy-route-verified",
+        "expected": "proxy-route-verified"
+      },
+      {
+        "name": "upstream usage propagated",
+        "actual": 5,
+        "expected": 5
+      },
+      {
+        "name": "unconfigured model rejected",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "streaming request accepted",
+        "actual": 200,
+        "expected": 200
+      },
+      {
+        "name": "streamed content propagated",
+        "actual": "proxy-route-verified",
+        "expected": "proxy-route-verified"
+      },
+      {
+        "name": "SSE completion marker",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "stream delivered progressively before upstream finished",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "HTTP redirects to HTTPS",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "untrusted certificate rejected",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "unknown TLS SNI rejected",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "different ingress class does not expose route",
+        "actual": 404,
+        "expected": 404
+      },
+      {
+        "name": "NGINX ready replica",
+        "actual": 1,
+        "expected": 1
+      },
+      {
+        "name": "LiteLLM ready replica",
+        "actual": 1,
+        "expected": 1
+      }
+    ],
+    "stream_timing": {
+      "first_content_seconds": 0.098,
+      "finish_seconds": 1.026
+    },
+    "images": {
+      "nginx": [
+        "nginx/nginx-ingress:5.7.0"
+      ],
+      "litellm": [
+        "ghcr.io/berriai/litellm:1.106.6"
+      ]
+    },
+    "nodeports": {
+      "80": 30527,
+      "443": 32002
+    }
+  },
+  "after_recovery": {
+    "timestamp": "2026-11-01T10:02:34.822489+00:00",
+    "checks": [
+      {
+        "name": "LiteLLM readiness via verified NGINX HTTPS",
+        "actual": 200,
+        "expected": 200
+      },
+      {
+        "name": "missing API key rejected",
+        "actual": 401,
+        "expected": 401
+      },
+      {
+        "name": "invalid API key rejected in database-free mode",
+        "actual": 400,
+        "expected": 400
+      },
+      {
+        "name": "invalid key response contains only an error",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "authorized model discovery",
+        "actual": 200,
+        "expected": 200
+      },
+      {
+        "name": "configured model appears",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "routed chat completion",
+        "actual": 200,
+        "expected": 200
+      },
+      {
+        "name": "actual upstream response content",
+        "actual": "proxy-route-verified",
+        "expected": "proxy-route-verified"
+      },
+      {
+        "name": "upstream usage propagated",
+        "actual": 5,
+        "expected": 5
+      },
+      {
+        "name": "unconfigured model rejected",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "streaming request accepted",
+        "actual": 200,
+        "expected": 200
+      },
+      {
+        "name": "streamed content propagated",
+        "actual": "proxy-route-verified",
+        "expected": "proxy-route-verified"
+      },
+      {
+        "name": "SSE completion marker",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "stream delivered progressively before upstream finished",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "HTTP redirects to HTTPS",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "untrusted certificate rejected",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "unknown TLS SNI rejected",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "different ingress class does not expose route",
+        "actual": 404,
+        "expected": 404
+      },
+      {
+        "name": "NGINX ready replica",
+        "actual": 1,
+        "expected": 1
+      },
+      {
+        "name": "LiteLLM ready replica",
+        "actual": 1,
+        "expected": 1
+      }
+    ],
+    "stream_timing": {
+      "first_content_seconds": 0.076,
+      "finish_seconds": 1.023
+    },
+    "images": {
+      "nginx": [
+        "nginx/nginx-ingress:5.7.0"
+      ],
+      "litellm": [
+        "ghcr.io/berriai/litellm:1.106.6"
+      ]
+    },
+    "nodeports": {
+      "80": 30527,
+      "443": 32002
+    }
+  },
+  "recovery": [
+    {
+      "deployment": "nginx-nginx-ingress-controller",
+      "old_pod_uid": "9b139670-c805-480a-aff0-b352270cedb5",
+      "new_pod_uid": "a1ce2352-776f-4f13-9c39-3aa47532e91c",
+      "checks_repeated": 20,
+      "passed": true,
+      "note": "route reconciliation was allowed after replacement Pod readiness"
+    },
+    {
+      "deployment": "litellm",
+      "old_pod_uid": "45c0b4cc-3638-4618-aed6-2d558a92d897",
+      "new_pod_uid": "3bdebf82-c069-4369-bfe6-78ea12fff85b",
+      "checks_repeated": 20,
+      "passed": true
+    }
+  ],
+  "nginx_metrics": {
+    "passed": true,
+    "sample_metric_names": [
+      "nginx_ingress_controller_ingress_resources_total",
+      "nginx_ingress_controller_ingress_resources_total",
+      "nginx_ingress_controller_ingress_resources_total",
+      "nginx_ingress_controller_nginx_last_reload_milliseconds",
+      "nginx_ingress_controller_nginx_last_reload_status",
+      "nginx_ingress_controller_nginx_reload_errors_total",
+      "nginx_ingress_controller_nginx_reloads_total",
+      "nginx_ingress_controller_nginx_reloads_total"
+    ]
+  },
+  "input_sha256": {
+    "nginx-values.yaml": "b4259697a787978e9851f390e5884e2d3dac32957732453d2b14a8006a3e0a60",
+    "litellm-values.yaml": "90d6a804f662462dda95a40808ce893abf5e94ba59c5e72357e2407a336b7893",
+    "proxy-ai-validation-values.yaml": "fba8efc0cd37efa796f2e364ed274e61241e90d3dae664879a13b6c9ca458511",
+    "proxy-ai-validation-backend.yaml": "791144c88577b95629d73a3c5d04af4d9c833bf0ca279e7a8ab6b823ffdbb315"
+  }
+}

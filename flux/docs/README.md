@@ -5,6 +5,7 @@ Use [runbooks](../runbooks/README.md) when you need executable procedures.
 
 - [CI and quality chart verification](findings/ci-quality-validation-2026-11-01.md)
 - [Tetragon, Trivy and security dashboard verification](findings/security-validation-2026-11-01.md)
+- [NGINX and LiteLLM deployment verification](findings/proxy-ai-validation-2026-11-01.md)
 - [Interrupted full-platform verification](findings/validation-2026-11-01.md)
 
 - [Next iximiuz Labs validation checklist](../runbooks/operations/next-lab-validation.md)

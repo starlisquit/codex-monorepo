@@ -2,7 +2,7 @@
 
 Official [BerriAI chart](https://docs.litellm.ai/docs/proxy/deploy),
 `oci://ghcr.io/berriai/litellm-helm`, chart/application `1.106.6`.
-The immutable chart reference is in `sources/litellm.yaml`; this component creates
+The pinned chart reference is in `sources/litellm.yaml`; this component creates
 namespace `ai`, a ConfigMap-backed model configuration and a ClusterIP Service.
 
 The initial route is `gpt-4o-mini` through OpenAI. Adapt the model list for your
