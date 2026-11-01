@@ -13,3 +13,4 @@ resources:
 - ../../../infrastructure/sources/prometheus-community
 - ../../../infrastructure/sources/cloudnative-pg
 - ../../../infrastructure/sources/litellm
+- literal-interpolation.yaml

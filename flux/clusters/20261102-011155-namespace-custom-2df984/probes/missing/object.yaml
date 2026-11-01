@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  namespace: ${NS_AI}
+kind: ConfigMap
+metadata:
+  name: missing-namespace-must-not-exist
+  namespace: flux-system

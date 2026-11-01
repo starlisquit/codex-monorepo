@@ -7,6 +7,7 @@ command -v "${FLUX_BIN:-flux}" >/dev/null
 python3 "$repo_root/flux/docs/runbooks/scripts/validate-platform.py"
 python3 "$repo_root/flux/docs/runbooks/scripts/validate-compositions.py"
 python3 "$repo_root/flux/docs/runbooks/scripts/validate-external-secrets.py"
+python3 "$repo_root/flux/docs/runbooks/scripts/validate-namespaces.py"
 count=0
 while IFS= read -r -d '' manifest; do
   # Every Component is validated in owner compositions by validate-compositions.py.
