@@ -31,7 +31,7 @@ unfinished work separately, including the paused API slowness investigation.
 - `ui/flux-ui/`: standalone Flux Web UI; Flux is bootstrapped separately, without
   the Flux Operator managing its lifecycle.
 - `autoscaling/keda/`: KEDA monitoring and an excluded VictoriaMetrics scaling example.
-- `demo/opentelemetry-demo/`: official demo application and generated traffic
+- `demo/opentelemetry-demo/`: two standalone official demo services (currency and quote), with no automatic traffic; telemetry is
   routed through native VM agents, with a Collector for SDK protocol compatibility.
 - `ui/headlamp/`: Kubernetes web UI with its own suspended HelmRelease.
 - `policy/kyverno/`: Kyverno engine only; each cluster defines its own policies.
@@ -91,8 +91,8 @@ unseal, backups, and authentication still need configuration (see
 [monitoring and OpenBao notes](MONITORING.md)). External Secrets needs
 a configured SecretStore or ClusterSecretStore.
 
-The single `victoria-metrics-k8s-stack` release now enables its operator-managed
-VictoriaLogs and VictoriaTraces backends for the full OpenTelemetry demo. Each
+The single `victoria-metrics-k8s-stack` release enables its operator-managed
+VictoriaLogs and VictoriaTraces backends for OpenTelemetry signals. Each
 uses a 10Gi `ceph-block` volume with seven-day retention. The existing traces agent
 is configured to forward to that VictoriaTraces backend; the demo Collector routes
 all telemetry through VMAgent, VLAgent, and VTAgent. See the [demo guide](infrastructure/demo/opentelemetry-demo/README.md).

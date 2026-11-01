@@ -132,9 +132,9 @@ access, and network policies still require live-cluster validation. Network
 policies are owned by each consuming cluster; permit the actual metrics ports
 when restricting access to infrastructure namespaces.
 
-## Full OpenTelemetry demo
+## Minimal OpenTelemetry demo
 
-The [demo](infrastructure/demo/opentelemetry-demo/README.md) emits SDK metrics,
+The [two-service demo](infrastructure/demo/opentelemetry-demo/README.md) emits SDK metrics,
 logs, and traces. Its Collector bridges the official SDKs' protocol requirements
 and forwards through native VMAgent, VLAgent, and VTAgent rather than directly to
 storage. Span-to-metrics conversion and the associated dashboard are removed.

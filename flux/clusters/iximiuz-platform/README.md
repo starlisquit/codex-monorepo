@@ -1,7 +1,8 @@
 # Full iximiuz Labs platform
 
 This cluster overlay enables every infrastructure HelmRelease and the PostgreSQL
-instance, dashboards, and datasource configuration. Shared templates remain
+instance, dashboards, and datasource configuration. The demo template deliberately
+selects only currency and quote, plus the Collector; it is not the full storefront. Shared templates remain
 suspended for other clusters; this overlay enables each selected release.
 
 ## Playground

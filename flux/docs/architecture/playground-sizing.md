@@ -12,7 +12,8 @@ Kubernetes node. During deployment the control plane was observed at about
 workers each had approximately 2.4–2.6 GiB available. Kubernetes API requests and
 some guest command calls timed out. These observations support reserving more
 control-plane capacity; they do not prove a single root cause for the slowdown.
-The user explicitly paused that investigation, so do not describe it as fixed.
+That investigation was initially paused and later resumed; see the resource-pressure
+findings for measured capacity failures. Do not describe the running cluster as fixed.
 
 ## Future-playground defaults
 
@@ -39,11 +40,12 @@ budget within this playground's total.
 
 ## Workload placement and limits
 
-The demo overlay now requires its services and Collector to run on workers. It
-also reduces the five-user load generator to a 384 MiB limit and 128 MiB request.
-These new placement/sizing changes have been rendered locally; their complete
-runtime behavior is not yet verified. This is still a tightly sized lab, not a
-capacity recommendation for the full stack in production.
+The demo overlay requires its services and Collector to run on workers. The
+shared demo template now disables all but currency and quote, plus the Collector,
+with 176Mi total requested memory and no browser load generator. See the
+[resource-pressure findings](../findings/resource-pressure.md) for the measured
+capacity deficit and the reason for this reduction. Local rendering validates
+placement; confirm that Flux has actually replaced older running workloads.
 
 Do not simply reapply a control-plane NoSchedule taint without configuring
 storage placement and tolerations: this three-host Ceph cluster uses all three

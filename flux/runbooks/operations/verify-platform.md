@@ -113,12 +113,14 @@ kubectl -n demo get helmrelease opentelemetry-demo
 kubectl -n demo get deployments,pods
 kubectl -n demo logs deployment/otel-collector --tail=100
 kubectl -n observability get service | grep -E 'vmagent|vlagent|vtagent|single'
-kubectl -n demo port-forward service/frontend-proxy 8080:8080
+kubectl -n demo port-forward service/quote 8080:8080
 ```
 
 If the release uses a different Collector deployment name, find it using
 `kubectl -n demo get deployments`. Check for exporter retry/queue/drop errors and
-confirm that the five-user load generator actually runs. The worker-only affinity
+confirm that only currency, quote, and the Collector remain. Generate a small
+request with `curl -fsS -H "Content-Type: application/json" --data '{"numberOfItems":2}' http://127.0.0.1:8080/getquote`
+through the quote port forward. No automatic load generator remains. The worker-only affinity
 is a capacity boundary: investigate Pending requests rather than moving the demo
 onto the already constrained control plane.
 

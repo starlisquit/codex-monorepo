@@ -1,110 +1,93 @@
-# OpenTelemetry Demo through native Victoria agents
+# Minimal OpenTelemetry demo through native Victoria agents
 
-The official demo chart remains pinned to `0.42.6` (application `3.1.0`, Collector
-`0.160.0`). Its instrumented services and automatic five-user load generator stay
-enabled. There is no telemetrygen deployment or separate JSON log generator.
+The shared template now enables only **currency** and **quote**, plus one small
+Collector. All other pinned-chart demo components are explicitly disabled,
+including the browser load generator, Kafka, storefront, AI services, flagd,
+OpAMP server, and the demo databases. This is the shared default, not just a lab
+override. The chart remains pinned to `0.42.6` (application `3.1.0`).
+
+| Workload | Role | CPU request | Memory request | Memory limit |
+| --- | --- | ---: | ---: | ---: |
+| currency | Standalone C++ gRPC service | 10m | 32Mi | 64Mi |
+| quote | Standalone instrumented PHP HTTP service | 10m | 48Mi | 96Mi |
+| otel-collector | OTLP compatibility/forwarding bridge | 25m | 96Mi | 192Mi |
+
+Total requests: **45m CPU and 176Mi memory**; memory limits total 352Mi.
+The previous live demo requested about 5.1 GiB. These are requested resources,
+not a guarantee of actual usage or proof that the entire platform now fits.
 
 ## Telemetry paths
 
 ```text
-Official demo SDKs (OTLP/gRPC and OTLP/HTTP)
-  └─ demo Collector: protocol compatibility and existing demo scraping
-       ├─ OTLP/HTTP metrics → VMAgent :8429 → VictoriaMetrics
-       ├─ OTLP/HTTP logs    → VLAgent :9429 → VictoriaLogs
-       └─ OTLP/HTTP traces  → VTAgent :10429 → VictoriaTraces
+currency (OTLP/gRPC) and quote (OTLP/HTTP)
+  -> Collector
+     -> VMAgent :8429 -> VictoriaMetrics
+     -> VLAgent :9429 -> VictoriaLogs
+     -> VTAgent :10429 -> VictoriaTraces
 ```
 
-Every storage export goes through a native agent; the Collector has no direct
-storage-backend exporter. It no longer exposes a Prometheus metrics endpoint or
-runs span-to-metrics conversion. The span-derived dashboard has been removed.
-SDK metrics remain enabled and are sent as cumulative OTLP metrics to VMAgent.
-The Collector's own OTLP telemetry and its existing demo dependency scrapers use
-that same metrics path.
+The Collector remains because the C++ service's SDKs use gRPC and the native
+agents accept HTTP/protobuf. It has only the OTLP receiver, memory limiter,
+batching, health check, and three native-agent exporters. It does not scrape
+removed Kafka/ad services, watch Kubernetes objects, connect to OpAMP, collect
+host metrics, or convert spans into metrics.
 
-## Why the Collector is retained
+The explicit `alternateConfig` also avoids the Helm 4 null-pipeline merge failure
+seen during the full-demo rollout. When changing chart versions, compare upstream
+defaults and explicitly review this configuration. Both shared and lab renders
+are checked to contain exactly these three workload controllers.
 
-Some official demo images cannot switch protocols using environment variables.
-For example, application `3.1.0`'s C++ currency service explicitly constructs gRPC
-metric, log, and trace exporters. VMAgent's native OTLP ingestion is HTTP/protobuf,
-and browser instrumentation uses another OTLP encoding. The existing Collector
-provides the compatible receiving/conversion endpoint for those SDKs, without
-requiring custom application images. Removing it entirely would need changes to
-those applications or another protocol bridge.
+The demo's bundled Prometheus, Grafana, Jaeger, OpenSearch, and eBPF profiler stay
+disabled. Existing observability services supply storage and visualization.
+VLAgent receives SDK logs in push mode; it does not tail container stdout/stderr.
 
-The demo's built-in Prometheus, Grafana, Jaeger, and OpenSearch remain disabled.
-Grafana and storage are supplied by the existing VM stack. SDK instrumentation
-is still responsible for creating application telemetry; native agents forward
-it rather than automatically instrumenting applications.
+## Enable and generate a small amount of traffic
 
-## Agent configuration
+The HelmRelease stays suspended in the shared template. The full platform overlay
+enables it only after the observability stack and traces agent are ready, and
+requires all three workloads to run on workers.
 
-- VMAgent already receives HTTP/protobuf at `/opentelemetry/v1/metrics` on 8429
-  and forwards to the stack's VMSingle.
-- The VM stack enables VLAgent in **push mode**, with `k8sCollector.enabled: false`.
-  It receives OTLP logs at `/insert/opentelemetry/v1/logs` on 9429 and forwards via
-  the native protocol to VLSingle. No host log tailing or host filesystem mounts
-  are required for this demo's SDK log path.
-- The existing VictoriaTraces agent receives HTTP OTLP traces at
-  `/insert/opentelemetry/v1/traces` on 10429 and forwards to VTSingle.
-
-This collects the SDK logs exported by the demo. Container stdout/stderr is a
-separate source and is not tailed by this push-mode VLAgent.
-
-## Install and observe
-
-1. Prepare Rook/Ceph, the `ceph-block` StorageClass, monitoring CRDs, Grafana
-   Operator, and the VM stack. Its VLSingle/VTSingle retain seven days of data
-   with a 10Gi volume each.
-2. Enable the existing VictoriaTraces agent release. Confirm VMAgent, VLAgent,
-   VTAgent, and their storage backends are running and healthy.
-3. Reconcile the shared chart sources and this demo directory. It creates the
-   `demo` namespace. Unsuspend the demo HelmRelease intentionally; it depends on
-   the VM stack, monitoring CRDs, and VictoriaTraces agent release.
-
-The full application remains substantial: 26 workload controllers and container
-memory limits totaling 6,904Mi, plus native agents, backends, and other platform
-services. Reserve adequate capacity before enabling it. All releases remain
-suspended in Git; no cluster deployment is performed by adding these templates.
-
-For storefront access after deployment:
+There is **no automatic load generator**. To exercise quote, forward its Service:
 
 ```sh
-kubectl -n demo port-forward service/frontend-proxy 8080:8080
+kubectl -n demo port-forward service/quote 8080:8080
 ```
 
-Use the existing Grafana Explore datasources: **VictoriaMetrics** for application
-and Collector metrics, **VictoriaLogs (DS)** for logs, and **VictoriaTraces** for
-traces. Span-derived counters such as `traces_span_metrics_calls_total` are no
-longer generated. Application metric names depend on their SDKs and VM's OTLP
-conversion; discover actual series before building workload dashboards. Automatic
-cross-signal links are not configured.
+In another terminal:
 
-When enforcing network isolation, permit the Collector's egress to observability
-TCP 8429/9429/10429, application OTLP traffic to the Collector, required demo
-service/dependency traffic, and the agents' storage forwarding. No new ingress,
-Gateway, or example policy is introduced. Update URLs for different namespaces,
-release names, or cluster domains.
+```sh
+curl -fsS -H 'Content-Type: application/json' \
+  --data '{"numberOfItems":2}' http://127.0.0.1:8080/getquote
+```
 
-## Validation scope
+Expected response: `17.98`. The pinned quote implementation emits a manual `quotes`
+counter, a calculation span, and an SDK log for this request. Give periodic metric
+export time to flush, then look for recent `service.name=quote` data in Grafana
+Explore's VictoriaMetrics, VictoriaLogs (DS), and VictoriaTraces datasources.
+Actual ingestion must be verified; rendering alone does not prove it.
 
-Helm/Kustomize renders and the generated Collector configuration are checked.
-The explicit Collector `alternateConfig` avoids a live Helm 4 failure caused by
-null pipeline merging. Keep it synchronized with the pinned chart when upgrading;
-upstream Collector defaults do not automatically replace it.
+Currency exposes its gRPC API on the `currency` Service, port 8080. It does not
+require Kafka, the storefront, flagd, or a database to start.
 
-Local smoke testing uses pinned native agents/backends and synthetic telemetry;
-it does not establish that every official demo workload functions in a deployed
-Kubernetes cluster. Live SDK export, agent queues, storage ingestion, and Grafana
-queries still require cluster validation.
+## Validation and rollout
 
-References:
+```sh
+kustomize build flux/infrastructure/demo/opentelemetry-demo
+flux reconcile source git flux-system --timeout=2m
+flux reconcile kustomization otel-demo --timeout=15m
+kubectl -n demo get deployments,pods
+kubectl -n demo logs deployment/otel-collector --tail=100
+```
 
-- [Official demo chart](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-demo)
-- [Pinned C++ metric exporter](https://github.com/open-telemetry/opentelemetry-demo/blob/3.1.0/src/currency/src/meter_common.h)
-- [VMAgent OTLP ingestion](https://github.com/VictoriaMetrics/VictoriaMetrics/blob/v1.155.0/app/vmagent/main.go)
-- [VLAgent](https://docs.victoriametrics.com/victorialogs/vlagent/)
-- [VTAgent](https://docs.victoriametrics.com/victoriatraces/vtagent/)
+Expect only currency, quote, and otel-collector workload controllers after the
+Helm upgrade removes the disabled components. Pending/failed old releases and
+unready Flux dependencies can delay application of a Git change; inspect their
+status rather than assuming a push already removed running Pods.
 
-See the [deployment findings](../../../docs/findings/flux-and-helm.md) and
-[verification runbook](../../../runbooks/operations/verify-platform.md) for the
-live rollout boundary and the lab-specific worker placement/resource settings.
+See [resource findings](../../../docs/findings/resource-pressure.md),
+[Helm findings](../../../docs/findings/flux-and-helm.md), and the
+[verification runbook](../../../runbooks/operations/verify-platform.md).
+
+References: [pinned demo chart](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-demo),
+[quote route and telemetry](https://github.com/open-telemetry/opentelemetry-demo/blob/3.1.0/src/quote/app/routes.php),
+[C++ exporters](https://github.com/open-telemetry/opentelemetry-demo/blob/3.1.0/src/currency/src/meter_common.h).
