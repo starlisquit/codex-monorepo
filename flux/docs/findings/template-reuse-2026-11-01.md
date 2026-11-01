@@ -1,5 +1,8 @@
 # Reusable infrastructure versus cluster configuration — 2026-11-01
 
+> Layout and namespace ownership were subsequently consolidated; see
+> [the layout refactor](template-layout-2026-11-01.md). Historical validation results below remain unchanged.
+
 ## Changes made
 
 The cluster overlays no longer repeat standard Helm reconciliation settings or
@@ -10,14 +13,14 @@ no new playground or live cluster mutation was needed or performed.
 | Finding | Shared location / resulting behavior |
 | --- | --- |
 | Repeated suspend:false and timeout patches | Removed 49 overlay fields/JSON-patch operations. All 31 shared HelmReleases have explicit timeouts: 15m normally, existing 5m behavior retained for Cilium and metrics-server. Added defaults to 23 releases that lacked them. Selecting a release enables reconciliation without an activation patch. |
-| ESO ServiceAccount and OpenBao SecretStore defined in a cluster | Moved to infrastructure/secrets/external-secrets/openbao-store; select after ESO and OpenBao are ready. |
+| ESO ServiceAccount and OpenBao SecretStore defined in a cluster | Moved to infrastructure/secrets/external-secrets/opt-in/openbao-store; select after ESO and OpenBao are ready. |
 | Duplicate token-review ClusterRoleBinding | Removed the custom openbao-token-review from desired resources. Official OpenBao chart 0.30.6 already grants the same server account system:auth-delegator via secrets-openbao-server-binding. Explicitly enabled server.authDelegator.enabled in shared values. |
-| Verification ExternalSecret coupled to ordinary integration | Moved to the separately selectable openbao-store/verification subdirectory. Existing lab selects it; ordinary deployments need not provision lab/verification. |
+| Verification ExternalSecret coupled to ordinary integration | Moved to the separately selectable external-secrets/opt-in/openbao-verification subdirectory. Existing lab selects it; ordinary deployments need not provision lab/verification. |
 | Shared namespace declarations copied into foundation | Moved intact to infrastructure/namespaces; foundation selects the bundle. Smaller clusters can still provision their own subset. |
 | Duplicate Cilium HelmRepository plus deletion patch | Full-platform foundation now selects the existing shared source. Removed its exclusion patch and the full-platform Cilium source copy. The minimal iximiuz-labs overlay keeps its source because it does not deploy that foundation. |
 | Stable PostgreSQL TLS references in cluster patch | Moved to the shared application PostgreSQL template. Cluster retains its 1Gi storage override; prerequisites are documented alongside the template. |
 | Gateway API CRDs stored in cluster overlay | Moved unchanged to infrastructure/networking/gateway-api-crds, including upstream notices and Standard channel v1.4.0 annotations. Existing CRD health gate stays in place. |
-| Generic Ceph write/sync/read Job and PVC stored in cluster overlay | Moved unchanged to separately selectable infrastructure/storage/rook-ceph/verification. Existing storage-ready dependency gate still selects and waits for it. |
+| Generic Ceph write/sync/read Job and PVC stored in cluster overlay | Moved unchanged to separately selectable infrastructure/storage/rook-ceph/cluster/opt-in/verification. Existing storage-ready dependency gate still selects and waits for it. |
 
 A simple component wrapper, such as blackbox, now consists only of its
 Kustomization API/kind and the shared infrastructure resource path. The store

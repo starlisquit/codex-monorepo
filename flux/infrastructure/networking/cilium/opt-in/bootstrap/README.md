@@ -10,7 +10,7 @@ Select it in the consuming cluster wrapper:
 resources:
 - ../../../infrastructure/networking/cilium
 components:
-- ../../../components/cilium-bootstrap
+- ../../../infrastructure/networking/cilium/opt-in/bootstrap
 ```
 
 This replaces a repeated JSON patch with an explicit mode selection. Components

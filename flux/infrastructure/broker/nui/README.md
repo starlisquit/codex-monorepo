@@ -1,5 +1,9 @@
 # NUI (NATS UI)
 
+Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
+Reconcile that foundation before this template; this directory does not create
+its own namespace.
+
 Opt-in template using the [official NUI chart](https://github.com/nats-nui/k8s),
 version 0.1.6. Upstream labels Kubernetes support experimental.
 The application image is pinned by version and multi-architecture digest rather

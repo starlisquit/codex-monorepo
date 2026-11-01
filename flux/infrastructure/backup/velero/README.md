@@ -1,5 +1,9 @@
 # Velero
 
+Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
+Reconcile that foundation before this template; this directory does not create
+its own namespace.
+
 Pinned official Helm chart **12.2.2**, Velero **1.18.2**, from
 <https://vmware-tanzu.github.io/helm-charts/>. The chart archive was checked against
 its published index SHA-256 and rendered with Helm 4. Base and S3 example renders
@@ -29,7 +33,7 @@ review the render before production use.
 
 ## Configure S3-compatible object storage
 
-`values-s3.example.yaml` is **excluded** from Kustomize. Copy it to a cluster-owned
+`opt-in/s3/values.example.yaml` is **excluded** from Kustomize. Copy it to a cluster-owned
 values file, replace bucket/region/HTTPS endpoint, and provision an existing Secret
 `velero-cloud-credentials` in namespace `velero`, with the credential file under
 key `cloud`. Do not put access keys in Git. Prefer provider workload identity when

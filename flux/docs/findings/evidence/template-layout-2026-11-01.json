@@ -1,0 +1,27 @@
+{
+  "baseline_commit": "10e2fcb4588751563e48940369172e3ec311ee81",
+  "validation": "offline render and structural comparison; no live cluster changes",
+  "kustomize_builds": 104,
+  "component_validation": "bootstrap Component composed through both existing Cilium consumers",
+  "selected_flux_kustomizations": 37,
+  "selected_helm_releases": 25,
+  "individual_namespace_files_removed": 11,
+  "central_unique_namespaces": 18,
+  "opt_in_directories_or_examples_moved": 9,
+  "selected_identities_before": 142,
+  "selected_identities_after": 146,
+  "removed_identities": [],
+  "added_identities": [
+    "v1|Namespace||ai",
+    "v1|Namespace||ci",
+    "v1|Namespace||proxy",
+    "v1|Namespace||quality"
+  ],
+  "changed_existing_identities": [],
+  "standalone_templates_with_identical_non_namespace_output": 11,
+  "namespace_security_labels_preserved": true,
+  "default_parent_templates_do_not_include_opt_ins": true,
+  "top_level_components_directory_removed": true,
+  "individual_namespace_yaml_files_remaining": 0,
+  "live_namespace_ownership_migration_performed": false
+}

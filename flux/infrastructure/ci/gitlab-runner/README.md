@@ -1,5 +1,9 @@
 # GitLab Runner
 
+Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
+Reconcile that foundation before this template; this directory does not create
+its own namespace.
+
 Official [GitLab chart](https://gitlab.com/gitlab-org/charts/gitlab-runner),
 chart `0.94.2` / Runner `19.5.2`, from `https://charts.gitlab.io`.
 The component creates namespace `ci`; its HelmRepository is in `sources/gitlab.yaml`.

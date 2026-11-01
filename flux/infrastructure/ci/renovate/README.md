@@ -1,5 +1,9 @@
 # Renovate
 
+Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
+Reconcile that foundation before this template; this directory does not create
+its own namespace.
+
 Official [Renovate chart](https://github.com/renovatebot/helm-charts), chart
 `46.396.0` / Renovate `44.198.0`, from `https://docs.renovatebot.com/helm-charts`.
 The directory uses the product spelling `renovate`.

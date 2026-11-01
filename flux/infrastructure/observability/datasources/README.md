@@ -10,7 +10,7 @@ and datasource UID to avoid conflicting with those defaults.
 
 To add a datasource:
 
-1. Copy `prometheus.yaml.example` to a descriptive `.yaml` filename.
+1. Copy `opt-in/prometheus/prometheus.yaml.example` to a descriptive `.yaml` filename.
 2. Replace the placeholder URL, names, and UID; choose the appropriate Grafana
    datasource type and settings for your backend. Keep `isDefault: false` unless
    deliberately changing which datasource is the default.

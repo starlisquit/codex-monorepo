@@ -1,5 +1,9 @@
 # SonarQube
 
+Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
+Reconcile that foundation before this template; this directory does not create
+its own namespace.
+
 Official [SonarSource chart](https://github.com/SonarSource/helm-chart-sonarqube),
 chart `2026.5.1003`, from `https://SonarSource.github.io/helm-chart-sonarqube`.
 This template explicitly selects Community Build `26.9.0.129388`; the chart's

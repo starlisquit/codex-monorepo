@@ -1,5 +1,8 @@
 # Native template overrides and Cilium bootstrap — 2026-11-01
 
+> Layout and namespace ownership were subsequently consolidated; see
+> [the layout refactor](template-layout-2026-11-01.md). Historical validation results below remain unchanged.
+
 The repeated valuesFrom append patch is replaced by native Flux support across
 all 31 HelmRelease templates. Cilium dependency removal is replaced by an
 explicit opt-in Kustomize Component. No extra templating engine, custom CRD
@@ -29,7 +32,7 @@ instructing users to construct another HelmRelease patch.
 ## Cilium dependency mode
 
 The shared Cilium release retains its normal monitoring-CRD dependency. Select
-`flux/components/cilium-bootstrap` in the consumer's components list to remove
+`flux/infrastructure/networking/cilium/opt-in/bootstrap` in the consumer's components list to remove
 that dependency list. The component targets Cilium only; other releases retain
 their dependency guards. Both existing iximiuz Cilium wrappers now select it,
 preserving their prior bootstrap behavior without copying a JSON patch.
@@ -44,7 +47,7 @@ this feature: Helm values configure the chart, while the containing HelmRelease
 is reconciled by Flux. Kustomize Components provide a native inclusion switch;
 Kustomize does not evaluate arbitrary boolean conditionals in static YAML.
 
-See the [component documentation](../../components/cilium-bootstrap/README.md)
+See the [component documentation](../../infrastructure/networking/cilium/opt-in/bootstrap/README.md)
 and [Cilium template documentation](../../infrastructure/networking/cilium/README.md).
 
 ## Verification

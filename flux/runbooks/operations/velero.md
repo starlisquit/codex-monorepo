@@ -10,7 +10,7 @@ playground is destroyed; this is an unexercised procedure, not a recovery result
 From the repo root, after reviewing and filling in the excluded example:
 
 ```sh
-cp flux/infrastructure/backup/velero/values-s3.example.yaml \
+cp flux/infrastructure/backup/velero/opt-in/s3/values.example.yaml \
   flux/clusters/iximiuz-platform/velero/values.yaml
 ```
 
@@ -19,7 +19,7 @@ Create the namespace and provision the credential through your approved secret
 workflow. For a preexisting local credential file, outside the repository:
 
 ```sh
-kubectl apply -f flux/infrastructure/backup/velero/namespace.yaml
+kubectl apply -k flux/infrastructure/namespaces
 kubectl -n velero create secret generic velero-cloud-credentials \
   --from-file=cloud=/secure/path/to/velero-credentials
 ```
@@ -67,7 +67,7 @@ recoverable. No automatic schedule is supplied.
 ## Metadata smoke backup and isolated restore
 
 ```sh
-kubectl apply -f flux/infrastructure/backup/velero/backup-metadata.example.yaml
+kubectl apply -f flux/infrastructure/backup/velero/opt-in/backup-metadata/backup.yaml
 velero backup describe application-metadata-smoke --details
 velero backup logs application-metadata-smoke
 ```

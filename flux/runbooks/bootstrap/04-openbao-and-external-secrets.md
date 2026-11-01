@@ -52,7 +52,7 @@ Kubernetes auth, the scoped `external-secrets-lab` role/policy, and a non-sensit
 verification value. The Kubernetes auth role binds the expected service account,
 namespace, and `openbao` audience. Git installs the corresponding SecretStore,
 service account and optional verification ExternalSecret from reusable
-`infrastructure/secrets/external-secrets/openbao-store` components. The OpenBao
+`infrastructure/secrets/external-secrets/opt-in/openbao-store` components. The OpenBao
 chart supplies the token-review binding; cluster YAML must not duplicate it.
 
 Verify only the known non-sensitive marker, not arbitrary Secret contents:

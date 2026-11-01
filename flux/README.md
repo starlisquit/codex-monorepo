@@ -57,11 +57,11 @@ focused playgrounds rather than deploying unrelated infrastructure.
 1. Chart versions are pinned to the latest stable releases verified on
    2026-11-01 (see the table below). Review Kubernetes compatibility and the
    supported chart values before enabling any release.
-2. Select `infrastructure/namespaces` once in a full-platform foundation, or
-   create only the target namespaces for a smaller installation: `observability`, `rook-ceph`, `databases`,
-   `kyverno`, `certificates`, `secrets`, `broker`, `ui`, `autoscaling`, and `applications` as needed.
-   The demo component creates its own `demo` namespace.
-   Cilium targets the existing `kube-system` namespace; sources use `flux-system`.
+2. Reconcile `infrastructure/namespaces` before the workload templates. This is
+   the single namespace-definition bundle, including `ai`, `ci`, `proxy`,
+   `quality`, `velero`, and the security namespaces with their required labels.
+   Individual templates no longer create namespaces. Cilium targets the existing
+   `kube-system` namespace; sources use Flux's bootstrap `flux-system` namespace.
 3. Build the desired component with `kustomize build <component-directory>`.
    Kustomize generates a stable values ConfigMap; `valuesFrom` connects it to
    the HelmRelease. The watch label tells Flux to reconcile values changes.
@@ -93,15 +93,21 @@ Missing optional ConfigMaps are ignored; missing keys, invalid YAML and other
 errors still fail. Removing the ConfigMap drops that override layer.
 
 For Cilium bootstrap, select
-[`components/cilium-bootstrap`](components/cilium-bootstrap/README.md) in the
+[`infrastructure/networking/cilium/opt-in/bootstrap`](infrastructure/networking/cilium/opt-in/bootstrap/README.md) in the
 consumer's `components` list rather than repeating a `dependsOn` deletion patch.
 Omitting the component retains normal Helm dependencies. A boolean inside Helm
 values cannot change the containing HelmRelease's dependency graph.
 
 For OpenBao-backed External Secrets, select
-[`secrets/external-secrets/openbao-store`](infrastructure/secrets/external-secrets/openbao-store/README.md)
+[`secrets/external-secrets/opt-in/openbao-store`](infrastructure/secrets/external-secrets/opt-in/openbao-store/README.md)
 after both controllers/backends are ready. The verification ExternalSecret is
 an opt-in subdirectory, and the official OpenBao chart owns token-review RBAC.
+
+Optional add-ons and excluded feature examples live under each owning
+resource's `opt-in/` directory. Select deployable additions explicitly through
+`resources` or `components`, depending on their Kustomize kind. Chart-values and
+placeholder examples stay excluded until configured. There is no top-level
+`components/` directory. Test fixtures remain under `runbooks/examples`.
 
 ## Dependencies and cluster configuration
 

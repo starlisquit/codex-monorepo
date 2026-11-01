@@ -11,7 +11,7 @@ A cluster wrapper only needs:
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- ../../../infrastructure/secrets/external-secrets/openbao-store
+- ../../../infrastructure/secrets/external-secrets/opt-in/openbao-store
 ```
 
 Use a separate Flux Kustomization with dependsOn gates for `external-secrets`
@@ -39,7 +39,7 @@ creates a role scoped to `kv/data/lab/*`, bound to this service account,
 namespace and audience. Create appropriately scoped roles for production;
 no administrator token is embedded in the SecretStore.
 
-`verification/` is separately selectable and creates only the non-sensitive
+`../openbao-verification/` is separately selectable and creates only the non-sensitive
 lab ExternalSecret `openbao-verification`. It requires the marker at
 `lab/verification`, property `status`, provisioned by the lab helper. Select it
 alongside this integration for a smoke test; ordinary consumers should omit it.

@@ -1,5 +1,9 @@
 # LiteLLM
 
+Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
+Reconcile that foundation before this template; this directory does not create
+its own namespace.
+
 Official [BerriAI chart](https://docs.litellm.ai/docs/proxy/deploy),
 `oci://ghcr.io/berriai/litellm-helm`, chart/application `1.106.6`.
 The pinned chart reference is in `sources/litellm.yaml`; this component creates
@@ -33,7 +37,7 @@ returned 400 with an error (the database-backed virtual-key fallback is unavaila
 Neither response exposed the model list or reached the upstream fixture.
 To enable database-backed features, configure an external dedicated PostgreSQL
 database and credential Secret, persistent encryption/salt key custody, and schema
-migrations. An excluded example is provided; its connection and recovery behavior
+migrations. An excluded example is provided at `opt-in/postgresql/values.example.yaml`; its connection and recovery behavior
 must be verified in the consuming environment. No database credentials belong in Git.
 
 ```sh

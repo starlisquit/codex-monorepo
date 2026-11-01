@@ -1,5 +1,9 @@
 # Trivy Operator
 
+Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
+Reconcile that foundation before this template; this directory does not create
+its own namespace.
+
 The operator has a 1 GiB memory limit: the first full-platform bootstrap repeatedly
 OOM-killed it at 256 MiB. Scan concurrency is two Jobs. Per-container requests are
 128 MiB memory and 256 MiB ephemeral storage; multi-container workloads otherwise

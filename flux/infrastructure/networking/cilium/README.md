@@ -12,7 +12,7 @@ complete configMapGenerator examples. Only absence of the optional ConfigMap is
 ignored: missing keys, invalid YAML and other read errors still fail.
 
 Default mode retains the Helm dependency on monitoring CRDs. For native CNI
-bootstrap, select the [bootstrap component](../../../components/cilium-bootstrap/README.md)
+bootstrap, select the [bootstrap component](opt-in/bootstrap/README.md)
 in the cluster wrapper's `components` list. This is an opt-in mode selection,
 not a boolean in Cilium's Helm values. The caller must retain appropriate
 Flux readiness gates or disable unavailable chart integrations.

@@ -1,5 +1,9 @@
 # Minimal OpenTelemetry demo through native Victoria agents
 
+Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
+Reconcile that foundation before this template; this directory does not create
+its own namespace.
+
 The shared template now enables only **currency** and **quote**, plus one small
 Collector. All other pinned-chart demo components are explicitly disabled,
 including the browser load generator, Kafka, storefront, AI services, flagd,

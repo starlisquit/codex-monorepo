@@ -1,5 +1,9 @@
 # Redis Insight
 
+Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
+Reconcile that foundation before this template; this directory does not create
+its own namespace.
+
 Opt-in deployment of Redis Insight 3.8.0 using [Redis's official Kubernetes
 manifests](https://redis.io/docs/latest/operate/redisinsight/install/install-on-k8s/).
 **There is no official Redis Insight Helm chart.** Community charts exist but

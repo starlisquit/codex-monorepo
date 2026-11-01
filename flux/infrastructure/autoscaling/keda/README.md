@@ -1,8 +1,8 @@
 # KEDA autoscaling with VictoriaMetrics
 
 KEDA chart `2.21.0` is pinned to the latest stable chart verified on 2026-11-01.
-Create the `autoscaling` namespace and reconcile this directory after the shared
-sources and monitoring CRD release. The HelmRelease is suspended initially.
+Reconcile the central namespace bundle first, then this directory after the
+shared sources and monitoring CRD release. The HelmRelease reconciles when selected.
 
 ## Metrics integration
 
@@ -10,7 +10,7 @@ Two separate paths are configured:
 
 - KEDA operator, metrics adapter, and admission-webhook metrics are exposed with
   ServiceMonitors. The VM operator converts them and VMAgent collects them.
-- The excluded `scaledobject.yaml.example` uses KEDA's Prometheus scaler to query
+- The excluded `opt-in/scaledobject/scaledobject.yaml.example` uses KEDA's Prometheus scaler to query
   the existing VMSingle Prometheus-compatible API. It does not require a separate
   Prometheus server or Prometheus Adapter.
 

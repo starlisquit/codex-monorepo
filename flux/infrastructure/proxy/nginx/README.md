@@ -1,5 +1,9 @@
 # NGINX Ingress Controller
 
+Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
+Reconcile that foundation before this template; this directory does not create
+its own namespace.
+
 Official [NGINX chart](https://github.com/nginx/kubernetes-ingress/tree/v5.7.0/charts/nginx-ingress),
 `nginx-ingress` chart `2.8.0` / controller `5.7.0`, from `https://helm.nginx.com/stable`.
 This is NGINX's open-source Ingress Controller, not the separate ingress-nginx
