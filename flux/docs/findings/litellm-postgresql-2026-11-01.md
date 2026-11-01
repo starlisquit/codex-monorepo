@@ -120,5 +120,9 @@ opt-in. SonarQube is the most direct next use of the same Cluster pattern.
 
 ## Publication and teardown
 
-Implementation, findings and evidence will be pushed to both remotes before
-playground destruction. The confirmed destroy result will be recorded afterward.
+Implementation, findings and evidence were committed as `6128953` and pushed
+to both GitHub and GitLab; remote main commit IDs matched before teardown.
+The explicit destroy API returned `ok: true` for playground
+`6ae7603746471e132687f4f5` at 2026-11-01 16:11:43 UTC / 19:11:43
+Europe/Istanbul. It was destroyed, not stopped; the immediate listing reported
+it non-running while deletion propagated.
