@@ -1,0 +1,182 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: platform-container-logs
+  namespace: observability
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: platform
+  datasources:
+  - inputName: DS_LOGS
+    datasourceName: VictoriaLogs (DS)
+  json: |
+    {
+      "uid": "platform-container-logs",
+      "title": "Platform / Container logs",
+      "description": "Container stdout/stderr collected by node-local vlagent. All levels includes records without level. SDK-push records without Kubernetes metadata are available separately in Explore.",
+      "tags": [
+        "platform",
+        "logs",
+        "kubernetes"
+      ],
+      "schemaVersion": 39,
+      "version": 1,
+      "refresh": "30s",
+      "time": {
+        "from": "now-15m",
+        "to": "now"
+      },
+      "__inputs": [
+        {
+          "name": "DS_LOGS",
+          "label": "VictoriaLogs",
+          "type": "datasource",
+          "pluginId": "victoriametrics-logs-datasource",
+          "pluginName": "VictoriaLogs"
+        }
+      ],
+      "templating": {
+        "list": [
+          {
+            "name": "namespace",
+            "label": "Namespace",
+            "type": "query",
+            "datasource": {
+              "type": "victoriametrics-logs-datasource",
+              "uid": "${DS_LOGS}"
+            },
+            "query": {
+              "refId": "variable-namespace",
+              "type": "fieldValue",
+              "field": "kubernetes.pod_namespace",
+              "query": "*",
+              "limit": 1000
+            },
+            "refresh": 2,
+            "multi": true,
+            "includeAll": true,
+            "allValue": ".*",
+            "current": {
+              "text": "All",
+              "value": "$__all"
+            },
+            "sort": 1,
+            "options": []
+          },
+          {
+            "name": "pod",
+            "label": "Pod",
+            "type": "query",
+            "datasource": {
+              "type": "victoriametrics-logs-datasource",
+              "uid": "${DS_LOGS}"
+            },
+            "query": {
+              "refId": "variable-pod",
+              "type": "fieldValue",
+              "field": "kubernetes.pod_name",
+              "query": "kubernetes.pod_namespace:~\"^${namespace:regex}$\"",
+              "limit": 1000
+            },
+            "refresh": 2,
+            "multi": true,
+            "includeAll": true,
+            "allValue": ".*",
+            "current": {
+              "text": "All",
+              "value": "$__all"
+            },
+            "sort": 1,
+            "options": []
+          },
+          {
+            "name": "container",
+            "label": "Container",
+            "type": "query",
+            "datasource": {
+              "type": "victoriametrics-logs-datasource",
+              "uid": "${DS_LOGS}"
+            },
+            "query": {
+              "refId": "variable-container",
+              "type": "fieldValue",
+              "field": "kubernetes.container_name",
+              "query": "kubernetes.pod_namespace:~\"^${namespace:regex}$\" AND kubernetes.pod_name:~\"^${pod:regex}$\"",
+              "limit": 1000
+            },
+            "refresh": 2,
+            "multi": true,
+            "includeAll": true,
+            "allValue": ".*",
+            "current": {
+              "text": "All",
+              "value": "$__all"
+            },
+            "sort": 1,
+            "options": []
+          },
+          {
+            "name": "level",
+            "label": "Level (when provided)",
+            "type": "custom",
+            "query": "trace,debug,info,warn,warning,error,fatal,critical",
+            "multi": true,
+            "includeAll": true,
+            "allValue": ".*",
+            "current": {
+              "text": "All",
+              "value": "$__all"
+            },
+            "options": []
+          },
+          {
+            "name": "search",
+            "label": "Message regex",
+            "type": "textbox",
+            "query": ".*",
+            "current": {
+              "text": ".*",
+              "value": ".*"
+            },
+            "options": []
+          }
+        ]
+      },
+      "panels": [
+        {
+          "id": 1,
+          "title": "Container stdout / stderr",
+          "type": "logs",
+          "gridPos": {
+            "x": 0,
+            "y": 0,
+            "w": 24,
+            "h": 22
+          },
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "${DS_LOGS}"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "kubernetes.pod_namespace:~\"^${namespace:regex}$\" AND kubernetes.pod_name:~\"^${pod:regex}$\" AND kubernetes.container_name:~\"^${container:regex}$\" AND (level:~\"(?i)^${level:regex}$\" OR severity_text:~\"(?i)^${level:regex}$\" OR severity:~\"(?i)^${level:regex}$\") AND _msg:~\"${search:raw}\"",
+              "queryType": "instant",
+              "editorMode": "code",
+              "maxLines": 1000
+            }
+          ],
+          "options": {
+            "showTime": true,
+            "showLabels": true,
+            "showCommonLabels": false,
+            "wrapLogMessage": true,
+            "prettifyLogMessage": false,
+            "enableLogDetails": true,
+            "sortOrder": "Descending",
+            "dedupStrategy": "none"
+          }
+        }
+      ]
+    }

@@ -9,6 +9,7 @@ The existing chart-supplied dashboards and category starter dashboards remain.
 | `demo/` | Demo / SDK and workload health | Quote counter/rate, available replicas, CPU, memory and restarts |
 | `platform/` | Platform / Capacity and pressure | Memory headroom/budgets, root disk capacity, pressure, Pending Pods, I/O wait |
 | `platform/` | Platform / Scrape health | Up/down targets, scrape duration and sample volume by job |
+| `logs/` | Platform / Container logs | stdout/stderr with namespace, Pod, container, level and message filters |
 
 Resources target namespace `observability`, Grafana instances with label
 `dashboards: platform`, and datasource **VictoriaMetrics**, using Operator datasource

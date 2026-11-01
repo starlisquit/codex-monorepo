@@ -80,4 +80,30 @@ vlagent:
   enabled: true
   spec:
     k8sCollector:
-      enabled: false
+      enabled: true
+      includePodLabels: true
+      includePodAnnotations: false
+      includeNodeLabels: false
+      includeNodeAnnotations: false
+    # Explicit writable hostPath preserves checkpoints and bounded write buffers.
+    tmpDataPath: /var/lib/vlagent-data
+    volumes:
+    - name: collector-data
+      hostPath:
+        path: /var/lib/vlagent-data
+        type: DirectoryOrCreate
+    volumeMounts:
+    - name: collector-data
+      mountPath: /var/lib/vlagent-data
+    tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+    extraArgs:
+      remoteWrite.maxDiskUsagePerURL: 128MiB
+    resources:
+      requests:
+        cpu: 25m
+        memory: 128Mi
+      limits:
+        memory: 256Mi
