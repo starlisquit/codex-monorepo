@@ -1,8 +1,8 @@
 # Velero
 
-Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
-Reconcile that foundation before this template; this directory does not create
-its own namespace.
+Select [this namespace base](../../namespaces/velero/kustomization.yaml) in foundation
+or the deployment wrapper before this template. No all-namespaces bundle is
+required; this directory does not create its own namespace.
 
 Pinned official Helm chart **12.2.2**, Velero **1.18.2**, from
 <https://vmware-tanzu.github.io/helm-charts/>. The chart archive was checked against

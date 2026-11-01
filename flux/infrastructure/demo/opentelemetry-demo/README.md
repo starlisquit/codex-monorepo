@@ -1,8 +1,8 @@
 # Minimal OpenTelemetry demo through native Victoria agents
 
-Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
-Reconcile that foundation before this template; this directory does not create
-its own namespace.
+Select [this namespace base](../../namespaces/demo/kustomization.yaml) in foundation
+or the deployment wrapper before this template. No all-namespaces bundle is
+required; this directory does not create its own namespace.
 
 The shared template now enables only **currency** and **quote**, plus one small
 Collector. All other pinned-chart demo components are explicitly disabled,

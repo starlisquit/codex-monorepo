@@ -1,8 +1,8 @@
 # SonarQube
 
-Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
-Reconcile that foundation before this template; this directory does not create
-its own namespace.
+Select [this namespace base](../../namespaces/quality/kustomization.yaml) in foundation
+or the deployment wrapper before this template. No all-namespaces bundle is
+required; this directory does not create its own namespace.
 
 Official [SonarSource chart](https://github.com/SonarSource/helm-chart-sonarqube),
 chart `2026.5.1003`, from `https://SonarSource.github.io/helm-chart-sonarqube`.
@@ -10,7 +10,7 @@ This template explicitly selects Community Build `26.9.0.129388`; the chart's
 Server application version is a different product/version. Developer/Enterprise
 editions require their own configuration and license.
 
-The component creates namespace `quality`. It is opt-in and not selected by the
+The component targets namespace `quality`. It is opt-in and not selected by the
 full-platform overlay. Before selection, provision PostgreSQL with database and
 dedicated login `sonarqube`, then adjust `jdbcOverwrite.jdbcUrl`/`jdbcUsername` to
 match. The default hostname is `sonarqube-postgresql.quality.svc.cluster.local`.

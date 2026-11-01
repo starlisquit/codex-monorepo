@@ -57,11 +57,11 @@ focused playgrounds rather than deploying unrelated infrastructure.
 1. Chart versions are pinned to the latest stable releases verified on
    2026-11-01 (see the table below). Review Kubernetes compatibility and the
    supported chart values before enabling any release.
-2. Reconcile `infrastructure/namespaces` before the workload templates. This is
-   the single namespace-definition bundle, including `ai`, `ci`, `proxy`,
-   `quality`, `velero`, and the security namespaces with their required labels.
-   Individual templates no longer create namespaces. Cilium targets the existing
-   `kube-system` namespace; sources use Flux's bootstrap `flux-system` namespace.
+2. Select only the namespace and source bases needed by the chosen releases,
+   such as `infrastructure/namespaces/ai` and `infrastructure/sources/litellm`.
+   Full-platform foundation selects its required subsets. The root namespace
+   and source bundles remain optional conveniences, never prerequisites.
+   Cilium uses the existing kube-system namespace; Flux bootstraps flux-system.
 3. Build the desired component with `kustomize build <component-directory>`.
    Kustomize generates a stable values ConfigMap; `valuesFrom` connects it to
    the HelmRelease. The watch label tells Flux to reconcile values changes.
@@ -108,6 +108,28 @@ resource's `opt-in/` directory. Select deployable additions explicitly through
 `resources` or `components`, depending on their Kustomize kind. Chart-values and
 placeholder examples stay excluded until configured. There is no top-level
 `components/` directory. Test fixtures remain under `runbooks/examples`.
+
+A minimal LiteLLM wrapper can select exactly its namespace, OCI source and
+release (credential Secrets are still provisioned separately):
+
+```yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../../infrastructure/namespaces/ai
+- ../../../infrastructure/sources/litellm
+- ../../../infrastructure/ai/litellm
+```
+
+Select namespaces/sources shared by multiple releases once in foundation. Keep
+an outer wrapper free of a namespace transformer that would relocate the
+flux-system source into the application namespace.
+
+HelmRelease `spec.install.createNamespace` concerns Helm's target namespace. It
+cannot create the namespace needed to store the HelmRelease and its values
+ConfigMap before the controller sees them, and it does not manage namespace
+security labels or Flux sources. These templates retain their current namespaced
+release identities and use selectable namespace bases instead.
 
 ## Dependencies and cluster configuration
 

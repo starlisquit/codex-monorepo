@@ -1,8 +1,8 @@
 # Trivy Operator
 
-Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
-Reconcile that foundation before this template; this directory does not create
-its own namespace.
+Select [this namespace base](../../namespaces/trivy-system/kustomization.yaml) in foundation
+or the deployment wrapper before this template. No all-namespaces bundle is
+required; this directory does not create its own namespace.
 
 The operator has a 1 GiB memory limit: the first full-platform bootstrap repeatedly
 OOM-killed it at 256 MiB. Scan concurrency is two Jobs. Per-container requests are

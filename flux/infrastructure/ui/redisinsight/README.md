@@ -1,8 +1,8 @@
 # Redis Insight
 
-Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
-Reconcile that foundation before this template; this directory does not create
-its own namespace.
+Select [this namespace base](../../namespaces/ui/kustomization.yaml) in foundation
+or the deployment wrapper before this template. No all-namespaces bundle is
+required; this directory does not create its own namespace.
 
 Opt-in deployment of Redis Insight 3.8.0 using [Redis's official Kubernetes
 manifests](https://redis.io/docs/latest/operate/redisinsight/install/install-on-k8s/).

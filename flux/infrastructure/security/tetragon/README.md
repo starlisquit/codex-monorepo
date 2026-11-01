@@ -1,8 +1,8 @@
 # Tetragon
 
-Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
-Reconcile that foundation before this template; this directory does not create
-its own namespace.
+Select [this namespace base](../../namespaces/tetragon/kustomization.yaml) in foundation
+or the deployment wrapper before this template. No all-namespaces bundle is
+required; this directory does not create its own namespace.
 
 A DaemonSet agent and stdout exporter on every node, plus the Tetragon operator.
 Requires Linux/eBPF support and suitable kernel BTF. Cilium's CNI and Tetragon are

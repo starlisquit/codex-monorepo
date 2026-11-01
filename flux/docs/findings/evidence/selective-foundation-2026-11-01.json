@@ -1,0 +1,59 @@
+{
+  "baseline_commit": "fe5d7928e02f6677f6f2902733a6c1e931069179",
+  "validation": "offline Kustomize render/composition comparison; no live changes",
+  "namespace_bases_available": 18,
+  "source_bases_available": 26,
+  "namespace_bases_selected_by_full_platform": 14,
+  "source_bases_selected_by_full_platform": 20,
+  "kustomize_builds": 148,
+  "selected_flux_kustomizations": 37,
+  "selected_helm_releases": 25,
+  "selected_identities_before": 146,
+  "selected_identities_after": 136,
+  "added_identities": [],
+  "removed_identities": [
+    "source.toolkit.fluxcd.io/v1|HelmRepository|flux-system|gitlab",
+    "source.toolkit.fluxcd.io/v1|HelmRepository|flux-system|nats-nui",
+    "source.toolkit.fluxcd.io/v1|HelmRepository|flux-system|nginx",
+    "source.toolkit.fluxcd.io/v1|HelmRepository|flux-system|renovate",
+    "source.toolkit.fluxcd.io/v1|HelmRepository|flux-system|sonarqube",
+    "source.toolkit.fluxcd.io/v1|OCIRepository|flux-system|litellm",
+    "v1|Namespace||ai",
+    "v1|Namespace||ci",
+    "v1|Namespace||proxy",
+    "v1|Namespace||quality"
+  ],
+  "changed_retained_identities": [],
+  "all_31_release_prerequisites_selectable": true,
+  "optional_bulk_namespace_bundle_render_unchanged": true,
+  "optional_bulk_source_bundle_render_unchanged": true,
+  "minimal_cilium_overlay_render_unchanged": true,
+  "small_compositions": {
+    "litellm": {
+      "namespaces": [
+        "ai"
+      ],
+      "sources": [
+        "litellm"
+      ],
+      "releases": [
+        "litellm"
+      ]
+    },
+    "shared-ci": {
+      "namespaces": [
+        "ci"
+      ],
+      "sources": [
+        "gitlab",
+        "renovate"
+      ],
+      "releases": [
+        "gitlab-runner",
+        "renovate"
+      ]
+    }
+  },
+  "helmrelease_identity_or_target_namespace_changed": false,
+  "live_pruning_or_namespace_deletion_performed": false
+}

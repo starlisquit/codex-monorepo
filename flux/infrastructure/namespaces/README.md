@@ -1,27 +1,27 @@
-# Central platform namespaces
+# Individually selectable namespaces
 
-`namespaces.yaml` is the single namespace-definition bundle for all
-infrastructure templates. Its 18 namespace objects include `ai`, `ci`, `proxy`,
-`quality`, `velero`, `tetragon` and `trivy-system`. The Tetragon privileged and
-Trivy baseline Pod Security labels are preserved. No individual resource
-folder contains a namespace.yaml or creates a namespace implicitly.
+Namespace definitions are centralized here, with one Kustomize base per
+namespace. Select only the ones a deployment needs, for example
+`infrastructure/namespaces/ai`. No workload template contains a namespace.yaml.
+The Tetragon privileged and Trivy baseline Pod Security labels are retained in
+their respective namespace bases.
 
-Select this directory once in foundation, before workload/controller templates.
-The existing full-platform foundation already does so. The bundle creates
-namespaces only: selecting it does not install optional charts or add-ons.
-The Kubernetes `kube-system` and Flux bootstrap `flux-system` namespaces remain
-owned by their respective bootstraps.
+The root Kustomization remains an optional convenience bundle containing all
+18 namespaces. It is not required and the full-platform foundation does not
+select it: that foundation selects only its 14 used namespaces. The Kubernetes
+kube-system and Flux bootstrap flux-system namespaces remain bootstrap-owned.
 
-For a standalone lab, apply the bundle before applying a template:
+A small installation can provision just AI's namespace:
 
 ```sh
-kubectl apply -k flux/infrastructure/namespaces
+kubectl apply -k flux/infrastructure/namespaces/ai
 ```
 
-For an existing installation, migrate namespace ownership before reconciling
-old workload inventories that prune. Reconcile foundation first and confirm
-namespace reconciliation labels identify foundation before removing an old
-owner's namespace inventory. Do not blindly prune or delete an existing
-namespace as part of moving its manifest. Namespace deletion deletes workloads
-and data in that namespace. No live ownership migration is performed by this
-repository-only refactor; all prior playgrounds were already destroyed.
+Or select the namespace base alongside its source and workload template in a
+consuming Kustomization. If multiple releases share a namespace, select it once
+under a common foundation owner, rather than repeating it in every consumer.
+
+For existing installations, review ownership and pruning before deselecting a
+namespace: deleting a namespace deletes its contents. This repository refactor
+performs no live migration or deletion. Reconcile intended namespace ownership
+before permitting an old owner to prune its inventory.

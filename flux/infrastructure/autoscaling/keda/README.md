@@ -1,7 +1,7 @@
 # KEDA autoscaling with VictoriaMetrics
 
 KEDA chart `2.21.0` is pinned to the latest stable chart verified on 2026-11-01.
-Reconcile the central namespace bundle first, then this directory after the
+Reconcile `infrastructure/namespaces/autoscaling` first, then this directory after the
 shared sources and monitoring CRD release. The HelmRelease reconciles when selected.
 
 ## Metrics integration

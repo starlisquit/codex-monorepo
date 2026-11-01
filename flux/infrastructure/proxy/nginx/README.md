@@ -1,15 +1,15 @@
 # NGINX Ingress Controller
 
-Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
-Reconcile that foundation before this template; this directory does not create
-its own namespace.
+Select [this namespace base](../../namespaces/proxy/kustomization.yaml) in foundation
+or the deployment wrapper before this template. No all-namespaces bundle is
+required; this directory does not create its own namespace.
 
 Official [NGINX chart](https://github.com/nginx/kubernetes-ingress/tree/v5.7.0/charts/nginx-ingress),
 `nginx-ingress` chart `2.8.0` / controller `5.7.0`, from `https://helm.nginx.com/stable`.
 This is NGINX's open-source Ingress Controller, not the separate ingress-nginx
 project or an NGINX Plus deployment. No Plus license is required.
 
-The component creates namespace `proxy` and class `nginx`, without making it the
+The component targets namespace `proxy` and creates class `nginx`, without making it the
 default class. Set `spec.ingressClassName: nginx` on intended application Ingresses.
 Use the `nginx.org/*` annotation family supported by this controller; annotations
 from another controller are not interchangeable. Custom VirtualServer resources

@@ -19,7 +19,7 @@ Create the namespace and provision the credential through your approved secret
 workflow. For a preexisting local credential file, outside the repository:
 
 ```sh
-kubectl apply -k flux/infrastructure/namespaces
+kubectl apply -k flux/infrastructure/namespaces/velero
 kubectl -n velero create secret generic velero-cloud-credentials \
   --from-file=cloud=/secure/path/to/velero-credentials
 ```

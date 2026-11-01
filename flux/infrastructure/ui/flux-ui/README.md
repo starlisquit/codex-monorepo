@@ -19,7 +19,7 @@ Bootstrap Flux separately using your chosen method, such as `flux bootstrap`.
 Then create the `ui` namespace, reconcile shared chart sources and monitoring
 CRDs, and include `./flux/infrastructure/ui/flux-ui` in the cluster's Flux
 Kustomizations. The HelmRelease remains suspended until intentionally enabled.
-The existing `sources/flux-operator.yaml` OCI source is retained because it
+The existing `sources/flux-operator` OCI source is retained because it
 supplies the chart used for this UI-only deployment.
 
 The chart creates the standalone server's view/impersonation RBAC rather than the

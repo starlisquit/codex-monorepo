@@ -1,5 +1,8 @@
 # Template-local opt-ins and central namespaces — 2026-11-01
 
+> The namespace bundle was subsequently split into selectable bases; see
+> [selective namespaces and sources](selective-foundation-2026-11-01.md).
+
 Optional additions now live under their owning resource's `opt-in/` directory.
 All individual `namespace.yaml` files have been removed from the templates;
 `infrastructure/namespaces/namespaces.yaml` is the single namespace-definition

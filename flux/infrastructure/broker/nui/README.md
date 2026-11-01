@@ -1,8 +1,8 @@
 # NUI (NATS UI)
 
-Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
-Reconcile that foundation before this template; this directory does not create
-its own namespace.
+Select [this namespace base](../../namespaces/broker/kustomization.yaml) in foundation
+or the deployment wrapper before this template. No all-namespaces bundle is
+required; this directory does not create its own namespace.
 
 Opt-in template using the [official NUI chart](https://github.com/nats-nui/k8s),
 version 0.1.6. Upstream labels Kubernetes support experimental.

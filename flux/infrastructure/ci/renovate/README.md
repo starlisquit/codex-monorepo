@@ -1,14 +1,14 @@
 # Renovate
 
-Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
-Reconcile that foundation before this template; this directory does not create
-its own namespace.
+Select [this namespace base](../../namespaces/ci/kustomization.yaml) in foundation
+or the deployment wrapper before this template. No all-namespaces bundle is
+required; this directory does not create its own namespace.
 
 Official [Renovate chart](https://github.com/renovatebot/helm-charts), chart
 `46.396.0` / Renovate `44.198.0`, from `https://docs.renovatebot.com/helm-charts`.
 The directory uses the product spelling `renovate`.
 
-The component creates namespace `ci` and an opt-in CronJob. It is not selected by
+The component deploys an opt-in CronJob in namespace `ci`. It is not selected by
 the full-platform overlay. Default schedule: 03:00 Europe/Istanbul daily.
 `concurrencyPolicy: Forbid` prevents overlapping scheduled runs; Jobs have a
 one-hour deadline and bounded history/retries. Manual Jobs can still overlap.

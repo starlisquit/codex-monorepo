@@ -1,13 +1,13 @@
 # LiteLLM
 
-Namespaces are defined centrally in [the namespace bundle](../../namespaces/README.md).
-Reconcile that foundation before this template; this directory does not create
-its own namespace.
+Select [this namespace base](../../namespaces/ai/kustomization.yaml) in foundation
+or the deployment wrapper before this template. No all-namespaces bundle is
+required; this directory does not create its own namespace.
 
 Official [BerriAI chart](https://docs.litellm.ai/docs/proxy/deploy),
 `oci://ghcr.io/berriai/litellm-helm`, chart/application `1.106.6`.
-The pinned chart reference is in `sources/litellm.yaml`; this component creates
-namespace `ai`, a ConfigMap-backed model configuration and a ClusterIP Service.
+The pinned chart reference is in `sources/litellm`. In namespace `ai`, this
+component deploys a ConfigMap-backed model configuration and a ClusterIP Service.
 
 The initial route is `gpt-4o-mini` through OpenAI. Adapt the model list for your
 provider. Provision these same-namespace Secrets outside Git before deployment:
