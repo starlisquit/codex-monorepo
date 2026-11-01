@@ -1,0 +1,34 @@
+# Official chart is experimental. Pin the application instead of upstream latest.
+image:
+  repository: ghcr.io/nats-nui/nui
+  tag: 0.10.0
+  pullPolicy: IfNotPresent
+service:
+  type: ClusterIP
+  port: 31311
+ingress:
+  enabled: false
+persistence:
+  size: 1Gi
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    memory: 512Mi
+# Supply this Secret separately; connection credentials must never enter Git.
+autoloadContexts: true
+contextsVolume:
+  name: nui-contexts
+  items:
+  - key: platform.json
+    path: platform.json
+credsVolume:
+  name: nui-creds
+  items: []
+# The image defaults to root-owned /protoschemas and /cddlschemas.
+# Override paths after the entrypoint defaults and persist both under /db.
+command:
+- /entrypoint.sh
+- --proto-schemas-path=/db/protoschemas
+- --cddl-schemas-path=/db/cddlschemas

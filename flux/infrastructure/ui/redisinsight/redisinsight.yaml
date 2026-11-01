@@ -1,0 +1,96 @@
+# Adapted from Redis's official Kubernetes installation manifests:
+# https://redis.io/docs/latest/operate/redisinsight/install/install-on-k8s/
+# Redis does not publish an official RedisInsight Helm chart.
+apiVersion: v1
+kind: Service
+metadata:
+  name: redisinsight-service
+spec:
+  type: ClusterIP
+  selector:
+    app: redisinsight
+  ports:
+  - name: http
+    port: 5540
+    targetPort: http
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redisinsight-data
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redisinsight
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: redisinsight
+  template:
+    metadata:
+      labels:
+        app: redisinsight
+    spec:
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+      containers:
+      - name: redisinsight
+        image: redis/redisinsight:3.8.0@sha256:b5e19ee240abef6edb435871b90ff8a210995422e8e018ab61c0339d318a1f84
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: RI_APP_HOST
+          value: 0.0.0.0
+        - name: RI_APP_PORT
+          value: "5540"
+        - name: RI_ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: redisinsight-encryption
+              key: key
+        - name: RI_LOG_LEVEL
+          value: error
+        ports:
+        - name: http
+          containerPort: 5540
+        volumeMounts:
+        - name: data
+          mountPath: /data
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            memory: 1Gi
+        startupProbe:
+          httpGet:
+            path: /api/health/
+            port: http
+          periodSeconds: 5
+          failureThreshold: 60
+        readinessProbe:
+          httpGet:
+            path: /api/health/
+            port: http
+        livenessProbe:
+          httpGet:
+            path: /api/health/
+            port: http
+          periodSeconds: 20
+          failureThreshold: 3
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: redisinsight-data

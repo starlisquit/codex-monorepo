@@ -1,0 +1,221 @@
+{
+  "play_id": "6ae70fa356e9b785c32c7b89",
+  "nui": [
+    {
+      "name": "Secret context imported",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pinned app version",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "NUI creates JetStream file stream",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "NUI publish persisted",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "NATS CLI confirms NUI stream",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "NUI reads messages from CLI",
+      "passed": true,
+      "detail": [
+        {
+          "subject": "validation.from-nui",
+          "payload": "ZnJvbS1udWk=",
+          "seq_num": 1,
+          "received_at": "2026-11-01T10:09:57.878701556Z",
+          "headers": null
+        },
+        {
+          "subject": "validation.from-cli",
+          "payload": "ZnJvbS1uYXRzLWNsaQ==",
+          "seq_num": 2,
+          "received_at": "2026-11-01T10:09:58.215771052Z",
+          "headers": null
+        }
+      ]
+    },
+    {
+      "name": "NUI creates KV bucket",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "CLI reads NUI KV write",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "NUI reads CLI KV write",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "redisinsight": [
+    {
+      "name": "Pinned app version",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Invalid Redis credentials rejected",
+      "passed": true,
+      "detail": 424
+    },
+    {
+      "name": "Authenticated Redis connection saved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "RedisInsight connects to Redis",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Redis CLI reads RedisInsight write",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "RedisInsight reads Redis CLI write",
+      "passed": true,
+      "detail": {
+        "value": "from-redis-cli",
+        "keyName": "validation:from-cli"
+      }
+    }
+  ],
+  "recovery": [
+    {
+      "name": "NUI manually saved connection survives Pod replacement",
+      "passed": true
+    },
+    {
+      "name": "NUI JetStream data survives UI replacement",
+      "passed": true
+    },
+    {
+      "name": "NUI KV data survives UI replacement",
+      "passed": true
+    },
+    {
+      "name": "NUI proto schema endpoint fixed",
+      "passed": true
+    },
+    {
+      "name": "NUI CDDL schema endpoint fixed",
+      "passed": true
+    },
+    {
+      "name": "RedisInsight saved connection survives Pod replacement",
+      "passed": true
+    },
+    {
+      "name": "RedisInsight encrypted credential decrypts after restart",
+      "passed": true
+    },
+    {
+      "name": "RedisInsight reads Redis after restart",
+      "passed": true
+    }
+  ],
+  "browser": {
+    "nui": {
+      "passed": false,
+      "error": "Cannot read properties of null (reading 'drawerPosition')",
+      "versions_reproduced": [
+        "0.10.0",
+        "0.9.3",
+        "0.8.1"
+      ]
+    },
+    "redisinsight": {
+      "onboarding_rendered": true,
+      "full_browser_workflow_verified": false,
+      "reason": "Initial EULA workflow remains unaccepted; functional validation used the application API."
+    }
+  },
+  "ui_pods": [
+    {
+      "name": "redis-validation-8547489b94-wz9fr",
+      "containers": [
+        {
+          "name": "redis",
+          "image": "docker.io/library/redis:8.2.2-alpine",
+          "imageID": "docker.io/library/redis@sha256:59b6e694653476de2c992937ebe1c64182af4728e54bb49e9b7a6c26614d8933",
+          "ready": true,
+          "restartCount": 0
+        }
+      ]
+    },
+    {
+      "name": "redisinsight-5c6565b8cb-lcx8c",
+      "containers": [
+        {
+          "name": "redisinsight",
+          "image": "sha256:3e9a2017a4d4dfc36bec418245a88180970f09785c08ce840117b3518a850c86",
+          "imageID": "docker.io/redis/redisinsight@sha256:b5e19ee240abef6edb435871b90ff8a210995422e8e018ab61c0339d318a1f84",
+          "ready": true,
+          "restartCount": 0
+        }
+      ]
+    }
+  ],
+  "broker_pods": [
+    {
+      "name": "nats-0",
+      "containers": [
+        {
+          "name": "nats",
+          "image": "docker.io/library/nats:2.15.2-alpine",
+          "imageID": "docker.io/library/nats@sha256:823e7f1d6d8ffe3b30dbd73d4a06bbb939acf94929f7fdf224404da7a05bafb5",
+          "ready": true,
+          "restartCount": 0
+        },
+        {
+          "name": "reloader",
+          "image": "docker.io/natsio/nats-server-config-reloader:0.24.0",
+          "imageID": "docker.io/natsio/nats-server-config-reloader@sha256:d758a82a9c20337e46c2f7356a413faa52cf4d6b02497c3ad81f72f1ba106464",
+          "ready": true,
+          "restartCount": 0
+        }
+      ]
+    },
+    {
+      "name": "nats-box-684899cd7-pwqht",
+      "containers": [
+        {
+          "name": "nats-box",
+          "image": "docker.io/natsio/nats-box:0.20.0",
+          "imageID": "docker.io/natsio/nats-box@sha256:d2f04223f40e016f77922a8115d34b0cd5fad2ec10b19b39316ae92d07f3d295",
+          "ready": true,
+          "restartCount": 0
+        }
+      ]
+    },
+    {
+      "name": "nui-0",
+      "containers": [
+        {
+          "name": "nui",
+          "image": "ghcr.io/nats-nui/nui:0.10.0",
+          "imageID": "ghcr.io/nats-nui/nui@sha256:879b64b2f2fa4c3298681ed0bebfbcfd80cae281ff787a10c404bbd62160d18a",
+          "ready": true,
+          "restartCount": 0
+        }
+      ]
+    }
+  ]
+}

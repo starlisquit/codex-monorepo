@@ -26,3 +26,4 @@ resources:
 - renovate.yaml
 - nginx.yaml
 - litellm.yaml
+- nats-nui.yaml

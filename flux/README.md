@@ -43,6 +43,8 @@ unfinished work separately, including the paused API slowness investigation.
 - `ci/renovate/`: official Renovate CronJob, explicit GitLab repository scope and initial dry-run mode.
 - `quality/sonarqube/`: official SonarSource chart with Community Build, external PostgreSQL and persistent data.
 - `proxy/nginx/`: official open-source NGINX Ingress Controller with an explicit ingress class and streaming-friendly proxy settings.
+- `broker/nui/`: official experimental NUI chart; broker API checks pass, browser validation has an upstream failure (see findings).
+- `ui/redisinsight/`: official Redis manifests; Redis publishes no official RedisInsight Helm chart.
 - `ai/litellm/`: official LiteLLM chart with external credential Secrets and a database-free proxy default.
 
 The CI/quality templates require their documented credential Secrets and, for
@@ -206,3 +208,4 @@ These are chart versions, not application image versions.
 | renovate | `46.396.0` |
 | nginx-ingress | `2.8.0` |
 | litellm-helm | `1.106.6` |
+| nui | `0.1.6` (app `0.10.0`) |
