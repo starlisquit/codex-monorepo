@@ -10,3 +10,10 @@ patches:
     name: opentelemetry-demo
   patch: "apiVersion: helm.toolkit.fluxcd.io/v2\nkind: HelmRelease\nmetadata:\n  name:\
     \ opentelemetry-demo\n  namespace: demo\nspec:\n  suspend: false\n  timeout: 15m\n"
+- target:
+    kind: HelmRelease
+    name: opentelemetry-demo
+  patch: "apiVersion: helm.toolkit.fluxcd.io/v2\nkind: HelmRelease\nmetadata:\n  name:\
+    \ opentelemetry-demo\n  namespace: demo\nspec:\n  values:\n    components:\n \
+    \     load-generator:\n        resources:\n          requests:\n            cpu:\
+    \ 50m\n            memory: 128Mi\n          limits:\n            memory: 384Mi\n"
