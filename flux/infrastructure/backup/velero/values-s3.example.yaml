@@ -1,0 +1,24 @@
+backupsEnabled: true
+snapshotsEnabled: false
+credentials:
+  useSecret: true
+  existingSecret: velero-cloud-credentials
+initContainers:
+- name: velero-plugin-for-aws
+  image: docker.io/velero/velero-plugin-for-aws:v1.14.4
+  imagePullPolicy: IfNotPresent
+  volumeMounts:
+  - mountPath: /target
+    name: plugins
+configuration:
+  backupStorageLocation:
+  - name: default
+    provider: aws
+    bucket: REPLACE_WITH_EXISTING_BUCKET
+    default: true
+    prefix: iximiuz-platform
+    config:
+      region: REPLACE_WITH_REGION
+      s3Url: https://REPLACE_WITH_S3_ENDPOINT
+      s3ForcePathStyle: 'true'
+  volumeSnapshotLocation: []

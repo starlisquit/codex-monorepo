@@ -31,7 +31,7 @@ The shared releases use `spec.suspend: true`. The `iximiuz-platform` overlays en
 those releases, but their **parent Flux Kustomizations remain suspended** in
 `clusters/iximiuz-platform/infrastructure.yaml`. This is deliberate: the last play
 had API/controller instability, so security agents/scans must not silently add
-load to the next bootstrap. See the [enablement runbook](../runbooks/operations/security-tools.md).
+load to the next bootstrap. See the [enablement runbook](../../runbooks/operations/security-tools.md).
 
 For three nodes, configured Tetragon requests total approximately 880 MiB RAM
 (three 256 MiB agents plus three 16 MiB exporters and a 64 MiB operator). Trivy

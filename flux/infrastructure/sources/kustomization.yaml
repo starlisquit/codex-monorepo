@@ -20,3 +20,4 @@ resources:
 - ceph-csi.yaml
 - metrics-server.yaml
 - aquasecurity.yaml
+- velero.yaml

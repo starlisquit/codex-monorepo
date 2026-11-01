@@ -1,0 +1,34 @@
+upgradeCRDs: false
+cleanUpCRDs: false
+backupsEnabled: false
+snapshotsEnabled: false
+deployNodeAgent: false
+credentials:
+  useSecret: false
+configuration:
+  backupStorageLocation: []
+  volumeSnapshotLocation: []
+  defaultBackupTTL: 168h
+  logFormat: json
+  logLevel: info
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    memory: 512Mi
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: node-role.kubernetes.io/control-plane
+          operator: DoesNotExist
+        - key: node-role.kubernetes.io/master
+          operator: DoesNotExist
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    autodetect: false
+schedules: {}

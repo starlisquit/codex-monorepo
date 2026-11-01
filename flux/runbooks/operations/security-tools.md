@@ -2,7 +2,7 @@
 
 No playground is running. The security templates are locally validated only. Fix
 control-plane reliability and reserve the additional memory/CPU/disk capacity
-listed in [security sizing](../../security/README.md) before enabling them.
+listed in [security sizing](../../infrastructure/security/README.md) before enabling them.
 
 ## Preflight
 
@@ -45,7 +45,7 @@ kubectl -n tetragon rollout status deployment/tetragon-operator --timeout=5m
 kubectl -n tetragon get servicemonitors
 ```
 
-Verify a real process event using the [Tetragon guide](../../security/tetragon/README.md),
+Verify a real process event using the [Tetragon guide](../../infrastructure/security/tetragon/README.md),
 its VictoriaLogs record, and successful monitoring targets before proceeding.
 No TracingPolicy is installed to kill or block processes.
 

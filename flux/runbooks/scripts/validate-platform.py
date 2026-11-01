@@ -40,10 +40,9 @@ for resource in resources:
         raise SystemExit(f"Missing readiness dependencies: {resource['metadata']['name']}")
 
 expected_releases = set()
-for tree in ("infrastructure", "security"):
-    for manifest in (flux_root / tree).rglob("helmrelease.yaml"):
-        release = yaml.safe_load(manifest.read_text())
-        expected_releases.add((release["metadata"]["namespace"], release["metadata"]["name"]))
+for manifest in (flux_root / "infrastructure").rglob("helmrelease.yaml"):
+    release = yaml.safe_load(manifest.read_text())
+    expected_releases.add((release["metadata"]["namespace"], release["metadata"]["name"]))
 checked_releases = {
     (check["namespace"], check["name"])
     for resource in resources for check in resource["spec"].get("healthChecks", [])

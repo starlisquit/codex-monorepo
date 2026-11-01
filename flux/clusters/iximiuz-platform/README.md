@@ -110,9 +110,18 @@ an off-cluster backup.
 
 ## Optional security components
 
-[Tetragon and Trivy Operator](../../security/README.md) have cluster overlays and
+[Tetragon and Trivy Operator](../../infrastructure/security/README.md) have cluster overlays and
 readiness dependencies but their parent Flux Kustomizations start suspended.
 Enable them individually through Git after restoring capacity and sustained API
 health. They were not deployed into the destroyed playground. Report/scanner
 coverage and runtime event export are deliberately scoped to the demo/application
 namespaces initially; Tetragon agents still require resources on every node.
+
+
+## Optional backup component
+
+[Velero](../../infrastructure/backup/velero/README.md) has an opt-in overlay with
+its parent Flux Kustomization suspended. Configure an external backend and
+credentials before enabling it. The base intentionally creates no backup target,
+volume backup or schedule. Local Ceph replication does not protect against
+playground destruction; PVC and application-consistent recovery remain untested.

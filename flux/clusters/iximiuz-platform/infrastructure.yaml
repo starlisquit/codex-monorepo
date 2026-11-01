@@ -882,3 +882,34 @@ spec:
   - apiVersion: apiextensions.k8s.io/v1
     kind: CustomResourceDefinition
     name: configauditreports.aquasecurity.github.io
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: velero
+  namespace: flux-system
+spec:
+  suspend: true
+  interval: 10m
+  retryInterval: 1m
+  path: ./flux/clusters/iximiuz-platform/velero
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: foundation
+  - name: monitoring-crds
+  - name: cilium
+  timeout: 15m
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: velero
+    namespace: velero
+  - apiVersion: apiextensions.k8s.io/v1
+    kind: CustomResourceDefinition
+    name: backups.velero.io
+  - apiVersion: apiextensions.k8s.io/v1
+    kind: CustomResourceDefinition
+    name: restores.velero.io

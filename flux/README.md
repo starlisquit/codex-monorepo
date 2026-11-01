@@ -12,7 +12,8 @@ unfinished work separately, including the paused API slowness investigation.
 
 ## Layout
 
-- `security/`: opt-in Tetragon runtime telemetry and Trivy Operator reports, with monitoring and bounded lab defaults.
+- `infrastructure/backup/velero/`: opt-in Velero with an excluded S3 configuration example; no backup protection until storage and credentials are configured.
+- `infrastructure/security/`: opt-in Tetragon runtime telemetry and Trivy Operator reports, with monitoring and bounded lab defaults.
 - `docs/`: architecture, deployment findings, and operational responsibilities.
 - `runbooks/`: exact bootstrap/verification/recovery steps and checked-in helper scripts.
 - `policies/`: reusable Kyverno ValidatingPolicy resources, initially Audit-only for application namespaces.
