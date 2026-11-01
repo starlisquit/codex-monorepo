@@ -5,6 +5,13 @@ cluster's Cilium CNI. They are built-in Kubernetes resources, not custom CRDs.
 No Cilium-specific API is required. Unlike Kyverno Audit policies, these policies
 **enforce traffic restrictions immediately** on matching Pods.
 
+## Additional connection allowlist
+
+Use [connection-allowlist/](connection-allowlist/README.md) to constrain both ingress
+and egress for a selected Pod or Deployment. It includes DNS, database/cache peers,
+and a replace-before-use external IP example. Its opt-in label differs from the
+ingress-only profiles below.
+
 ## Selected workloads: application and monitoring callers
 
 The parent Kustomization includes `restricted-ingress/`. In namespace

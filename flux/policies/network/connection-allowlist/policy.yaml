@@ -1,0 +1,68 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: workload-connection-allowlist
+  namespace: applications
+spec:
+  # Label a Pod, or a Deployment's spec.template.metadata.labels, to opt in.
+  podSelector:
+    matchLabels:
+      networking.platform/connections: allowlisted
+  policyTypes: [Ingress, Egress]
+  ingress:
+  # Caller must have this label AND belong to this namespace.
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: applications
+      podSelector:
+        matchLabels:
+          networking.platform/caller: approved
+    ports:
+    - protocol: TCP
+      port: 8080
+  egress:
+  # DNS only, not arbitrary traffic to kube-system.
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+  # Example: the existing CNPG database, selected by its stable cluster label.
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: databases
+      podSelector:
+        matchLabels:
+          cnpg.io/cluster: application-db
+    ports:
+    - protocol: TCP
+      port: 5432
+  # Example: the existing Valkey service's backing Pods.
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: databases
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: valkey
+          app.kubernetes.io/instance: valkey
+    ports:
+    - protocol: TCP
+      port: 6379
+  # DOCUMENTATION ADDRESS ONLY: replace with the real approved external endpoint.
+  # Remove this rule if external connections are not needed.
+  - to:
+    - ipBlock:
+        cidr: 192.0.2.10/32
+    ports:
+    - protocol: TCP
+      port: 443
