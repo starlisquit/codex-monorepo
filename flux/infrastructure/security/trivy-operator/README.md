@@ -1,5 +1,12 @@
 # Trivy Operator
 
+The operator has a 1 GiB memory limit: the first full-platform bootstrap repeatedly
+OOM-killed it at 256 MiB. Scan concurrency is two Jobs. Per-container requests are
+128 MiB memory and 256 MiB ephemeral storage; multi-container workloads otherwise
+reserve several GiB per Job and could not schedule on the lab workers. Limits
+remain 2 GiB memory and 8 GiB ephemeral storage per scanner. Monitor actual use,
+scan completion, and worker disk space before raising concurrency.
+
 Deploys the Kubernetes operator, not a standalone Trivy CLI or central scan server.
 The operator creates scan Jobs and vulnerability/configuration report CRs for
 workloads across all namespaces. Scan Jobs run in `trivy-system`, not

@@ -1,5 +1,6 @@
 targetNamespaces: ''
 operator:
+  scanJobsConcurrentLimit: 2
   scanJobTimeout: 10m
   scanJobTTL: 30m
   scanSecretTTL: 30m
@@ -30,8 +31,8 @@ trivy:
   resources:
     requests:
       cpu: 100m
-      memory: 512Mi
-      ephemeralStorage: 2Gi
+      memory: 128Mi
+      ephemeralStorage: 256Mi
     limits:
       cpu: '1'
       memory: 2Gi
@@ -39,9 +40,9 @@ trivy:
 resources:
   requests:
     cpu: 25m
-    memory: 128Mi
-  limits:
     memory: 256Mi
+  limits:
+    memory: 1Gi
 affinity: *id001
 serviceMonitor:
   enabled: true
