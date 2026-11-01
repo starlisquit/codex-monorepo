@@ -1,0 +1,334 @@
+{
+  "contracts": {
+    "mode": "apps",
+    "contracts": [
+      {
+        "namespace": "ai",
+        "name": "litellm-auth",
+        "keys": [
+          "master-key",
+          "salt-key"
+        ],
+        "sha256": {
+          "master-key": "0a8c097fc357a3f0c335fce2b4f9aaa16d2ebabda9c5e3ad9030bfb0ab77fcc6",
+          "salt-key": "dcd88cba187ed5515374b1010a3cb323809f845ca89200fd9577908b9b0455a3"
+        },
+        "ready": true,
+        "correct_owner": true
+      },
+      {
+        "namespace": "ai",
+        "name": "litellm-provider-credentials",
+        "keys": [
+          "OPENAI_API_KEY"
+        ],
+        "sha256": {
+          "OPENAI_API_KEY": "648657e23d5578cde7addeba4c76bbf9900620e6be508068d1373787fff727de"
+        },
+        "ready": true,
+        "correct_owner": true
+      },
+      {
+        "namespace": "quality",
+        "name": "sonarqube-monitoring",
+        "keys": [
+          "passcode"
+        ],
+        "sha256": {
+          "passcode": "c5c6ba59445c008a8dc770e25b89f453858480efbc3cd53dd204ecaee2fa11cb"
+        },
+        "ready": true,
+        "correct_owner": true
+      },
+      {
+        "namespace": "quality",
+        "name": "sonarqube-database",
+        "keys": [
+          "password"
+        ],
+        "sha256": {
+          "password": "25db7fdcbad6225e6f592f8f0fe160ea21d29fa514a292c7f9655adc25706dae"
+        },
+        "ready": true,
+        "correct_owner": true
+      }
+    ],
+    "auth": [
+      {
+        "store": "litellm-openbao",
+        "namespace": "ai",
+        "own_path_read": true,
+        "cross_path_http": 403,
+        "wrong_audience_http": 403
+      },
+      {
+        "store": "sonarqube-openbao",
+        "namespace": "quality",
+        "own_path_read": true,
+        "cross_path_http": 403,
+        "wrong_audience_http": 403
+      },
+      {
+        "store": "sonarqube-external-database-openbao",
+        "namespace": "quality",
+        "own_path_read": true,
+        "cross_path_http": 403,
+        "wrong_audience_http": 403
+      }
+    ],
+    "completed_at": "2026-11-01T21:03:00.497065+00:00",
+    "result": "passed"
+  },
+  "applications": {
+    "mode": "apps",
+    "started_at": "2026-11-01T21:02:12.710244+00:00",
+    "checks": {
+      "litellm_master_key_and_provider_credentials": {
+        "unauthorized_http": 401,
+        "authenticated_models": true,
+        "authenticated_upstream_fixture_request": true
+      },
+      "sonarqube_monitoring_passcode": {
+        "without_passcode_rejected": true,
+        "with_passcode_authenticated": true
+      },
+      "sonarqube_database_password_and_database_round_trip": {
+        "project_created_and_read": true,
+        "database_mode": "external PostgreSQL fixture, no CNPG ownership"
+      },
+      "postgresql_independent_persisted_project_check": true
+    },
+    "result": "passed",
+    "completed_at": "2026-11-01T21:07:51.840550+00:00"
+  },
+  "captured_at": "2026-11-01T21:11:46.300974+00:00",
+  "result": "passed",
+  "flux_path": "./flux/clusters/20261101-235335-infra-eso-apps-2c28d0",
+  "flux_stages": [
+    {
+      "name": "cert-manager",
+      "revision": "main@sha1:de6fab5e7ad4157c752ce0f7458526f5577e7ab8",
+      "ready": true
+    },
+    {
+      "name": "credentials",
+      "revision": "main@sha1:de6fab5e7ad4157c752ce0f7458526f5577e7ab8",
+      "ready": true
+    },
+    {
+      "name": "external-secrets",
+      "revision": "main@sha1:de6fab5e7ad4157c752ce0f7458526f5577e7ab8",
+      "ready": true
+    },
+    {
+      "name": "flux-system",
+      "revision": "main@sha1:de6fab5e7ad4157c752ce0f7458526f5577e7ab8",
+      "ready": true
+    },
+    {
+      "name": "foundation",
+      "revision": "main@sha1:de6fab5e7ad4157c752ce0f7458526f5577e7ab8",
+      "ready": true
+    },
+    {
+      "name": "litellm",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "model-fixture",
+      "revision": "main@sha1:de6fab5e7ad4157c752ce0f7458526f5577e7ab8",
+      "ready": true
+    },
+    {
+      "name": "monitoring-crds",
+      "revision": "main@sha1:de6fab5e7ad4157c752ce0f7458526f5577e7ab8",
+      "ready": true
+    },
+    {
+      "name": "openbao",
+      "revision": "main@sha1:de6fab5e7ad4157c752ce0f7458526f5577e7ab8",
+      "ready": true
+    },
+    {
+      "name": "pki-issuer",
+      "revision": "main@sha1:de6fab5e7ad4157c752ce0f7458526f5577e7ab8",
+      "ready": true
+    },
+    {
+      "name": "pki-trust",
+      "revision": "main@sha1:de6fab5e7ad4157c752ce0f7458526f5577e7ab8",
+      "ready": true
+    },
+    {
+      "name": "postgres",
+      "revision": "main@sha1:de6fab5e7ad4157c752ce0f7458526f5577e7ab8",
+      "ready": true
+    },
+    {
+      "name": "sonarqube",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "trust-manager",
+      "revision": "main@sha1:de6fab5e7ad4157c752ce0f7458526f5577e7ab8",
+      "ready": true
+    }
+  ],
+  "helm_releases": [
+    {
+      "name": "litellm",
+      "namespace": "ai",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "litellm-helm",
+          "version": "1.106.6+b681a4cb1eaf",
+          "app_version": "1.106.6"
+        }
+      ]
+    },
+    {
+      "name": "cert-manager",
+      "namespace": "certificates",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "cert-manager",
+          "version": "v1.21.3",
+          "app_version": "v1.21.3"
+        }
+      ]
+    },
+    {
+      "name": "trust-manager",
+      "namespace": "certificates",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "trust-manager",
+          "version": "v0.26.0",
+          "app_version": "v0.26.0"
+        }
+      ]
+    },
+    {
+      "name": "prometheus-operator-crds",
+      "namespace": "observability",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "prometheus-operator-crds",
+          "version": "32.0.2",
+          "app_version": "v0.94.2"
+        }
+      ]
+    },
+    {
+      "name": "sonarqube",
+      "namespace": "quality",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "sonarqube",
+          "version": "2026.5.1003",
+          "app_version": "2026.5.3"
+        }
+      ]
+    },
+    {
+      "name": "external-secrets",
+      "namespace": "secrets",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "external-secrets",
+          "version": "2.14.0",
+          "app_version": "v2.14.0"
+        }
+      ]
+    },
+    {
+      "name": "openbao",
+      "namespace": "secrets",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "openbao",
+          "version": "0.30.6",
+          "app_version": "v2.7.2"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "name": "cplane-01",
+      "version": "v1.37.1+k3s1"
+    },
+    {
+      "name": "node-01",
+      "version": "v1.37.1+k3s1"
+    },
+    {
+      "name": "node-02",
+      "version": "v1.37.1+k3s1"
+    }
+  ],
+  "root_ca_sha256": "947d5f69e9bb3609aa16fd69fca365833893a46cbd627d71f8e7d2e1fb13d59e",
+  "workload_pods": [
+    {
+      "namespace": "ai",
+      "name": "litellm-74db5468f8-vls5d",
+      "uid": "0352b127-a195-4ead-8dbe-a1ee4ff67554",
+      "phase": "Running",
+      "ready": true,
+      "containers": [
+        {
+          "name": "litellm",
+          "image": "ghcr.io/berriai/litellm:1.106.6"
+        }
+      ]
+    },
+    {
+      "namespace": "ai",
+      "name": "mock-openai-7b94b988f4-rkm8w",
+      "uid": "8b074f3b-6b35-49c6-b25a-0fb9bbaf9525",
+      "phase": "Running",
+      "ready": true,
+      "containers": [
+        {
+          "name": "mock",
+          "image": "docker.io/library/python:3.12-alpine"
+        }
+      ]
+    },
+    {
+      "namespace": "quality",
+      "name": "sonarqube-postgresql-674cf4d46b-tmspk",
+      "uid": "cfceb795-ff57-4956-ace4-13e910d36fbd",
+      "phase": "Running",
+      "ready": true,
+      "containers": [
+        {
+          "name": "sonarqube-postgresql",
+          "image": "postgres:18.6"
+        }
+      ]
+    },
+    {
+      "namespace": "quality",
+      "name": "sonarqube-sonarqube-0",
+      "uid": "90ab1fe0-9167-45a5-bb8e-6fbca771614d",
+      "phase": "Running",
+      "ready": true,
+      "containers": [
+        {
+          "name": "sonarqube",
+          "image": "sonarqube:26.9.0.129388-community"
+        }
+      ]
+    }
+  ]
+}

@@ -31,3 +31,7 @@ store endpoint/mount/role and policy paths together when isolating environments.
 Wait for `SecretStore/sonarqube-external-database-openbao` and each ExternalSecret to report `Ready=True`
 before reconciling the application. No certificates, root/unseal material or
 operator-generated passwords are managed by this opt-in.
+
+The externally supplied database-password mode passed real SonarQube project
+creation and an independent PostgreSQL persistence check. See
+[runtime findings](../../../../../docs/findings/infra-eso-apps-2026-11-01.md).

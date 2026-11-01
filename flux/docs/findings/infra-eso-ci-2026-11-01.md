@@ -57,6 +57,8 @@ other-lane source revisions from the tested workload revision.
 
 ## Teardown
 
-Publish this report and configuration to both remotes before deleting the
-validation runner/branch and destroying the completed playground. Record those
-cleanup confirmations afterwards; do not revoke the user's existing PAT.
+Findings/configuration were published to both remotes in
+`2cef441f92244cdac89314d1bd3e041706e4bcbf` before teardown.
+Destroy API confirmed playground destruction at `2026-11-01T21:12:08Z`.
+GitLab confirmed runner and validation-branch deletion with **HTTP204** each.
+The existing user PAT was not rotated or revoked.

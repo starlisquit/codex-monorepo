@@ -32,3 +32,6 @@ store endpoint/mount/role and policy paths together when isolating environments.
 Wait for `SecretStore/litellm-openbao` and each ExternalSecret to report `Ready=True`
 before reconciling the application. No certificates, root/unseal material or
 operator-generated passwords are managed by this opt-in.
+
+Actual application credential consumption passed on fresh K3s. See
+[runtime findings](../../../../../docs/findings/infra-eso-apps-2026-11-01.md).

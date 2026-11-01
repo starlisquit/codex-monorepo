@@ -61,5 +61,6 @@ evidence distinguishes their propagation from the tested workload revision.
 
 ## Teardown
 
-Publish findings and configuration to both remotes before destroying this
-completed playground; record confirmed destruction afterwards.
+Findings/configuration were published to both remotes in
+`2cef441f92244cdac89314d1bd3e041706e4bcbf` before teardown.
+Destroy API confirmed playground destruction at `2026-11-01T21:11:56Z`.
