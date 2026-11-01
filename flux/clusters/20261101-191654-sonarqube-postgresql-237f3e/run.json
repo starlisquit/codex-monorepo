@@ -4,7 +4,9 @@
   "timezone": "Europe/Istanbul",
   "purpose": "sonarqube-postgresql",
   "flux_path": "./flux/clusters/20261101-191654-sonarqube-postgresql-237f3e",
-  "status": "verified",
+  "status": "destroyed",
   "tested_revision": "main@sha1:502553c2ac358ee1c952ed5fa284237456e19f32",
-  "findings": "../../docs/findings/sonarqube-postgresql-2026-11-01.md"
+  "findings": "../../docs/findings/sonarqube-postgresql-2026-11-01.md",
+  "destroyed_at": "2026-11-01T16:43:03Z",
+  "published_findings_commit": "67bcb18"
 }

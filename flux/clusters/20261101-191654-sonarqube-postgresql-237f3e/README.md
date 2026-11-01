@@ -11,3 +11,6 @@ recovery. See [findings](../../docs/findings/sonarqube-postgresql-2026-11-01.md)
 and run.json for the tested revision and teardown state. The scanner manifest
 under validation is a manual one-shot fixture, excluded from root reconciliation;
 its token Secret remains outside Git.
+
+The playground was destroyed after findings were published. This folder is a
+completed run record; create a new folder and play ID for future validation.

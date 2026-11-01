@@ -125,5 +125,9 @@ effect. Review stateful pruning and backups for a production installation.
 
 ## Publication and teardown
 
-Findings and verified run configuration will be pushed to both remotes before
-destroying this playground. Confirmed teardown will be recorded afterward.
+Findings and verified run configuration were published as `67bcb18` and both
+remote main commit IDs were verified equal before teardown. The explicit
+destroy API returned `ok: true` for `6ae765f67f32053bde237f3e` at
+2026-11-01 19:43:03 Europe/Istanbul / 16:43:03 UTC. The playground was destroyed,
+not stopped. The immediate listing reported it non-running during deletion
+propagation; run.json records the completed/destroyed state.
