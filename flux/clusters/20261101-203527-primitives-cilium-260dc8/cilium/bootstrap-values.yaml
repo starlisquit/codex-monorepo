@@ -26,9 +26,6 @@ gatewayAPI:
     create: false
   hostNetwork:
     enabled: false
-    nodes:
-      matchLabels:
-        gateway-validation: 'true'
 prometheus:
   enabled: false
   serviceMonitor:
