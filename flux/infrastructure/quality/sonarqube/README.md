@@ -41,7 +41,8 @@ and bootstrap logs instead of disabling Elasticsearch's bootstrap checks.
 ```sh
 kustomize build flux/infrastructure/quality/sonarqube
 helm repo add sonarqube https://SonarSource.github.io/helm-chart-sonarqube
-helm lint sonarqube/sonarqube --version 2026.5.1003 -f flux/infrastructure/quality/sonarqube/values.yaml
+helm pull sonarqube/sonarqube --version 2026.5.1003 --untar --untardir /tmp/sonarqube-chart
+helm lint /tmp/sonarqube-chart/sonarqube -f flux/infrastructure/quality/sonarqube/values.yaml
 helm upgrade --install sonarqube sonarqube/sonarqube --version 2026.5.1003 \
   -n quality -f flux/infrastructure/quality/sonarqube/values.yaml --wait --timeout 15m
 kubectl -n quality port-forward svc/sonarqube-sonarqube 9000:9000

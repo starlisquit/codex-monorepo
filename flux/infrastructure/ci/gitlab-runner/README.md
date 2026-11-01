@@ -35,7 +35,8 @@ Validate/deploy independently:
 ```sh
 kustomize build flux/infrastructure/ci/gitlab-runner
 helm repo add gitlab https://charts.gitlab.io
-helm lint gitlab/gitlab-runner --version 0.94.2 -f flux/infrastructure/ci/gitlab-runner/values.yaml
+helm pull gitlab/gitlab-runner --version 0.94.2 --untar --untardir /tmp/gitlab-runner-chart
+helm lint /tmp/gitlab-runner-chart/gitlab-runner -f flux/infrastructure/ci/gitlab-runner/values.yaml
 helm upgrade --install gitlab-runner gitlab/gitlab-runner --version 0.94.2 \
   -n ci -f flux/infrastructure/ci/gitlab-runner/values.yaml --wait --timeout 10m
 ```

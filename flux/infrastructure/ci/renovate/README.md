@@ -28,7 +28,8 @@ repository's Renovate policy and onboarding preference deliberately.
 ```sh
 kustomize build flux/infrastructure/ci/renovate
 helm repo add renovate https://docs.renovatebot.com/helm-charts
-helm lint renovate/renovate --version 46.396.0 -f flux/infrastructure/ci/renovate/values.yaml
+helm pull renovate/renovate --version 46.396.0 --untar --untardir /tmp/renovate-chart
+helm lint /tmp/renovate-chart/renovate -f flux/infrastructure/ci/renovate/values.yaml
 helm upgrade --install renovate renovate/renovate --version 46.396.0 \
   -n ci -f flux/infrastructure/ci/renovate/values.yaml --wait --timeout 5m
 kubectl -n ci create job renovate-manual --from=cronjob/renovate

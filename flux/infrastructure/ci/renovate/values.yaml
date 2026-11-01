@@ -13,6 +13,7 @@ renovate:
       "platform": "gitlab",
       "endpoint": "https://gitlab.com/api/v4/",
       "autodiscover": false,
+      "flux": {"managerFilePatterns": ["/\\.ya?ml$/"]},
       "repositories": ["basarsubasi-gitops/kubernetes/flux"],
       "onboarding": false,
       "requireConfig": "optional",
