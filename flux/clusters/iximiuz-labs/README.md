@@ -18,6 +18,9 @@ removed. Cilium handles ClusterIP and NodePort routing on all three nodes.
 The kube-proxy built-in `--cleanup` was run on each node; kubelet-owned firewall
 and canary chains remain intact.
 
+See the [kube-proxy migration runbook](KUBE-PROXY-MIGRATION.md) for the exact
+procedure, validation results, ownership details, and recovery instructions.
+
 ## Access
 
 Open the play and use the `dev-machine` terminal. The `laborant` user already has
