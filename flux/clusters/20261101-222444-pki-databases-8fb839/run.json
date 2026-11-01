@@ -1,0 +1,8 @@
+{
+  "play_id": "6ae791fc46471e13268fb839",
+  "created_at": "2026-11-01T19:24:44.151000+00:00",
+  "timezone": "Europe/Istanbul",
+  "purpose": "pki-databases",
+  "flux_path": "./flux/clusters/20261101-222444-pki-databases-8fb839",
+  "status": "preparing"
+}

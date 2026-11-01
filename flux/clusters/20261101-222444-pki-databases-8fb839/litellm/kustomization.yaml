@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../../infrastructure/ai/litellm
+- ../../../infrastructure/ai/litellm/opt-in/postgresql/integration
+configMapGenerator:
+- name: litellm-cluster-values
+  namespace: ai
+  files:
+  - values.yaml
+  options:
+    labels:
+      reconcile.fluxcd.io/watch: Enabled
+generatorOptions:
+  disableNameSuffixHash: true

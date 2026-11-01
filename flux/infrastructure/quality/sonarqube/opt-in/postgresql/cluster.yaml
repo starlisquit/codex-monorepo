@@ -20,3 +20,8 @@ spec:
       memory: 256Mi
     limits:
       memory: 1Gi
+  certificates:
+    serverTLSSecret: sonarqube-postgresql-server-pki
+    serverCASecret: sonarqube-postgresql-server-pki
+    replicationTLSSecret: sonarqube-postgresql-replication-pki
+    clientCASecret: sonarqube-postgresql-replication-pki

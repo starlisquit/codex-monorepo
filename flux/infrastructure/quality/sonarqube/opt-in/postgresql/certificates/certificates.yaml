@@ -1,0 +1,56 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: sonarqube-postgresql-server-pki
+  namespace: quality
+spec:
+  secretName: sonarqube-postgresql-server-pki
+  commonName: sonarqube-postgresql-rw
+  duration: 2160h
+  renewBefore: 360h
+  privateKey:
+    rotationPolicy: Always
+  secretTemplate:
+    labels:
+      cnpg.io/reload: ''
+  usages:
+  - server auth
+  issuerRef:
+    name: platform-workload-ca
+    kind: ClusterIssuer
+    group: cert-manager.io
+  dnsNames:
+  - sonarqube-postgresql-rw
+  - sonarqube-postgresql-rw.quality
+  - sonarqube-postgresql-rw.quality.svc
+  - sonarqube-postgresql-rw.quality.svc.cluster.local
+  - sonarqube-postgresql-r
+  - sonarqube-postgresql-r.quality
+  - sonarqube-postgresql-r.quality.svc
+  - sonarqube-postgresql-r.quality.svc.cluster.local
+  - sonarqube-postgresql-ro
+  - sonarqube-postgresql-ro.quality
+  - sonarqube-postgresql-ro.quality.svc
+  - sonarqube-postgresql-ro.quality.svc.cluster.local
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: sonarqube-postgresql-replication-pki
+  namespace: quality
+spec:
+  secretName: sonarqube-postgresql-replication-pki
+  commonName: streaming_replica
+  duration: 2160h
+  renewBefore: 360h
+  privateKey:
+    rotationPolicy: Always
+  secretTemplate:
+    labels:
+      cnpg.io/reload: ''
+  usages:
+  - client auth
+  issuerRef:
+    name: platform-workload-ca
+    kind: ClusterIssuer
+    group: cert-manager.io

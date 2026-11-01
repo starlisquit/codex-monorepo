@@ -1,0 +1,8 @@
+{
+  "play_id": "6ae791fa7f32053bde29d314",
+  "created_at": "2026-11-01T19:24:42.264000+00:00",
+  "timezone": "Europe/Istanbul",
+  "purpose": "monitor-components",
+  "flux_path": "./flux/clusters/20261101-222442-monitor-components-29d314",
+  "status": "preparing"
+}

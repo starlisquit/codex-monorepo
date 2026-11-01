@@ -6,8 +6,8 @@ jdbcOverwrite:
   jdbcSecretPasswordKey: password
 extraVolumes:
 - name: postgresql-ca
-  secret:
-    secretName: sonarqube-postgresql-ca
+  configMap:
+    name: platform-ca
     items:
     - key: ca.crt
       path: ca.crt

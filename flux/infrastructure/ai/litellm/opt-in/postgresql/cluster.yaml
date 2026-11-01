@@ -20,3 +20,8 @@ spec:
       memory: 256Mi
     limits:
       memory: 1Gi
+  certificates:
+    serverTLSSecret: litellm-db-server-pki
+    serverCASecret: litellm-db-server-pki
+    replicationTLSSecret: litellm-db-replication-pki
+    clientCASecret: litellm-db-replication-pki

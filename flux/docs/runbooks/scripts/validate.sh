@@ -4,9 +4,10 @@ repo_root=$(git rev-parse --show-toplevel)
 kustomize_bin=${KUSTOMIZE_BIN:-kustomize}
 command -v "$kustomize_bin" >/dev/null
 python3 "$repo_root/flux/docs/runbooks/scripts/validate-platform.py"
+python3 "$repo_root/flux/docs/runbooks/scripts/validate-compositions.py"
 count=0
 while IFS= read -r -d '' manifest; do
-  # Components are built through their consuming Kustomizations, not standalone.
+  # Every Component is validated in owner compositions by validate-compositions.py.
   kind=$(python3 -c 'import sys, yaml; print(yaml.safe_load(open(sys.argv[1]))["kind"])' "$manifest")
   if [[ "$kind" == "Component" ]]; then
     continue

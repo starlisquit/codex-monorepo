@@ -1,9 +1,12 @@
-# Official ClickHouse operator; manages clickhouse.com/v1alpha1 resources.
 crd:
   enabled: true
   keep: true
 certManager:
   enabled: true
+  issuerRef:
+    name: platform-workload-ca
+    kind: ClusterIssuer
+    group: cert-manager.io
 webhook:
   enabled: true
 prometheus:
