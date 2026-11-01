@@ -1,7 +1,8 @@
-# Template: review against the pinned chart before enabling.
 app:
   metrics:
     service:
       enabled: true
       servicemonitor:
         enabled: true
+  trust:
+    namespace: certificates

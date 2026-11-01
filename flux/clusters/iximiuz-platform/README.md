@@ -9,7 +9,9 @@ suspended for other clusters; this overlay enables each selected release.
 - Playground: `codex-platform-243e14fd` (base: `k8s-omni`).
 - Play: <https://labs.iximiuz.com/playgrounds/codex-platform-243e14fd/6ae6c40156e9b785c3220466>.
 - Three Kubernetes nodes: `cplane-01`, `node-01`, `node-02`, each requesting
-  3 vCPUs, 5 GiB RAM, a 20 GiB system disk, and a raw 25 GiB `/dev/vdb`.
+  3 vCPUs, 5 GiB RAM, a 20 GiB system disk, and a raw 25 GiB `/dev/vdb` in
+  the recorded running play. Future definitions now prioritize the control
+  plane: 4 vCPUs/6 GiB, workers 2 vCPUs/4608 MiB, dev 1 vCPU/1 GiB.
 - `dev-machine`: 1 vCPU, 1 GiB RAM, 10 GiB system disk.
 - kubeadm skips `addon/kube-proxy`; Cilium uses the direct API endpoint
   `172.16.0.2:6443`, Kubernetes IPAM, and kube-proxy replacement.
@@ -24,10 +26,12 @@ this overlay. No workloads or stored application data were migrated from it.
 
 1. Foundation namespaces and chart sources.
 2. Prometheus monitoring CRDs and Gateway API v1.4.0 standard CRDs.
-3. Full Cilium monitoring/Gateway integration, Rook, Grafana Operator,
+3. Full Cilium monitoring/Gateway integration, Rook/CSI operator, the separate
+   CSI driver chart, Grafana Operator,
    CloudNativePG operator, cert-manager, and independent infrastructure services.
 4. Rook Ceph cluster, with one explicitly selected raw `/dev/vdb` on each node.
-5. VictoriaMetrics stack after Ceph and Grafana Operator; PostgreSQL, NATS,
+5. A mounted RBD PVC write/read check, then the VictoriaMetrics stack after
+   storage and Grafana Operator; PostgreSQL, NATS,
    Valkey, and OpenBao after their storage and operator/certificate prerequisites.
 6. VictoriaTraces agent, blackbox probing, and Grafana dashboards after the stack.
 7. OpenTelemetry demo after the observability stack and traces agent.
@@ -58,6 +62,16 @@ All web applications use internal Services. Headlamp retains user-authenticated
 RBAC; its service account is not granted cluster-admin. No public exposure or
 plaintext credentials are committed.
 
+## Documentation and reproducible bootstrap
+
+- [Architecture, findings, and unresolved issues](../../docs/README.md)
+- [Exact bootstrap and recovery procedures](../../runbooks/README.md)
+- [Future playground sizing](../../docs/architecture/playground-sizing.md)
+
+The API slowness investigation is paused. Full demo readiness and end-to-end
+telemetry are not claimed. Subsequent template changes keep demo services on
+workers and limit Kustomize controller concurrency to four to reduce API bursts.
+
 ## Operations
 
 Use the playground's `dev-machine` terminal:
@@ -71,10 +85,11 @@ kubectl -n rook-ceph exec deploy/rook-ceph-tools -- ceph status
 kubectl -n databases get cluster application-db
 ```
 
-OpenBao requires one-time initialization and unseal; retry-join alone does not
-unseal peers. Keep all unseal material and root credentials outside Git. External
-Secrets also requires an authenticated SecretStore before it can synchronize
-secrets; installing the controller does not configure a backend automatically.
+OpenBao was initialized once and all three replicas were unsealed in the recorded
+play. External Secrets synchronized a scoped verification value through its
+Git-managed SecretStore. A fresh play still requires the operational initialization
+and auth configuration from the runbooks; those steps are not supplied by the
+Helm chart. Keep all recovery material outside Git and independently retained.
 
 For a fresh play, install Cilium first, bootstrap the committed Flux manifests
 under this directory, and let Flux follow the readiness graph. This playground

@@ -7,5 +7,12 @@ patches:
     kind: Cluster
     group: postgresql.cnpg.io
     name: application-db
-  patch: "apiVersion: postgresql.cnpg.io/v1\nkind: Cluster\nmetadata:\n  name: application-db\n\
-    \  namespace: databases\nspec:\n  storage:\n    size: 1Gi\n"
+  patch: |
+    apiVersion: postgresql.cnpg.io/v1
+    kind: Cluster
+    metadata:
+      name: application-db
+      namespace: databases
+    spec:
+      storage:
+        size: 1Gi

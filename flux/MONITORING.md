@@ -1,8 +1,11 @@
 # Metrics collection into VictoriaMetrics
 
 Metrics endpoints and their collection resources are enabled for the configured
-components. The HelmReleases remain suspended; these manifests do not establish
-live ingestion until the components are installed and their targets are healthy.
+components. Shared HelmReleases remain suspended; cluster overlays enable them. The full
+lab has demonstrated live ingestion for platform targets, with unresolved
+control-plane TLS targets and unfinished demo verification documented in
+[monitoring findings](docs/findings/observability.md). Follow the
+[verification runbook](runbooks/operations/verify-platform.md) for current status.
 
 ## Collection path and installation order
 
@@ -12,10 +15,13 @@ live ingestion until the components are installed and their targets are healthy.
 2. Install Grafana Operator, then the VM stack. The VM operator's Prometheus
    converter is explicitly enabled. It converts ServiceMonitors and PodMonitors
    into VMServiceScrapes and VMPodScrapes.
-3. VMAgent has `selectAllByDefault: true` and discovers native scrape resources
+3. Ceph requires both Rook/CSI operator and the separate CSI driver chart, then
+   a ready cluster/pool and successful PVC write/read test before persistent
+   observability backends are considered usable.
+4. VMAgent has `selectAllByDefault: true` and discovers native scrape resources
    across namespaces. Do not restrict operator watch scope or VMAgent selectors
    without adding equivalent namespace access and selectors.
-4. Install the remaining components. HelmRelease dependencies ensure monitoring
+5. Install the remaining components. HelmRelease dependencies ensure monitoring
    CRDs exist before chart-generated monitors are installed. Raw resources, such
    as the PostgreSQL instance PodMonitor, also need a Flux Kustomization dependency
    on the ready CRD release and their application operator.

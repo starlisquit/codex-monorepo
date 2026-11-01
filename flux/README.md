@@ -2,11 +2,21 @@
 
 This directory follows the requested infrastructure layout, with the
 CloudNativePG operator and an example PostgreSQL instance in separate directories.
-It is a starting scaffold, not a deployment-ready cluster configuration.
+Shared components are templates; cluster-specific overlays select, enable, and
+order them. The full lab overlay is `clusters/iximiuz-platform/`; its desired
+state does not imply that every workload has completed live verification.
+
+Start with the [documentation index](docs/README.md) and follow the
+[bootstrap runbooks](runbooks/README.md). The docs record verified findings and
+unfinished work separately, including the paused API slowness investigation.
 
 ## Layout
 
-- `infrastructure/sources/`: shared Helm repositories and the Grafana Operator OCI source.
+- `docs/`: architecture, deployment findings, and operational responsibilities.
+- `runbooks/`: exact bootstrap/verification/recovery steps and checked-in helper scripts.
+- `clusters/`: separate minimal and full-platform cluster overlays.
+- `infrastructure/sources/`: shared Helm repositories and OCI chart sources.
+- `infrastructure/storage/rook-ceph/csi-drivers/`: CSI Driver CRs via the separate chart; the operator chart alone does not deploy the driver workloads.
 - Each chart directory contains a HelmRelease, `values.yaml`, and a Kustomize build.
 - `databases/cloudnative-pg/operator/`: PostgreSQL operator release.
 - `databases/cloudnative-pg/clusters/application/`: example managed PostgreSQL cluster.
@@ -53,11 +63,11 @@ and adjust the references instead.
 
 Use separate Flux Kustomizations with `dependsOn` and HelmRelease health checks:
 
-- Rook operator -> Ceph cluster -> workloads requiring persistent volumes.
+- Rook/CSI operator -> separate CSI driver chart + Ceph cluster/pool -> PVC write/read check -> storage consumers.
 - CloudNativePG operator + ready storage -> PostgreSQL instance.
 - Grafana Operator -> VictoriaMetrics stack (creates Grafana CRs) -> dashboards.
 - Kyverno -> any policies defined by the consuming cluster.
-- cert-manager -> trust-manager.
+- cert-manager -> trust-manager; its trust namespace is explicitly `certificates`.
 
 `kustomization.yaml` files assemble manifests; they do not enforce controller
 readiness or installation order.
@@ -126,17 +136,23 @@ included under `infrastructure/policy/`.
 
 ## Validation
 
-All 32 Kustomize builds and all 20 pinned Helm charts were rendered successfully
-using a Kubernetes 1.35 validation profile. Cilium used a test-only API endpoint,
-which is not saved in these manifests. The traces agent now has a real VTSingle
-remoteWrite destination. The Grafana and GrafanaDatasource
-resources were also validated against the pinned Grafana Operator CRD schemas.
+The initial template validation rendered the original 20 pinned charts using a
+Kubernetes 1.35 profile. Live deployment subsequently exposed additional runtime
+requirements and a Helm 4 Collector rendering failure that the Helm 3 render did
+not catch. See [deployment findings](docs/findings/deployment-findings.md).
 
-Run `kustomize build` for each directory containing `kustomization.yaml`.
-Check Kubernetes compatibility and render again with your actual cluster settings
-before deployment. Helm rendering does not establish live readiness or validate
-the chart's runtime dashboard sync job. No cluster has been bootstrapped or
-reconciled by adding these templates.
+The current local validation covers 65 Kustomize builds, the platform dependency
+DAG and storage gates, and syntax checks for the runbook helpers. The four changed charts (Rook operator,
+CSI drivers, trust-manager, and demo) also render under Helm 3 and Helm 4.0.0. Run:
+
+```sh
+flux/runbooks/scripts/validate.sh
+```
+
+Build success does not establish live readiness, sustainable capacity, backup
+recoverability, or end-to-end demo telemetry. The full stack uses explicit
+readiness gates; its demo rollout and the current API slowness diagnosis remain
+unfinished at the time of this documentation update.
 
 ## Pinned chart versions
 
@@ -160,6 +176,7 @@ These are chart versions, not application image versions.
 | openbao | `0.30.6` |
 | rook-ceph-cluster | `1.21.1` |
 | rook-ceph | `1.21.1` |
+| ceph-csi-drivers | `1.1.0` |
 | grafana-operator | `5.25.0` |
 | headlamp | `0.46.0` |
 | prometheus-operator-crds | `32.0.2` |

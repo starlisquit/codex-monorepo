@@ -9,9 +9,18 @@ patches:
     version: v2
     kind: HelmRelease
     name: cilium
-  patch: "- op: replace\n  path: /spec/suspend\n  value: false\n- op: remove\n  path:\
-    \ /spec/dependsOn\n- op: add\n  path: /spec/valuesFrom/-\n  value:\n    kind:\
-    \ ConfigMap\n    name: cilium-cluster-values\n    valuesKey: values.yaml\n"
+  patch: |
+    - op: replace
+      path: /spec/suspend
+      value: false
+    - op: remove
+      path: /spec/dependsOn
+    - op: add
+      path: /spec/valuesFrom/-
+      value:
+        kind: ConfigMap
+        name: cilium-cluster-values
+        valuesKey: values.yaml
 configMapGenerator:
 - name: cilium-cluster-values
   namespace: kube-system

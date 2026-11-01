@@ -88,6 +88,10 @@ release names, or cluster domains.
 ## Validation scope
 
 Helm/Kustomize renders and the generated Collector configuration are checked.
+The explicit Collector `alternateConfig` avoids a live Helm 4 failure caused by
+null pipeline merging. Keep it synchronized with the pinned chart when upgrading;
+upstream Collector defaults do not automatically replace it.
+
 Local smoke testing uses pinned native agents/backends and synthetic telemetry;
 it does not establish that every official demo workload functions in a deployed
 Kubernetes cluster. Live SDK export, agent queues, storage ingestion, and Grafana
@@ -100,3 +104,7 @@ References:
 - [VMAgent OTLP ingestion](https://github.com/VictoriaMetrics/VictoriaMetrics/blob/v1.155.0/app/vmagent/main.go)
 - [VLAgent](https://docs.victoriametrics.com/victorialogs/vlagent/)
 - [VTAgent](https://docs.victoriametrics.com/victoriatraces/vtagent/)
+
+See the [deployment findings](../../../docs/findings/flux-and-helm.md) and
+[verification runbook](../../../runbooks/operations/verify-platform.md) for the
+live rollout boundary and the lab-specific worker placement/resource settings.

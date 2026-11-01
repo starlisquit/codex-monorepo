@@ -7,4 +7,7 @@ patches:
 - target:
     kind: Deployment
     name: kustomize-controller
-  patch: "- op: add\n  path: /spec/template/spec/containers/0/args/-\n  value: --concurrent=10\n"
+  patch: |
+    - op: add
+      path: /spec/template/spec/containers/0/args/-
+      value: --concurrent=4

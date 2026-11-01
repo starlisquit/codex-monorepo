@@ -206,6 +206,34 @@ spec:
     kind: HelmRelease
     name: victoria-metrics-k8s-stack
     namespace: observability
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: victoria-metrics-k8s-stack-grafana
+    namespace: observability
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: vmagent-victoria-metrics-k8s-stack
+    namespace: observability
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: vmsingle-victoria-metrics-k8s-stack
+    namespace: observability
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: vlsingle-victoria-metrics-k8s-stack
+    namespace: observability
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: vtsingle-victoria-metrics-k8s-stack
+    namespace: observability
+  - apiVersion: apps/v1
+    kind: StatefulSet
+    name: vlagent-victoria-metrics-k8s-stack
+    namespace: observability
+  - apiVersion: apps/v1
+    kind: StatefulSet
+    name: vmalertmanager-victoria-metrics-k8s-stack
+    namespace: observability
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -503,7 +531,7 @@ spec:
   healthCheckExprs:
   - apiVersion: postgresql.cnpg.io/v1
     kind: Cluster
-    current: has(status.readyInstances) && status.readyInstances == 3
+    current: has(status.readyInstances) && status.readyInstances == spec.instances
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization

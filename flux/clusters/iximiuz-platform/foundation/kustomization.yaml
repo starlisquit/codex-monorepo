@@ -9,5 +9,10 @@ patches:
     version: v1
     kind: HelmRepository
     name: cilium
-  patch: "$patch: delete\napiVersion: source.toolkit.fluxcd.io/v1\nkind: HelmRepository\n\
-    metadata:\n  name: cilium\n  namespace: flux-system\n"
+  patch: |
+    $patch: delete
+    apiVersion: source.toolkit.fluxcd.io/v1
+    kind: HelmRepository
+    metadata:
+      name: cilium
+      namespace: flux-system

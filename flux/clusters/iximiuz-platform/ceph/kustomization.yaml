@@ -8,16 +8,27 @@ patches:
     version: v2
     kind: HelmRelease
     name: rook-ceph-cluster
-  patch: "apiVersion: helm.toolkit.fluxcd.io/v2\nkind: HelmRelease\nmetadata:\n  name:\
-    \ rook-ceph-cluster\n  namespace: rook-ceph\nspec:\n  suspend: false\n  timeout:\
-    \ 15m\n"
+  patch: |
+    apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    metadata:
+      name: rook-ceph-cluster
+      namespace: rook-ceph
+    spec:
+      suspend: false
+      timeout: 15m
 - target:
     group: helm.toolkit.fluxcd.io
     version: v2
     kind: HelmRelease
     name: rook-ceph-cluster
-  patch: "- op: add\n  path: /spec/valuesFrom/-\n  value:\n    kind: ConfigMap\n \
-    \   name: rook-ceph-cluster-cluster-values\n    valuesKey: values.yaml\n"
+  patch: |
+    - op: add
+      path: /spec/valuesFrom/-
+      value:
+        kind: ConfigMap
+        name: rook-ceph-cluster-cluster-values
+        valuesKey: values.yaml
 configMapGenerator:
 - name: rook-ceph-cluster-cluster-values
   namespace: rook-ceph

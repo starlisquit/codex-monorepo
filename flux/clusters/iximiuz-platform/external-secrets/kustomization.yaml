@@ -8,6 +8,12 @@ patches:
     version: v2
     kind: HelmRelease
     name: external-secrets
-  patch: "apiVersion: helm.toolkit.fluxcd.io/v2\nkind: HelmRelease\nmetadata:\n  name:\
-    \ external-secrets\n  namespace: secrets\nspec:\n  suspend: false\n  timeout:\
-    \ 15m\n"
+  patch: |
+    apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    metadata:
+      name: external-secrets
+      namespace: secrets
+    spec:
+      suspend: false
+      timeout: 15m

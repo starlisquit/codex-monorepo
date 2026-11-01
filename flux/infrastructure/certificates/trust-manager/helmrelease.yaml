@@ -27,3 +27,5 @@ spec:
   dependsOn:
   - name: prometheus-operator-crds
     namespace: observability
+  - name: cert-manager
+    namespace: certificates

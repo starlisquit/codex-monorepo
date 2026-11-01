@@ -7,13 +7,13 @@ operatorConfig:
       priorityClassName: system-node-critical
     controllerPlugin:
       priorityClassName: system-cluster-critical
-      replicas: 1
+      replicas: 2
 drivers:
   rbd:
     enabled: true
     name: rook-ceph.rbd.csi.ceph.com
   cephfs:
-    enabled: false
+    enabled: true
     name: rook-ceph.cephfs.csi.ceph.com
   nfs:
     enabled: false

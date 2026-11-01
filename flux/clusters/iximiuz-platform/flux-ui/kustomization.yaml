@@ -8,5 +8,12 @@ patches:
     version: v2
     kind: HelmRelease
     name: flux-ui
-  patch: "apiVersion: helm.toolkit.fluxcd.io/v2\nkind: HelmRelease\nmetadata:\n  name:\
-    \ flux-ui\n  namespace: ui\nspec:\n  suspend: false\n  timeout: 15m\n"
+  patch: |
+    apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    metadata:
+      name: flux-ui
+      namespace: ui
+    spec:
+      suspend: false
+      timeout: 15m
