@@ -68,8 +68,9 @@ replication, RBD/CephFS StorageClasses, and RGW explicitly using the pinned char
 The PostgreSQL and NATS examples reference `ceph-block`; create that StorageClass
 or change the examples. Other chart values default to `{}` until configured.
 In particular, configure persistence, resources, high availability, credentials,
-and exposure according to the selected chart version. OpenBao needs an explicit
-initialization, unseal, storage, and authentication design; External Secrets needs
+and exposure according to the selected chart version. OpenBao uses three HA Raft replicas with persistent storage; initialization,
+unseal, server TLS, backups, and authentication still need configuration (see
+[monitoring and OpenBao notes](MONITORING.md)). External Secrets needs
 a configured SecretStore or ClusterSecretStore.
 
 The original single `victoria-metrics-k8s-stack` release is retained. The pinned

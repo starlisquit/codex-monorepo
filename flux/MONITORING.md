@@ -52,12 +52,25 @@ route per endpoint rather than enabling competing scrape mechanisms.
 
 ## OpenBao
 
-The server HCL retains the chart's standalone, HA/Consul, and HA/Raft storage modes
-while enabling Prometheus retention and unauthenticated access to its metrics
-endpoint. Metrics are collected over the existing internal listener; this does not
-make OpenBao's other API operations unauthenticated. Protect access with the
-cluster's network policy and review listener/TLS configuration before production.
-The server must be initialized and unsealed before normal telemetry is available.
+OpenBao uses three HA replicas with integrated Raft storage and a 10Gi
+`ceph-block` persistent volume per replica. Standalone mode is disabled, and no
+Consul backend is configured. The single HCL configuration uses a readable YAML
+literal block. Raft peers retry joining through the chart's `openbao-active`
+Service after a leader has been initialized and unsealed.
+
+Initialization, unsealing, and Raft snapshots remain operational steps: initialize
+one replica only, securely retain its recovery/unseal material, and unseal the
+replicas as required. Do not initialize each replica as a separate cluster.
+Retry-join does not provide auto-unseal. Take and test Raft snapshot backups;
+replication is not a substitute for backups. Create the `ceph-block` StorageClass
+before deploying, or adjust the storage class and capacity for your cluster.
+
+The server enables Prometheus retention and unauthenticated access to its metrics
+endpoint. Other API operations still require authentication. The existing server
+listener remains HTTP (`tls_disable = 1`); the injector certificate described below
+does not secure it. Configure server TLS and adapt the Raft join URL, client trust,
+and monitoring scheme before production. The server must be initialized and
+unsealed before normal telemetry is available.
 
 The injector's metrics share its HTTPS webhook listener. Its chart extraObjects
 create a namespaced cert-manager CA and serving certificate. A CA-injection
@@ -73,7 +86,8 @@ All chart renders use a Kubernetes 1.35 validation profile with the monitoring C
 advertised to Helm. Cilium's API address and the traces agent's remoteWrite URL use
 test-only overrides during rendering, not committed destination values. Monitors
 are checked against the pinned CRD schemas and static Service port references.
-OpenBao HCL is parsed for all three storage-mode configurations.
+The single OpenBao Raft HCL configuration is parsed and checked against the
+rendered StatefulSet and persistent volume settings.
 
 After deployment, inspect the converted VM scrape resources and VMAgent's targets
 and verify recent samples for each component. Certificate issuance, OpenBao
