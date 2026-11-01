@@ -1,0 +1,287 @@
+{
+  "contracts": {
+    "mode": "ui",
+    "contracts": [
+      {
+        "namespace": "ui",
+        "name": "redisinsight-encryption",
+        "keys": [
+          "key"
+        ],
+        "sha256": {
+          "key": "99dd778c7ed91c0a32be34bbdba12e858a2651fc88335ffa28705c47891abdfc"
+        },
+        "ready": true,
+        "correct_owner": true
+      },
+      {
+        "namespace": "broker",
+        "name": "nui-contexts",
+        "keys": [
+          "platform.json"
+        ],
+        "sha256": {
+          "platform.json": "c815f9486ada1aa7cffca459d8ecc4911259ed9f8d669843cc65a77c6fda1690"
+        },
+        "ready": true,
+        "correct_owner": true
+      }
+    ],
+    "auth": [
+      {
+        "store": "redisinsight-openbao",
+        "namespace": "ui",
+        "own_path_read": true,
+        "cross_path_http": 403,
+        "wrong_audience_http": 403
+      },
+      {
+        "store": "nui-openbao",
+        "namespace": "broker",
+        "own_path_read": true,
+        "cross_path_http": 403,
+        "wrong_audience_http": 403
+      }
+    ],
+    "completed_at": "2026-11-01T21:03:02.981334+00:00",
+    "result": "passed"
+  },
+  "applications": {
+    "mode": "ui",
+    "started_at": "2026-11-01T21:06:32.325572+00:00",
+    "checks": {
+      "redisinsight_encrypted_authenticated_connection_created": true,
+      "redisinsight_api_write_confirmed_by_redis_cli": true,
+      "nui_eso_context_authenticated_stream_and_publish": {
+        "context_autoloaded": true,
+        "authenticated_nats_operations": true
+      },
+      "redisinsight_saved_encrypted_connection_survives_restart": true,
+      "nui_authenticated_context_survives_restart": true,
+      "replacement_pod_uids_changed": {
+        "redis": "6656604b-0610-4fac-a32e-f48ffd08b75e",
+        "nui": "566964a5-2dd2-4d97-aedb-6750326c873f"
+      }
+    },
+    "result": "passed",
+    "completed_at": "2026-11-01T21:06:53.785504+00:00"
+  },
+  "captured_at": "2026-11-01T21:07:48.439877+00:00",
+  "result": "passed",
+  "flux_path": "./flux/clusters/20261101-235337-infra-eso-ui-2c28eb",
+  "flux_stages": [
+    {
+      "name": "cert-manager",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "credentials",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "external-secrets",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "flux-system",
+      "revision": "main@sha1:de6fab5e7ad4157c752ce0f7458526f5577e7ab8",
+      "ready": true
+    },
+    {
+      "name": "foundation",
+      "revision": "main@sha1:de6fab5e7ad4157c752ce0f7458526f5577e7ab8",
+      "ready": true
+    },
+    {
+      "name": "monitoring-crds",
+      "revision": "main@sha1:de6fab5e7ad4157c752ce0f7458526f5577e7ab8",
+      "ready": true
+    },
+    {
+      "name": "nats-fixture",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "nui",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "openbao",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "pki-issuer",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "pki-trust",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "redis-fixture",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "redisinsight",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "trust-manager",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    }
+  ],
+  "helm_releases": [
+    {
+      "name": "nui",
+      "namespace": "broker",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "nui",
+          "version": "0.1.6",
+          "app_version": "latest"
+        }
+      ]
+    },
+    {
+      "name": "cert-manager",
+      "namespace": "certificates",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "cert-manager",
+          "version": "v1.21.3",
+          "app_version": "v1.21.3"
+        }
+      ]
+    },
+    {
+      "name": "trust-manager",
+      "namespace": "certificates",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "trust-manager",
+          "version": "v0.26.0",
+          "app_version": "v0.26.0"
+        }
+      ]
+    },
+    {
+      "name": "prometheus-operator-crds",
+      "namespace": "observability",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "prometheus-operator-crds",
+          "version": "32.0.2",
+          "app_version": "v0.94.2"
+        }
+      ]
+    },
+    {
+      "name": "external-secrets",
+      "namespace": "secrets",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "external-secrets",
+          "version": "2.14.0",
+          "app_version": "v2.14.0"
+        }
+      ]
+    },
+    {
+      "name": "openbao",
+      "namespace": "secrets",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "openbao",
+          "version": "0.30.6",
+          "app_version": "v2.7.2"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "name": "cplane-01",
+      "version": "v1.37.1+k3s1"
+    },
+    {
+      "name": "node-01",
+      "version": "v1.37.1+k3s1"
+    },
+    {
+      "name": "node-02",
+      "version": "v1.37.1+k3s1"
+    }
+  ],
+  "root_ca_sha256": "9f38b5d00ac89cfcb25781df1bb49418895cbad9e0b267fdfc181e1fe8aac534",
+  "workload_pods": [
+    {
+      "namespace": "ui",
+      "name": "redis-validation-8547489b94-zzxtv",
+      "uid": "e29aa7d8-c74f-4317-a5d3-53d7f3fc81cb",
+      "phase": "Running",
+      "ready": true,
+      "containers": [
+        {
+          "name": "redis",
+          "image": "redis:8.2.2-alpine"
+        }
+      ]
+    },
+    {
+      "namespace": "ui",
+      "name": "redisinsight-798568c8c4-6gk72",
+      "uid": "0f3e57a8-d510-4b20-a980-f2378eea4972",
+      "phase": "Running",
+      "ready": true,
+      "containers": [
+        {
+          "name": "redisinsight",
+          "image": "redis/redisinsight:3.8.0@sha256:b5e19ee240abef6edb435871b90ff8a210995422e8e018ab61c0339d318a1f84"
+        }
+      ]
+    },
+    {
+      "namespace": "broker",
+      "name": "nats-validation-56d545755c-wctzq",
+      "uid": "c8a4227f-c80b-4612-876b-3989ba90a95b",
+      "phase": "Running",
+      "ready": true,
+      "containers": [
+        {
+          "name": "nats-validation",
+          "image": "nats:2.12.1-alpine"
+        }
+      ]
+    },
+    {
+      "namespace": "broker",
+      "name": "nui-0",
+      "uid": "8e2e5da2-dbb8-4bc4-8642-52582cc30ecd",
+      "phase": "Running",
+      "ready": true,
+      "containers": [
+        {
+          "name": "nui",
+          "image": "ghcr.io/nats-nui/nui:0.10.0@sha256:879b64b2f2fa4c3298681ed0bebfbcfd80cae281ff787a10c404bbd62160d18a"
+        }
+      ]
+    }
+  ]
+}

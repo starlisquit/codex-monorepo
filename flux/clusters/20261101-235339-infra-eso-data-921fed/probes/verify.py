@@ -1,7 +1,7 @@
 import base64,copy,datetime as dt,hashlib,hmac,json,urllib.request,urllib.error,xml.etree.ElementTree as ET
 from runtime import *
 e=Evidence('data');wait_contracts();v=values();fixture=json.loads((FOLDER/'fixture-values.json').read_text())
-wait('MinIO ready',lambda:ready(pod('velero','app=s3-fixture')))
+wait('S3 fixture ready',lambda:ready(pod('velero','app=s3-fixture')))
 with Forward('velero','service/s3-fixture',9000,19090) as s3:
  def s3call(method,path):
   now=dt.datetime.now(dt.timezone.utc);stamp=now.strftime('%Y%m%dT%H%M%SZ');date=now.strftime('%Y%m%d');host='127.0.0.1:19090';payload=hashlib.sha256(b'').hexdigest();headers=f'host:{host}\nx-amz-content-sha256:{payload}\nx-amz-date:{stamp}\n';signed='host;x-amz-content-sha256;x-amz-date';canonical=method+'\n'+path+'\n\n'+headers+'\n'+signed+'\n'+payload;scope=date+'/us-east-1/s3/aws4_request';string='AWS4-HMAC-SHA256\n'+stamp+'\n'+scope+'\n'+hashlib.sha256(canonical.encode()).hexdigest()
@@ -12,7 +12,7 @@ with Forward('velero','service/s3-fixture',9000,19090) as s3:
  s3call('PUT','/velero-validation');e.record('local_authenticated_s3_bucket_created')
  wait_release('velero','velero')
  wait('Velero BSL available',lambda:get('backupstoragelocation','default','velero').get('status',{}).get('phase')=='Available',300)
- e.record('velero_consumes_eso_cloud_credentials',{'bsl':'default','phase':'Available','backend':'authenticated local MinIO fixture'})
+ e.record('velero_consumes_eso_cloud_credentials',{'bsl':'default','phase':'Available','backend':'authenticated local SeaweedFS S3 fixture'})
  objects=[{'apiVersion':'v1','kind':'Namespace','metadata':{'name':'velero-credential-check'}},{'apiVersion':'v1','kind':'ConfigMap','metadata':{'name':'credential-check','namespace':'velero-credential-check'},'data':{'status':'verified'}},{'apiVersion':'velero.io/v1','kind':'Backup','metadata':{'name':'eso-credential-backup','namespace':'velero'},'spec':{'includedNamespaces':['velero-credential-check'],'snapshotVolumes':False,'ttl':'1h0m0s'}}]
  result=subprocess.run(['kubectl','apply','-f','-'],input=json.dumps({'apiVersion':'v1','kind':'List','items':objects}),capture_output=True,text=True,timeout=25);assert result.returncode==0
  backup=wait('Velero backup completed',lambda:(x if (x:=get('backup','eso-credential-backup','velero')).get('status',{}).get('phase')=='Completed' else False),300)

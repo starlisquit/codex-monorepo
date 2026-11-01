@@ -15,20 +15,10 @@ spec:
     spec:
       containers:
       - name: s3-fixture
-        image: docker.io/minio/minio:RELEASE.2025-04-22T22-12-26Z
+        image: docker.io/chrislusf/seaweedfs:4.00@sha256:dcbccdc9f33689d43ca3d1fb73d2baa319f8307c59d7923191b993ddc85ba6f8
         ports:
         - containerPort: 9000
-        env:
-        - name: MINIO_ROOT_USER
-          valueFrom:
-            secretKeyRef:
-              name: s3-fixture
-              key: access-key
-        - name: MINIO_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: s3-fixture
-              key: secret-key
+        env: []
         resources:
           requests:
             cpu: 50m
@@ -37,13 +27,27 @@ spec:
             memory: 512Mi
         args:
         - server
-        - /data
+        - -s3
+        - -s3.port=9000
+        - -s3.config=/etc/s3/config.json
+        - -dir=/data
+        - -volume.max=1
+        - -master.volumeSizeLimitMB=100
         volumeMounts:
         - name: data
           mountPath: /data
+        - name: s3-config
+          mountPath: /etc/s3
+          readOnly: true
       volumes:
       - name: data
         emptyDir: {}
+      - name: s3-config
+        secret:
+          secretName: s3-fixture
+          items:
+          - key: config.json
+            path: config.json
 ---
 apiVersion: v1
 kind: Service

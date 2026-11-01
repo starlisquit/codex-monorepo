@@ -31,3 +31,6 @@ store endpoint/mount/role and policy paths together when isolating environments.
 Wait for `SecretStore/nui-openbao` and each ExternalSecret to report `Ready=True`
 before reconciling the application. No certificates, root/unseal material or
 operator-generated passwords are managed by this opt-in.
+
+Live OpenBao/ESO delivery and actual application credential use passed on a fresh
+K3s run. See [runtime findings](../../../../../docs/findings/infra-eso-ui-2026-11-01.md).

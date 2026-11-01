@@ -97,7 +97,7 @@ def configure_infrastructure(backend,repo,run):
         values={'gitlab-runner-auth':{'runner-token':ci['runner_token']},'renovate-credentials':{'RENOVATE_TOKEN':ci['renovate_token']}}
     elif mode=='data':
         access='fixture'+secrets.token_hex(8);secret=secrets.token_hex(24)
-        apply_secret('velero','s3-fixture',{'access-key':access,'secret-key':secret})
+        apply_secret('velero','s3-fixture',{'access-key':access,'secret-key':secret,'config.json':json.dumps({'identities':[{'name':'velero-validation','credentials':[{'accessKey':access,'secretKey':secret}],'actions':['Admin','Read','Write','List','Tagging']}]})})
         values={'clickhouse-auth':{'password':fresh()},'velero-cloud-credentials':{'cloud':'[default]\naws_access_key_id = '+access+'\naws_secret_access_key = '+secret+'\n'}}
         (FOLDER/'fixture-values.json').write_text(json.dumps({'s3_access_key':access,'s3_secret_key':secret}))
     for relative in inventory['opt_ins']:

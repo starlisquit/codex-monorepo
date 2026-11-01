@@ -1,0 +1,261 @@
+{
+  "contracts": {
+    "mode": "ci",
+    "contracts": [
+      {
+        "namespace": "ci",
+        "name": "gitlab-runner-auth",
+        "keys": [
+          "runner-registration-token",
+          "runner-token"
+        ],
+        "sha256": {
+          "runner-registration-token": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "runner-token": "fbd17357ca996259b46d1bbff933c8c82734ed0ebafd9a1a111880b3464ac41a"
+        },
+        "ready": true,
+        "correct_owner": true
+      },
+      {
+        "namespace": "ci",
+        "name": "renovate-credentials",
+        "keys": [
+          "RENOVATE_TOKEN"
+        ],
+        "sha256": {
+          "RENOVATE_TOKEN": "a736c8cd9b7cb6d7849eedc487eac9d5ccdbaee998a96ebdc333badf5b4de945"
+        },
+        "ready": true,
+        "correct_owner": true
+      }
+    ],
+    "auth": [
+      {
+        "store": "gitlab-runner-openbao",
+        "namespace": "ci",
+        "own_path_read": true,
+        "cross_path_http": 403,
+        "wrong_audience_http": 403
+      },
+      {
+        "store": "renovate-openbao",
+        "namespace": "ci",
+        "own_path_read": true,
+        "cross_path_http": 403,
+        "wrong_audience_http": 403
+      }
+    ],
+    "completed_at": "2026-11-01T21:03:02.980405+00:00",
+    "result": "passed"
+  },
+  "applications": {
+    "mode": "ci",
+    "started_at": "2026-11-01T21:02:13.272433+00:00",
+    "checks": {
+      "runner_authenticated_online": {
+        "runner_id": 58230510,
+        "status": "online"
+      },
+      "real_kubernetes_executor_job": {
+        "pipeline_id": 3015371114,
+        "job_id": 17648206882,
+        "runner_id": 58230510,
+        "status": "success"
+      },
+      "effective_concurrency_defaults": {
+        "concurrent": 5,
+        "runner_limit": 5
+      },
+      "renovate_authenticated_dry_run": {
+        "job": "renovate-eso-validation",
+        "completed": true,
+        "repository_finished": true,
+        "extraction_summary_present": true,
+        "github_lookup_warning": true
+      }
+    },
+    "result": "passed",
+    "completed_at": "2026-11-01T21:06:47.480373+00:00"
+  },
+  "captured_at": "2026-11-01T21:07:49.621166+00:00",
+  "result": "passed",
+  "flux_path": "./flux/clusters/20261101-235338-infra-eso-ci-2c2902",
+  "flux_stages": [
+    {
+      "name": "cert-manager",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "credentials",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "external-secrets",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "flux-system",
+      "revision": "main@sha1:de6fab5e7ad4157c752ce0f7458526f5577e7ab8",
+      "ready": true
+    },
+    {
+      "name": "foundation",
+      "revision": "main@sha1:de6fab5e7ad4157c752ce0f7458526f5577e7ab8",
+      "ready": true
+    },
+    {
+      "name": "gitlab-runner",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "monitoring-crds",
+      "revision": "main@sha1:de6fab5e7ad4157c752ce0f7458526f5577e7ab8",
+      "ready": true
+    },
+    {
+      "name": "openbao",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "pki-issuer",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "pki-trust",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "renovate",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    },
+    {
+      "name": "trust-manager",
+      "revision": "main@sha1:b394d1e5176c188ee2903a2f862e2a3da751cbc7",
+      "ready": false
+    }
+  ],
+  "helm_releases": [
+    {
+      "name": "cert-manager",
+      "namespace": "certificates",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "cert-manager",
+          "version": "v1.21.3",
+          "app_version": "v1.21.3"
+        }
+      ]
+    },
+    {
+      "name": "trust-manager",
+      "namespace": "certificates",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "trust-manager",
+          "version": "v0.26.0",
+          "app_version": "v0.26.0"
+        }
+      ]
+    },
+    {
+      "name": "gitlab-runner",
+      "namespace": "ci",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "gitlab-runner",
+          "version": "0.94.2",
+          "app_version": "19.5.2"
+        }
+      ]
+    },
+    {
+      "name": "renovate",
+      "namespace": "ci",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "renovate",
+          "version": "46.396.0",
+          "app_version": "44.198.0"
+        }
+      ]
+    },
+    {
+      "name": "prometheus-operator-crds",
+      "namespace": "observability",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "prometheus-operator-crds",
+          "version": "32.0.2",
+          "app_version": "v0.94.2"
+        }
+      ]
+    },
+    {
+      "name": "external-secrets",
+      "namespace": "secrets",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "external-secrets",
+          "version": "2.14.0",
+          "app_version": "v2.14.0"
+        }
+      ]
+    },
+    {
+      "name": "openbao",
+      "namespace": "secrets",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "openbao",
+          "version": "0.30.6",
+          "app_version": "v2.7.2"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "name": "cplane-01",
+      "version": "v1.37.1+k3s1"
+    },
+    {
+      "name": "node-01",
+      "version": "v1.37.1+k3s1"
+    },
+    {
+      "name": "node-02",
+      "version": "v1.37.1+k3s1"
+    }
+  ],
+  "root_ca_sha256": "16c75e10b49c5526e0c8cd29f59efa82a0702976c8f682b58ba19e923e5ce081",
+  "workload_pods": [
+    {
+      "namespace": "ci",
+      "name": "gitlab-runner-759cf7b5f9-x8kjc",
+      "uid": "dd2cf1b9-543c-4e33-abef-2b528ebd27dc",
+      "phase": "Running",
+      "ready": true,
+      "containers": [
+        {
+          "name": "gitlab-runner",
+          "image": "registry.gitlab.com/gitlab-org/gitlab-runner:alpine-v19.5.2"
+        }
+      ]
+    }
+  ]
+}

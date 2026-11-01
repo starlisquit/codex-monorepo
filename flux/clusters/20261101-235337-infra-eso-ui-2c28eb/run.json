@@ -4,5 +4,8 @@
   "timezone": "Europe/Istanbul",
   "purpose": "infra-eso-ui",
   "flux_path": "./flux/clusters/20261101-235337-infra-eso-ui-2c28eb",
-  "status": "preparing"
+  "status": "verified",
+  "tested_revision": "de6fab5e7ad4157c752ce0f7458526f5577e7ab8",
+  "findings": "flux/docs/findings/infra-eso-ui-2026-11-01.md",
+  "policy_fix_revision": "b394d1e5176c188ee2903a2f862e2a3da751cbc7"
 }
