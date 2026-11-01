@@ -1,0 +1,317 @@
+{
+  "contracts": {
+    "mode": "data",
+    "contracts": [
+      {
+        "namespace": "databases",
+        "name": "clickhouse-auth",
+        "keys": [
+          "password"
+        ],
+        "sha256": {
+          "password": "6e3d4491d9d6992766d14817e48614b8401913396d3962e8f9deedcdc59e7a97"
+        },
+        "ready": true,
+        "correct_owner": true
+      },
+      {
+        "namespace": "velero",
+        "name": "velero-cloud-credentials",
+        "keys": [
+          "cloud"
+        ],
+        "sha256": {
+          "cloud": "a27984863123c9fefce2d242705356f71408b0c630580abc8e9f38c7ce4ba212"
+        },
+        "ready": true,
+        "correct_owner": true
+      }
+    ],
+    "auth": [
+      {
+        "store": "clickhouse-openbao",
+        "namespace": "databases",
+        "own_path_read": true,
+        "cross_path_http": 403,
+        "wrong_audience_http": 403
+      },
+      {
+        "store": "velero-openbao",
+        "namespace": "velero",
+        "own_path_read": true,
+        "cross_path_http": 403,
+        "wrong_audience_http": 403
+      }
+    ],
+    "completed_at": "2026-11-01T21:03:01.659517+00:00",
+    "result": "passed"
+  },
+  "applications": {
+    "mode": "data",
+    "started_at": "2026-11-01T21:19:14.392286+00:00",
+    "checks": {
+      "local_authenticated_s3_bucket_created": true,
+      "velero_consumes_eso_cloud_credentials": {
+        "bsl": "default",
+        "phase": "Available",
+        "backend": "authenticated local SeaweedFS S3 fixture"
+      },
+      "velero_real_object_backup_and_restore": {
+        "backup": "Completed",
+        "restore": "Completed",
+        "restored_configmap": "verified",
+        "objects_observed_in_bucket": true
+      },
+      "clickhouse_password_authentication_and_sql_round_trip": {
+        "wrong_password_rejected": true,
+        "eso_password_accepted": true,
+        "write_and_read": true
+      }
+    },
+    "result": "passed",
+    "completed_at": "2026-11-01T21:19:40.228319+00:00"
+  },
+  "captured_at": "2026-11-01T21:21:00.765614+00:00",
+  "result": "passed",
+  "flux_path": "./flux/clusters/20261101-235339-infra-eso-data-921fed",
+  "flux_stages": [
+    {
+      "name": "cert-manager",
+      "revision": "main@sha1:d18e8d7819bf921edb84c52df0205c49627a7086",
+      "ready": true
+    },
+    {
+      "name": "clickhouse",
+      "revision": "main@sha1:d18e8d7819bf921edb84c52df0205c49627a7086",
+      "ready": true
+    },
+    {
+      "name": "clickhouse-operator",
+      "revision": "main@sha1:d18e8d7819bf921edb84c52df0205c49627a7086",
+      "ready": true
+    },
+    {
+      "name": "credentials",
+      "revision": "main@sha1:d18e8d7819bf921edb84c52df0205c49627a7086",
+      "ready": true
+    },
+    {
+      "name": "external-secrets",
+      "revision": "main@sha1:d18e8d7819bf921edb84c52df0205c49627a7086",
+      "ready": true
+    },
+    {
+      "name": "flux-system",
+      "revision": "main@sha1:d18e8d7819bf921edb84c52df0205c49627a7086",
+      "ready": true
+    },
+    {
+      "name": "foundation",
+      "revision": "main@sha1:d18e8d7819bf921edb84c52df0205c49627a7086",
+      "ready": true
+    },
+    {
+      "name": "monitoring-crds",
+      "revision": "main@sha1:d18e8d7819bf921edb84c52df0205c49627a7086",
+      "ready": true
+    },
+    {
+      "name": "openbao",
+      "revision": "main@sha1:d18e8d7819bf921edb84c52df0205c49627a7086",
+      "ready": true
+    },
+    {
+      "name": "pki-issuer",
+      "revision": "main@sha1:d18e8d7819bf921edb84c52df0205c49627a7086",
+      "ready": true
+    },
+    {
+      "name": "pki-trust",
+      "revision": "main@sha1:d18e8d7819bf921edb84c52df0205c49627a7086",
+      "ready": true
+    },
+    {
+      "name": "s3-fixture",
+      "revision": "main@sha1:d18e8d7819bf921edb84c52df0205c49627a7086",
+      "ready": true
+    },
+    {
+      "name": "trust-manager",
+      "revision": "main@sha1:d18e8d7819bf921edb84c52df0205c49627a7086",
+      "ready": true
+    },
+    {
+      "name": "velero",
+      "revision": "main@sha1:d18e8d7819bf921edb84c52df0205c49627a7086",
+      "ready": true
+    }
+  ],
+  "helm_releases": [
+    {
+      "name": "cert-manager",
+      "namespace": "certificates",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "cert-manager",
+          "version": "v1.21.3",
+          "app_version": "v1.21.3"
+        }
+      ]
+    },
+    {
+      "name": "trust-manager",
+      "namespace": "certificates",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "trust-manager",
+          "version": "v0.26.0",
+          "app_version": "v0.26.0"
+        }
+      ]
+    },
+    {
+      "name": "clickhouse-operator",
+      "namespace": "databases",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "clickhouse-operator-helm",
+          "version": "0.0.8+61d97bb43a16",
+          "app_version": "v0.0.8"
+        }
+      ]
+    },
+    {
+      "name": "prometheus-operator-crds",
+      "namespace": "observability",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "prometheus-operator-crds",
+          "version": "32.0.2",
+          "app_version": "v0.94.2"
+        }
+      ]
+    },
+    {
+      "name": "external-secrets",
+      "namespace": "secrets",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "external-secrets",
+          "version": "2.14.0",
+          "app_version": "v2.14.0"
+        }
+      ]
+    },
+    {
+      "name": "openbao",
+      "namespace": "secrets",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "openbao",
+          "version": "0.30.6",
+          "app_version": "v2.7.2"
+        }
+      ]
+    },
+    {
+      "name": "velero",
+      "namespace": "velero",
+      "ready": true,
+      "chart_history": [
+        {
+          "chart": "velero",
+          "version": "12.2.2",
+          "app_version": "1.18.2"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "name": "cplane-01",
+      "version": "v1.37.1+k3s1"
+    },
+    {
+      "name": "node-01",
+      "version": "v1.37.1+k3s1"
+    },
+    {
+      "name": "node-02",
+      "version": "v1.37.1+k3s1"
+    }
+  ],
+  "root_ca_sha256": "2c30ec444cdda413636110cc0f50c7266b13258e259915855bbe7d1563dea531",
+  "workload_pods": [
+    {
+      "namespace": "velero",
+      "name": "s3-fixture-85fd7c5c56-pqntv",
+      "uid": "e46cac8a-4fd6-402d-8157-a8db42527e09",
+      "phase": "Running",
+      "ready": true,
+      "containers": [
+        {
+          "name": "s3-fixture",
+          "image": "docker.io/chrislusf/seaweedfs:4.00@sha256:dcbccdc9f33689d43ca3d1fb73d2baa319f8307c59d7923191b993ddc85ba6f8"
+        }
+      ]
+    },
+    {
+      "namespace": "velero",
+      "name": "velero-789b8dcc45-5mspk",
+      "uid": "0585b0dc-d51e-4d40-88cf-d999eef18955",
+      "phase": "Running",
+      "ready": true,
+      "containers": [
+        {
+          "name": "velero",
+          "image": "docker.io/velero/velero:v1.18.2"
+        }
+      ]
+    },
+    {
+      "namespace": "databases",
+      "name": "clickhouse-clickhouse-0-0-0",
+      "uid": "e7e5256c-23c3-428f-8663-557c012bf5e8",
+      "phase": "Running",
+      "ready": true,
+      "containers": [
+        {
+          "name": "clickhouse-server",
+          "image": "docker.io/clickhouse/clickhouse-server:latest"
+        }
+      ]
+    },
+    {
+      "namespace": "databases",
+      "name": "clickhouse-keeper-0-0",
+      "uid": "c0c8ea1e-398a-4638-88e7-66c269ab1469",
+      "phase": "Running",
+      "ready": true,
+      "containers": [
+        {
+          "name": "clickhouse-keeper",
+          "image": "docker.io/clickhouse/clickhouse-keeper:latest"
+        }
+      ]
+    },
+    {
+      "namespace": "databases",
+      "name": "clickhouse-operator-controller-manager-6964b677b7-wxphn",
+      "uid": "1c2af7f0-76af-44ff-b6e1-0745a47be5da",
+      "phase": "Running",
+      "ready": true,
+      "containers": [
+        {
+          "name": "manager",
+          "image": "ghcr.io/clickhouse/clickhouse-operator:v0.0.8"
+        }
+      ]
+    }
+  ]
+}

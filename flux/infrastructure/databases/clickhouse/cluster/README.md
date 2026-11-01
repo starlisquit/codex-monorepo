@@ -32,8 +32,9 @@ Database TLS and backups must be configured for your environment.
 Validation: this base builds and validates against the pinned official CRD
 schemas. The earlier [live verification](../../../../docs/findings/clickhouse-operator-2026-11-01.md)
 tested these images with one ClickHouse and one Keeper replica, SQL and pod
-replacement persistence. The larger topology, Ceph storage and password Secret
-configuration in this reusable base have not been live-tested.
+replacement persistence. The larger topology and Ceph storage have not been live-tested. The base
+password Secret reference has now passed [live OpenBao/ESO verification](../../../../docs/findings/infra-eso-data-2026-11-01.md)
+with a one-replica local-path lab override.
 
 ## Optional OpenBao credentials (clickhouse)
 

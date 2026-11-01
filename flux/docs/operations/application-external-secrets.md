@@ -114,9 +114,21 @@ and refresh fail; alert on SecretStore/ExternalSecret readiness and refresh age.
 application and composes all of them together. Its credential checks enforce
 unique ownership, exact KV policies, namespace/role/service-account/audience
 bindings, public-CA-only trust and expected application Secret names/keys. These
-are offline checks, not a new runtime authentication or rotation test. The prior
-OpenBao verification demonstrated the underlying service-account-authenticated
-ESO path; it does not by itself validate each new application mapping live.
+routine checks are offline. Dedicated parallel K3s runs additionally verified all
+nine infrastructure opt-ins (ten Secret contracts) through actual applications:
+
+- [LiteLLM and SonarQube](../findings/infra-eso-apps-2026-11-01.md): proxy
+  authentication/provider routing, monitoring passcode and external PostgreSQL password.
+- [RedisInsight and NUI](../findings/infra-eso-ui-2026-11-01.md): encrypted
+  saved Redis connection and authenticated NATS context, both after Pod replacement.
+- [Runner and Renovate](../findings/infra-eso-ci-2026-11-01.md): real GitLab job
+  execution and authenticated dry-run repository processing.
+- [ClickHouse and Velero](../findings/infra-eso-data-2026-11-01.md): password-
+  authenticated SQL and ConfigMap backup/restore against a local authenticated S3 fixture.
+
+The live tests found and corrected missing self-token permissions in the original
+policies. See each report for versions, lab overrides and limits; these runs do
+not establish production HA, all-feature coverage or upstream credential rotation.
 
 ## Custom applications using the Deployment primitive
 

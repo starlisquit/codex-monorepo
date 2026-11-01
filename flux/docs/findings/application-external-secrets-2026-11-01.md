@@ -42,3 +42,12 @@ and Flux readiness ordering. Existing manually provisioned Secrets require an
 explicit ownership handover. Environment-based credentials require Pod recreation
 to consume updates. ESO refresh does not rotate upstream credentials. Encryption
 keys require stable custody and coordinated data migration if changed.
+
+## Runtime follow-up
+
+All nine infrastructure integrations were subsequently exercised against actual
+applications on four parallel fresh K3s clusters. See
+[application credential coverage](../operations/application-external-secrets.md#validation-scope)
+for reports and evidence. Live ESO validation exposed the missing self-token
+permissions in the initial policies; those policies and the routine validator
+were corrected before the successful application results were recorded.

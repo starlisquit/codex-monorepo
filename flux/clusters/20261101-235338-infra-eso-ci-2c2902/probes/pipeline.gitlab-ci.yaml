@@ -1,0 +1,8 @@
+# Copy only into an isolated temporary validation branch, never main.
+stages: [verify]
+secret-delivery:
+  stage: verify
+  tags: [infra-eso-validation]
+  image: alpine:3.22
+  script:
+  - echo infra-eso-runner-verified
