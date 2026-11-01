@@ -1,7 +1,8 @@
 # Container log browser
 
 `Platform / Container logs` uses the existing VictoriaLogs (DS) datasource and
-Grafana Operator. Namespace, Pod and container dropdowns query live Kubernetes
+Grafana Operator. It references the chart's stable datasource UID `VictoriaLogs`
+(the display name is `VictoriaLogs (DS)`). Adapt that UID for other stacks. Namespace, Pod and container dropdowns query live Kubernetes
 metadata fields; level and message-regex filters narrow the selected time range.
 The panel returns at most 1000 records. Use Explore for further LogsQL queries.
 
