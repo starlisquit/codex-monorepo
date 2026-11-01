@@ -12,7 +12,7 @@ one-time CNI bootstrap is necessary before ordinary Flux Pods can run:
 
 1. Clone this repository and apply the core Gateway API and `opt-in/l4-routes`
    CRDs with `kubectl apply --server-side -k`.
-2. Label `node-01` with `gateway-validation=true`; remove the kube-proxy DaemonSet
+2. Remove the kube-proxy DaemonSet
    because Cilium is configured for kube-proxy replacement.
 3. Create temporary TLS Secret `demo/protocol-fixture-tls` for `app.example.com`
    outside Git. A one-day self-signed certificate is sufficient for this fixture;
@@ -24,10 +24,18 @@ one-time CNI bootstrap is necessary before ordinary Flux Pods can run:
 
 The bootstrap-values file is the effective shared values plus the focused run's
 overrides. Hubble, encryption and monitoring are disabled for this test. No
-separate Envoy Gateway controller is installed. Cilium exposes native Gateway
-API listeners directly on labeled node-01 (172.16.0.3), using high ports 18080
-(HTTP), 15051 (gRPC), 18443 (TLS), 15432 (TCP), 15353 (UDP). The backend Service
-uses the ports from the shared route templates. There is no external load balancer.
+separate Envoy Gateway controller is installed. Cilium uses LoadBalancer mode and
+an eight-address lab-only IP pool (172.16.0.200–207). The assigned Gateway address
+was 172.16.0.200; its ports are 18080 (HTTP), 15051 (gRPC), 18443 (TLS), 15432
+(TCP), 15353 (UDP). The backend Service uses the shared route template ports.
+Traffic tests run from the backend Pod through this VIP; external L2/BGP
+advertisement was not configured or tested. No cloud load balancer is allocated.
+
+The initial host-network attempt passed HTTP/gRPC/TLS but explicitly rejected
+TCP/UDP as unsupported. After changing host-network mode, restarting the Cilium
+operator was required to pick up its new startup configuration. Fresh bootstrap
+uses LoadBalancer mode from the outset. Gateway readiness now checks every
+listener and every route, not just the Gateway-level Programmed condition.
 
 `verify-rbac.py` uses actual short-lived ServiceAccount tokens in memory; it never
 prints or saves them. `verify-cronjob.py` records scheduler completion and Forbid

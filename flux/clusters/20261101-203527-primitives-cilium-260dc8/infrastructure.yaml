@@ -76,6 +76,65 @@ spec:
   - name: cilium
   - name: protocol-backends
   - name: gateway-ip-pool
+  healthChecks:
+  - apiVersion: gateway.networking.k8s.io/v1
+    kind: Gateway
+    name: edge-application-gateway
+    namespace: demo
+  - apiVersion: gateway.networking.k8s.io/v1
+    kind: HTTPRoute
+    name: edge-application-http
+    namespace: demo
+  - apiVersion: gateway.networking.k8s.io/v1
+    kind: GRPCRoute
+    name: edge-application-grpc
+    namespace: demo
+  - apiVersion: gateway.networking.k8s.io/v1
+    kind: TLSRoute
+    name: edge-application-tls
+    namespace: demo
+  - apiVersion: gateway.networking.k8s.io/v1
+    kind: TCPRoute
+    name: edge-application-tcp
+    namespace: demo
+  - apiVersion: gateway.networking.k8s.io/v1
+    kind: UDPRoute
+    name: edge-application-udp
+    namespace: demo
+  healthCheckExprs:
+  - apiVersion: gateway.networking.k8s.io/v1
+    kind: Gateway
+    current: has(status.conditions) && ['Accepted', 'Programmed'].all(t, status.conditions.exists(c,
+      c.type == t && c.status == 'True' && c.observedGeneration == metadata.generation))
+      && has(status.listeners) && status.listeners.size() == spec.listeners.size()
+      && status.listeners.all(l, has(l.conditions) && ['Accepted', 'Programmed', 'ResolvedRefs'].all(t,
+      l.conditions.exists(c, c.type == t && c.status == 'True' && c.observedGeneration
+      == metadata.generation)))
+  - apiVersion: gateway.networking.k8s.io/v1
+    kind: HTTPRoute
+    current: has(status.parents) && status.parents.size() > 0 && status.parents.all(p,
+      has(p.conditions) && ['Accepted', 'ResolvedRefs'].all(t, p.conditions.exists(c,
+      c.type == t && c.status == 'True' && c.observedGeneration == metadata.generation)))
+  - apiVersion: gateway.networking.k8s.io/v1
+    kind: GRPCRoute
+    current: has(status.parents) && status.parents.size() > 0 && status.parents.all(p,
+      has(p.conditions) && ['Accepted', 'ResolvedRefs'].all(t, p.conditions.exists(c,
+      c.type == t && c.status == 'True' && c.observedGeneration == metadata.generation)))
+  - apiVersion: gateway.networking.k8s.io/v1
+    kind: TLSRoute
+    current: has(status.parents) && status.parents.size() > 0 && status.parents.all(p,
+      has(p.conditions) && ['Accepted', 'ResolvedRefs'].all(t, p.conditions.exists(c,
+      c.type == t && c.status == 'True' && c.observedGeneration == metadata.generation)))
+  - apiVersion: gateway.networking.k8s.io/v1
+    kind: TCPRoute
+    current: has(status.parents) && status.parents.size() > 0 && status.parents.all(p,
+      has(p.conditions) && ['Accepted', 'ResolvedRefs'].all(t, p.conditions.exists(c,
+      c.type == t && c.status == 'True' && c.observedGeneration == metadata.generation)))
+  - apiVersion: gateway.networking.k8s.io/v1
+    kind: UDPRoute
+    current: has(status.parents) && status.parents.size() > 0 && status.parents.all(p,
+      has(p.conditions) && ['Accepted', 'ResolvedRefs'].all(t, p.conditions.exists(c,
+      c.type == t && c.status == 'True' && c.observedGeneration == metadata.generation)))
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
