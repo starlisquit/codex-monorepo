@@ -12,3 +12,14 @@ use their declared served API versions against the existing newer CRDs.
 Envoy Gateway v1.9.3 is a run-only test controller, using internal ClusterIP.
 Before bootstrap, create temporary Secret demo/protocol-fixture-tls with a
 certificate for app.example.com; private key material must stay outside Git.
+
+## Retired run
+
+This run was cancelled on user direction before completing runtime verification.
+Envoy Gateway had installed, but the user requested testing with the repository's
+Cilium Gateway API integration instead. Reconciliation was suspended immediately;
+configuration/history is preserved as evidence, not an active deployment target.
+The old v1.4.0 L4 CRDs initially failed because K3s already stored those APIs as
+v1. The final K3s state is not a successful primitive runtime verification.
+The ServiceAccount token probe never prints credentials; its results were not
+collected in this cancelled run.
