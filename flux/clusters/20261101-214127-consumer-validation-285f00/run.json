@@ -1,8 +1,0 @@
-{
-  "play_id": "6ae787d67f32053bde285f00",
-  "created_at": "2026-11-01T18:41:27.012000+00:00",
-  "timezone": "Europe/Istanbul",
-  "purpose": "consumer-validation",
-  "flux_path": "./flux/clusters/20261101-214127-consumer-validation-285f00",
-  "status": "preparing"
-}

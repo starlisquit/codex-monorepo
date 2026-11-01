@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: rook-ceph-operator-metrics
-  namespace: ${ROOK_CEPH_NAMESPACE:=rook-ceph}
+  namespace: rook-ceph
   labels:
     app: rook-ceph-operator-metrics
 spec:
@@ -17,7 +17,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: rook-ceph-operator
-  namespace: ${ROOK_CEPH_NAMESPACE:=rook-ceph}
+  namespace: rook-ceph
 spec:
   selector:
     matchLabels:

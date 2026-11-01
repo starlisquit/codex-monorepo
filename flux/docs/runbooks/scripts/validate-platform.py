@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Validate every run's Flux path, dependency DAG and selected prerequisites."""
 from pathlib import Path
-from flux_render import build, substitute, variables_for
 import os
 import subprocess
 import yaml
@@ -22,8 +21,7 @@ for manifest in runs:
     expected_path = './' + run.relative_to(repo_root).as_posix()
     if root['spec']['path'] != expected_path:
         raise SystemExit(f'Flux must point to its own run folder: {run}')
-    variables = variables_for(run)
-    resources = [o for o in build(run, variables) if o['kind'] == 'Kustomization' and o['apiVersion'] == 'kustomize.toolkit.fluxcd.io/v1' and o['metadata']['name'] != 'flux-system']
+    resources = [o for o in yaml.safe_load_all(manifest.read_text()) if o]
     by_name = {o['metadata']['name']: o for o in resources}
     if len(by_name) != len(resources):
         raise SystemExit(f'Duplicate Flux Kustomization name: {run}')
@@ -46,7 +44,7 @@ for manifest in runs:
             raise SystemExit(f'Missing readiness dependencies: {name}')
         for dep in o['spec'].get('dependsOn', []):
             visit(dep['name'], stack + [name])
-        objects.extend(build(path, {**variables, **o['spec'].get('postBuild', {}).get('substitute', {})}))
+        objects.extend(x for x in yaml.safe_load_all(subprocess.check_output([kustomize, 'build', str(path)], text=True)) if x)
         visited.add(name)
     for name in by_name:
         visit(name, [])

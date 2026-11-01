@@ -1,5 +1,5 @@
-cluster:
-  name: ${CLUSTER_NAME:=default}
+# Set k8sServiceHost and k8sServicePort to the real API server endpoint before enabling.
+# That endpoint must be reachable without kube-proxy (not the Kubernetes Service IP).
 kubeProxyReplacement: true
 encryption:
   enabled: true
@@ -21,21 +21,11 @@ hubble:
     - tcp
     - flow
     - icmp
+    # Includes visible gRPC traffic as HTTP/2, not gRPC status-code metrics.
     - httpV2
     enableOpenMetrics: true
     serviceMonitor:
       enabled: true
-  tls:
-    enabled: true
-    auto:
-      enabled: true
-      method: certmanager
-      certManagerIssuerRef:
-        name: ${CA_ISSUER_NAME}
-        kind: ClusterIssuer
-        group: cert-manager.io
-      privateKey:
-        rotationPolicy: Always
 gatewayAPI:
   enabled: true
   enableAlpn: true

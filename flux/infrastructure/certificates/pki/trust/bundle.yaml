@@ -1,11 +1,11 @@
 apiVersion: trust.cert-manager.io/v1alpha1
 kind: Bundle
 metadata:
-  name: ${CA_BUNDLE_NAME}
+  name: platform-ca
 spec:
   sources:
   - secret:
-      name: ${CA_CERT_NAME}
+      name: platform-root-ca
       key: tls.crt
   target:
     configMap:

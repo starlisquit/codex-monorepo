@@ -55,7 +55,7 @@ victoria-metrics-operator:
     certManager:
       enabled: true
       issuer:
-        name: ${CA_ISSUER_NAME}
+        name: platform-workload-ca
         kind: ClusterIssuer
       cert:
         duration: 2160h

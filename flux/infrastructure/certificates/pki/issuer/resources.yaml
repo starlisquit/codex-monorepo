@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: platform-root-bootstrap
-  namespace: ${CERTIFICATES_NAMESPACE:=certificates}
+  namespace: certificates
 spec:
   selfSigned: {}
 ---
@@ -10,11 +10,11 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: platform-root
-  namespace: ${CERTIFICATES_NAMESPACE:=certificates}
+  namespace: certificates
 spec:
   isCA: true
-  commonName: "${CA_COMMON_NAME}"
-  secretName: ${CA_CERT_NAME}
+  commonName: openbao-injector-ca
+  secretName: platform-root-ca
   duration: 87600h
   renewBefore: 8760h
   privateKey:
@@ -28,7 +28,7 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: ${CA_ISSUER_NAME}
+  name: platform-workload-ca
 spec:
   ca:
-    secretName: ${CA_CERT_NAME}
+    secretName: platform-root-ca

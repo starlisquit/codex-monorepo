@@ -1,5 +1,5 @@
 cronjob:
-  schedule: 0 3 * * *
+  schedule: "0 3 * * *"
   timeZone: Europe/Istanbul
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 1
@@ -10,11 +10,11 @@ existingSecret: renovate-credentials
 renovate:
   config: |
     {
-      "platform": "${RENOVATE_PLATFORM}",
-      "endpoint": "${RENOVATE_ENDPOINT}",
+      "platform": "gitlab",
+      "endpoint": "https://gitlab.com/api/v4/",
       "autodiscover": false,
-      "repositories": ${RENOVATE_REPOSITORIES},
       "flux": {"managerFilePatterns": ["/\\.ya?ml$/"]},
+      "repositories": ["basarsubasi-gitops/kubernetes/flux"],
       "onboarding": false,
       "requireConfig": "optional",
       "dryRun": "full"

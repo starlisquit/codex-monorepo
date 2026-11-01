@@ -1,4 +1,4 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: ${ROOK_CEPH_NAMESPACE:=rook-ceph}
+  name: rook-ceph

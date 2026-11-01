@@ -5,7 +5,7 @@ app:
       servicemonitor:
         enabled: true
   trust:
-    namespace: ${CERTIFICATES_NAMESPACE:=certificates}
+    namespace: certificates
 secretTargets:
   enabled: true
   authorizedSecrets:

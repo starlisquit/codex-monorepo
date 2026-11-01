@@ -2,7 +2,7 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: application-db
-  namespace: ${DATABASES_NAMESPACE:=databases}
+  namespace: databases
 spec:
   instances: 3
   storage:

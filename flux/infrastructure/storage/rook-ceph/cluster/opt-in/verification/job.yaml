@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: ceph-storage-check
-  namespace: ${ROOK_CEPH_NAMESPACE:=rook-ceph}
+  namespace: rook-ceph
 spec:
   backoffLimit: 3
   template:

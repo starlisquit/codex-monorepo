@@ -1,8 +1,9 @@
+# Template: review against the pinned chart before enabling.
 serviceMonitor:
   enabled: true
   selfMonitor:
     enabled: true
   targets:
   - name: victoriametrics-health
-    url: http://vmsingle-victoria-metrics-k8s-stack.${OBSERVABILITY_NAMESPACE:=observability}.svc.cluster.local:8428/health
+    url: http://vmsingle-victoria-metrics-k8s-stack.observability.svc.cluster.local:8428/health
     module: http_2xx

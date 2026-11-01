@@ -1,4 +1,4 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: ${UI_NAMESPACE:=ui}
+  name: ui

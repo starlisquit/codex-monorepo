@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: keda
-  namespace: ${AUTOSCALING_NAMESPACE:=autoscaling}
+  namespace: autoscaling
 spec:
   interval: 30m
   timeout: 15m
@@ -22,7 +22,7 @@ spec:
       retries: 3
   dependsOn:
   - name: prometheus-operator-crds
-    namespace: ${OBSERVABILITY_NAMESPACE:=observability}
+    namespace: observability
   chart:
     spec:
       chart: keda

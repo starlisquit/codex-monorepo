@@ -2,13 +2,13 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: sonarqube-postgresql
-  namespace: ${QUALITY_NAMESPACE:=quality}
+  namespace: quality
 spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:18.6-system-trixie
-  instances: ${SONARQUBE_DB_INSTANCES:=3}
+  instances: 3
   enableSuperuserAccess: false
   storage:
-    storageClass: ${STORAGE_CLASS:=ceph-block}
+    storageClass: ceph-block
     size: 20Gi
   bootstrap:
     initdb:
@@ -20,8 +20,3 @@ spec:
       memory: 256Mi
     limits:
       memory: 1Gi
-  certificates:
-    serverTLSSecret: sonarqube-postgresql-server-pki
-    serverCASecret: sonarqube-postgresql-server-pki
-    replicationTLSSecret: sonarqube-postgresql-replication-pki
-    clientCASecret: sonarqube-postgresql-replication-pki

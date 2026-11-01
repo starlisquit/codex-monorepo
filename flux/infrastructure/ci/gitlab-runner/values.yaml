@@ -1,4 +1,4 @@
-gitlabUrl: ${GITLAB_URL}
+gitlabUrl: https://gitlab.com/
 replicas: 1
 strategy:
   type: Recreate

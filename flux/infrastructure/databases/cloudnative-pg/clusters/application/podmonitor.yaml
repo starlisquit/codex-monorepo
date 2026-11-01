@@ -2,7 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: application-db
-  namespace: ${DATABASES_NAMESPACE:=databases}
+  namespace: databases
 spec:
   selector:
     matchLabels:

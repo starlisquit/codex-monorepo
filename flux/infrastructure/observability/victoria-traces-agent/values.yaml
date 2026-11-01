@@ -1,4 +1,4 @@
 serviceMonitor:
   enabled: true
 remoteWrite:
-- url: http://vtsingle-victoria-metrics-k8s-stack.${OBSERVABILITY_NAMESPACE:=observability}.svc.cluster.local:10428
+- url: http://vtsingle-victoria-metrics-k8s-stack.observability.svc.cluster.local:10428

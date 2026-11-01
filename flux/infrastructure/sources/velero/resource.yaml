@@ -1,7 +1,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: ${VELERO_NAMESPACE:=velero}
+  name: velero
   namespace: flux-system
 spec:
   interval: 1h

@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
 - helmrelease.yaml
 - metrics.yaml
-namespace: ${ROOK_CEPH_NAMESPACE:=rook-ceph}
+namespace: rook-ceph
 configMapGenerator:
 - name: rook-ceph-operator-values
   files:

@@ -135,14 +135,14 @@ opentelemetry-collector:
   alternateConfig:
     extensions:
       health_check:
-        endpoint: $${env:MY_POD_IP}:13133
+        endpoint: ${env:MY_POD_IP}:13133
     receivers:
       otlp:
         protocols:
           grpc:
-            endpoint: $${env:MY_POD_IP}:4317
+            endpoint: ${env:MY_POD_IP}:4317
           http:
-            endpoint: $${env:MY_POD_IP}:4318
+            endpoint: ${env:MY_POD_IP}:4318
     processors:
       memory_limiter:
         check_interval: 5s
@@ -151,11 +151,11 @@ opentelemetry-collector:
       batch: {}
     exporters:
       otlp_http/vlagent:
-        logs_endpoint: http://vlagent-victoria-metrics-k8s-stack.${OBSERVABILITY_NAMESPACE:=observability}.svc.cluster.local:9429/insert/opentelemetry/v1/logs
+        logs_endpoint: http://vlagent-victoria-metrics-k8s-stack.observability.svc.cluster.local:9429/insert/opentelemetry/v1/logs
       otlp_http/vmagent:
-        metrics_endpoint: http://vmagent-victoria-metrics-k8s-stack.${OBSERVABILITY_NAMESPACE:=observability}.svc.cluster.local:8429/opentelemetry/v1/metrics
+        metrics_endpoint: http://vmagent-victoria-metrics-k8s-stack.observability.svc.cluster.local:8429/opentelemetry/v1/metrics
       otlp_http/vtagent:
-        traces_endpoint: http://vtagent-victoria-traces-agent.${OBSERVABILITY_NAMESPACE:=observability}.svc.cluster.local:10429/insert/opentelemetry/v1/traces
+        traces_endpoint: http://vtagent-victoria-traces-agent.observability.svc.cluster.local:10429/insert/opentelemetry/v1/traces
     service:
       extensions:
       - health_check

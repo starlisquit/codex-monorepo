@@ -2,23 +2,23 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: nats-tls
-  namespace: ${BROKER_NAMESPACE:=broker}
+  namespace: broker
 spec:
   secretName: nats-tls
-  commonName: nats.${BROKER_NAMESPACE:=broker}.svc
+  commonName: nats.broker.svc
   dnsNames:
   - nats
-  - nats.${BROKER_NAMESPACE:=broker}
-  - nats.${BROKER_NAMESPACE:=broker}.svc
-  - nats.${BROKER_NAMESPACE:=broker}.svc.cluster.local
+  - nats.broker
+  - nats.broker.svc
+  - nats.broker.svc.cluster.local
   - nats-headless
-  - nats-headless.${BROKER_NAMESPACE:=broker}
-  - nats-headless.${BROKER_NAMESPACE:=broker}.svc
-  - nats-headless.${BROKER_NAMESPACE:=broker}.svc.cluster.local
+  - nats-headless.broker
+  - nats-headless.broker.svc
+  - nats-headless.broker.svc.cluster.local
   - '*.nats-headless'
-  - '*.nats-headless.${BROKER_NAMESPACE:=broker}'
-  - '*.nats-headless.${BROKER_NAMESPACE:=broker}.svc'
-  - '*.nats-headless.${BROKER_NAMESPACE:=broker}.svc.cluster.local'
+  - '*.nats-headless.broker'
+  - '*.nats-headless.broker.svc'
+  - '*.nats-headless.broker.svc.cluster.local'
   duration: 2160h
   renewBefore: 360h
   privateKey:
@@ -27,7 +27,7 @@ spec:
   - server auth
   - client auth
   issuerRef:
-    name: ${CA_ISSUER_NAME}
+    name: platform-workload-ca
     kind: ClusterIssuer
     group: cert-manager.io
 ---
@@ -35,15 +35,15 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: valkey-tls
-  namespace: ${DATABASES_NAMESPACE:=databases}
+  namespace: databases
 spec:
   secretName: valkey-tls
-  commonName: valkey.${DATABASES_NAMESPACE:=databases}.svc
+  commonName: valkey.databases.svc
   dnsNames:
   - valkey
-  - valkey.${DATABASES_NAMESPACE:=databases}
-  - valkey.${DATABASES_NAMESPACE:=databases}.svc
-  - valkey.${DATABASES_NAMESPACE:=databases}.svc.cluster.local
+  - valkey.databases
+  - valkey.databases.svc
+  - valkey.databases.svc.cluster.local
   - localhost
   duration: 2160h
   renewBefore: 360h
@@ -52,7 +52,7 @@ spec:
   usages:
   - server auth
   issuerRef:
-    name: ${CA_ISSUER_NAME}
+    name: platform-workload-ca
     kind: ClusterIssuer
     group: cert-manager.io
   ipAddresses:

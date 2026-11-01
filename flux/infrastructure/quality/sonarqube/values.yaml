@@ -1,11 +1,11 @@
 community:
   enabled: true
-  buildNumber: 26.9.0.129388
+  buildNumber: "26.9.0.129388"
 monitoringPasscodeSecretName: sonarqube-monitoring
 monitoringPasscodeSecretKey: passcode
 jdbcOverwrite:
   enabled: true
-  jdbcUrl: jdbc:postgresql://sonarqube-postgresql.${QUALITY_NAMESPACE:=quality}.svc.cluster.local:5432/sonarqube
+  jdbcUrl: jdbc:postgresql://sonarqube-postgresql.quality.svc.cluster.local:5432/sonarqube
   jdbcUsername: sonarqube
   jdbcSecretName: sonarqube-database
   jdbcSecretPasswordKey: password
@@ -18,7 +18,7 @@ resources:
     memory: 2Gi
     ephemeral-storage: 1Gi
   limits:
-    cpu: '2'
+    cpu: "2"
     memory: 4Gi
     ephemeral-storage: 5Gi
 sonarProperties:

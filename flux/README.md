@@ -58,9 +58,6 @@ Create run folders with [the run workflow](clusters/README.md); the two former
 fixed cluster examples have been removed. Shared controller bootstrap manifests
 live under `bootstrap/flux-system`.
 
-Read [cluster-defined settings and reusable Flux wiring](docs/architecture/cluster-settings.md)
-for native `${VARIABLE}` customization and predeclared readiness stages.
-
 ## Before enabling a release
 
 1. Chart versions are pinned to the latest stable releases verified on
