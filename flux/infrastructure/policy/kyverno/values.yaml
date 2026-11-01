@@ -1,9 +1,22 @@
-# Template: review against the pinned chart before enabling.
 admissionController:
   metricsService:
     create: true
   serviceMonitor:
     enabled: true
+  createSelfSignedCert: false
+  certManager:
+    enabled: true
+    createSelfSignedIssuer: false
+    issuerRef:
+      name: platform-workload-ca
+      kind: ClusterIssuer
+      group: cert-manager.io
+    ca:
+      duration: 8760h
+      renewBefore: 720h
+    tls:
+      duration: 2160h
+      renewBefore: 360h
 backgroundController:
   metricsService:
     create: true
@@ -14,6 +27,20 @@ cleanupController:
     create: true
   serviceMonitor:
     enabled: true
+  createSelfSignedCert: false
+  certManager:
+    enabled: true
+    createSelfSignedIssuer: false
+    issuerRef:
+      name: platform-workload-ca
+      kind: ClusterIssuer
+      group: cert-manager.io
+    ca:
+      duration: 8760h
+      renewBefore: 720h
+    tls:
+      duration: 2160h
+      renewBefore: 360h
 reportsController:
   metricsService:
     create: true

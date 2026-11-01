@@ -10,6 +10,10 @@ tls:
   type: cert-manager
   certManager:
     addInjectorAnnotations: true
+    existingIssuer:
+      enabled: true
+      kind: ClusterIssuer
+      name: platform-workload-ca
 metrics:
   enabled: true
 serviceMonitor:
