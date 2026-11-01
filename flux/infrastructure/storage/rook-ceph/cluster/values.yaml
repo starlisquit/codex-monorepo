@@ -5,3 +5,6 @@ cephClusterSpec:
     useAllNodes: false
     useAllDevices: false
     nodes: []
+monitoring:
+  metricsDisabled: false
+  enabled: true

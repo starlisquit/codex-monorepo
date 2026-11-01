@@ -1,2 +1,6 @@
-# Template: review against the pinned chart before enabling.
-{}
+monitoring:
+  enabled: true
+csi:
+  serviceMonitor:
+    enabled: true
+operatorMetricsBindAddress: 0.0.0.0:8080

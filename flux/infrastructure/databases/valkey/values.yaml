@@ -1,2 +1,7 @@
 # Template: review against the pinned chart before enabling.
-{}
+metrics:
+  enabled: true
+  service:
+    enabled: true
+  serviceMonitor:
+    enabled: true

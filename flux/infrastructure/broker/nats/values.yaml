@@ -12,3 +12,5 @@ config:
         storageClassName: ceph-block
 promExporter:
   enabled: true
+  podMonitor:
+    enabled: true

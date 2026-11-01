@@ -1,3 +1,7 @@
 # Template: review against the pinned chart before enabling.
 crds:
   enabled: true
+prometheus:
+  enabled: true
+  servicemonitor:
+    enabled: true

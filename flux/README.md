@@ -15,6 +15,8 @@ It is a starting scaffold, not a deployment-ready cluster configuration.
   a category and list them in that category's Kustomization.
 - `observability/datasources/`: additional GrafanaDatasource resources and an
   excluded example; the VM chart retains ownership of its default datasources.
+- `observability/prometheus-operator-crds/`: monitoring CRDs only; see
+  [monitoring setup](MONITORING.md) for collection and dependency details.
 - `ui/headlamp/`: Kubernetes web UI with its own suspended HelmRelease.
 - `policy/cluster-policies/`: example Kyverno policies in Audit mode, scoped to `applications`.
 - `policy/network-policies/`: example policies scoped to `applications`.
@@ -126,7 +128,7 @@ and required external destinations before enabling default deny.
 
 ## Validation
 
-All 21 Kustomize builds and all 16 pinned Helm charts were rendered successfully
+All 32 Kustomize builds and all 18 pinned Helm charts were rendered successfully
 using a Kubernetes 1.35 validation profile. Cilium used a test-only API endpoint,
 and the traces agent used a test-only `remoteWrite[0].url`; neither test address
 is saved in these manifests. The traces agent cannot render as committed until
@@ -164,3 +166,4 @@ These are chart versions, not application image versions.
 | rook-ceph | `1.21.1` |
 | grafana-operator | `5.25.0` |
 | headlamp | `0.46.0` |
+| prometheus-operator-crds | `32.0.2` |

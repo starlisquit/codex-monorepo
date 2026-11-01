@@ -42,3 +42,18 @@ extraObjects:
       adminPassword:
         name: '{{ include "grafana.fullname" .Subcharts.grafana }}'
         key: admin-password
+vmagent:
+  enabled: true
+  spec:
+    selectAllByDefault: true
+victoria-metrics-operator:
+  operator:
+    disable_prometheus_converter: false
+prometheus-node-exporter:
+  enabled: true
+  vmScrape:
+    enabled: true
+kube-state-metrics:
+  enabled: true
+  vmScrape:
+    enabled: true
