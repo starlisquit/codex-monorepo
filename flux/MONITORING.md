@@ -55,8 +55,9 @@ route per endpoint rather than enabling competing scrape mechanisms.
 
 OpenBao uses three HA replicas with integrated Raft storage and a 10Gi
 `ceph-block` persistent volume per replica. Standalone mode is disabled, and no
-Consul backend is configured. The single HCL configuration uses a readable YAML
-literal block. Raft peers retry joining through the chart's `openbao-active`
+Consul backend is configured. The server configuration is a structured YAML object that the chart renders as
+JSON. `server.ha.config: {}` selects the chart's JSON-rendering branch, including
+for Raft; keep it as an object when editing `server.ha.raft.config`. Raft peers retry joining through the chart's `openbao-active`
 Service after a leader has been initialized and unsealed.
 
 Initialization, unsealing, and Raft snapshots remain operational steps: initialize
@@ -87,8 +88,8 @@ All chart renders use a Kubernetes 1.35 validation profile with the monitoring C
 advertised to Helm. Cilium's API address and the traces agent's remoteWrite URL use
 test-only overrides during rendering, not committed destination values. Monitors
 are checked against the pinned CRD schemas and static Service port references.
-The single OpenBao Raft HCL configuration is parsed and checked against the
-rendered StatefulSet and persistent volume settings.
+The structured OpenBao Raft configuration is checked against the rendered JSON,
+StatefulSet, and persistent volume settings.
 
 After deployment, inspect the converted VM scrape resources and VMAgent's targets
 and verify recent samples for each component. Certificate issuance, OpenBao
