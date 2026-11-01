@@ -1,0 +1,52 @@
+targetNamespaces: demo,applications
+operator:
+  scanJobsConcurrentLimit: 1
+  scanJobTimeout: 10m
+  scanJobsRetryDelay: 5m
+  scanJobTTL: 30m
+  scanSecretTTL: 30m
+  scannerReportTTL: 24h
+  sbomGenerationEnabled: false
+  clusterSbomCacheEnabled: false
+  rbacAssessmentScannerEnabled: false
+  infraAssessmentScannerEnabled: false
+  clusterComplianceEnabled: false
+  exposedSecretScannerEnabled: false
+  accessGlobalSecretsAndServiceAccount: false
+  metricsFindingsEnabled: true
+  metricsVulnIdEnabled: false
+  metricsImageInfo: false
+trivyOperator:
+  scanJobsInSameNamespace: false
+  scanJobAffinity: &id001
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: node-role.kubernetes.io/control-plane
+            operator: DoesNotExist
+          - key: node-role.kubernetes.io/master
+            operator: DoesNotExist
+  scanJobAutomountServiceAccountToken: false
+trivy:
+  slow: true
+  timeout: 10m0s
+  ignoreUnfixed: false
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+      ephemeralStorage: 1Gi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+      ephemeralStorage: 2Gi
+resources:
+  requests:
+    cpu: 25m
+    memory: 128Mi
+  limits:
+    memory: 256Mi
+affinity: *id001
+serviceMonitor:
+  enabled: true

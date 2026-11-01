@@ -106,3 +106,13 @@ For a fresh play, install Cilium first, bootstrap the committed Flux manifests
 under this directory, and let Flux follow the readiness graph. This playground
 has temporary disks unless persisted through iximiuz Labs; replication is not
 an off-cluster backup.
+
+
+## Optional security components
+
+[Tetragon and Trivy Operator](../../security/README.md) have cluster overlays and
+readiness dependencies but their parent Flux Kustomizations start suspended.
+Enable them individually through Git after restoring capacity and sustained API
+health. They were not deployed into the destroyed playground. Report/scanner
+coverage and runtime event export are deliberately scoped to the demo/application
+namespaces initially; Tetragon agents still require resources on every node.

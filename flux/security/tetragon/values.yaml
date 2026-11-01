@@ -1,0 +1,57 @@
+hostNetwork: true
+tetragon:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+    limits:
+      memory: 512Mi
+  processCacheSize: 8192
+  deletedPodCacheSize: 256
+  exportRateLimit: 120
+  exportFileMaxSizeMB: 5
+  exportFileMaxBackups: 2
+  exportAllowList: '{"namespace": ["demo", "applications"], "event_set": ["PROCESS_EXEC",
+    "PROCESS_EXIT"]}
+
+    '
+  fieldFilters: '{"fields": "process.arguments,parent.arguments", "action": "EXCLUDE"}
+
+    '
+  grpc:
+    address: unix:///var/run/tetragon/tetragon.sock
+  prometheus:
+    enabled: true
+    metricsLabelFilter: namespace,workload
+    serviceMonitor:
+      enabled: true
+tetragonOperator:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      memory: 128Mi
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: node-role.kubernetes.io/control-plane
+            operator: DoesNotExist
+          - key: node-role.kubernetes.io/master
+            operator: DoesNotExist
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+export:
+  mode: stdout
+  resources:
+    requests:
+      cpu: 5m
+      memory: 16Mi
+    limits:
+      memory: 64Mi
+crds:
+  installMethod: helm

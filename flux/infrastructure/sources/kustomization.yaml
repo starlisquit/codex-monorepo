@@ -19,3 +19,4 @@ resources:
 - opentelemetry.yaml
 - ceph-csi.yaml
 - metrics-server.yaml
+- aquasecurity.yaml

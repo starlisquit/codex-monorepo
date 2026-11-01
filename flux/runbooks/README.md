@@ -15,6 +15,8 @@ API address, or cluster domain, edit the corresponding references before applyin
 
 ## Operations and recovery
 
+- [Enable and verify security tools](operations/security-tools.md)
+
 - [Central PKI configuration, migration limits, and Vault/OpenBao integration](operations/pki.md)
 
 - [Container log collection and dashboard verification](operations/container-logging.md)
