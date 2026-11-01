@@ -130,4 +130,30 @@ GitHub and GitLab; both remote main commit IDs matched before teardown.
 The explicit destroy API returned `ok: true` for playground
 `6ae70fa356e9b785c32c7b89` at 2026-11-01 13:17:49 Europe/Istanbul
 (10:17:49 UTC). The playground was destroyed, not stopped. A subsequent
-listing reported it non-running during deletion propagation.
+listing reported it non-running during deletion propagation. The final listing
+returned `plays: []`, confirming no retained playgrounds remained.
+
+
+## Outstanding work and acceptance limits
+
+- **NUI browser workflow is blocked:** reproduce and resolve the fresh-profile
+  `drawerPosition` startup error in an upstream image, then rerun actual UI
+  connection, message and KV operations before recommending activation. API
+  successes and ready probes do not close this finding.
+- **Redis Insight browser workflow is incomplete:** its setup screen rendered,
+  but onboarding and interactive database browsing were not completed. The
+  authenticated API and restart checks establish those specific functions only.
+- **Redis Insight chart requirement remains unmet:** no official chart was
+  found in the project's repository or official installation guide. This
+  template uses official manifests and must not be described as Helm validated.
+- **Encryption depends on configuration and key retention:** supply the external
+  Secret, explicitly enable application encryption and preserve the same key
+  with the PVC. Startup readiness does not verify these prerequisites.
+- **Production integration remains untested:** repeat with the actual NATS and
+  Valkey authentication/CA settings before enabling either UI against the
+  platform. The isolated fixture results do not establish production readiness.
+
+Related completed NGINX and LiteLLM checks, including streaming behavior,
+restart recovery, TLS/authentication results, fixture limits and confirmed
+playground destruction, are recorded separately in
+[proxy-ai-validation-2026-11-01.md](proxy-ai-validation-2026-11-01.md).
