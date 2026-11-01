@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../../infrastructure/secrets/openbao
+patches:
+- target:
+    group: helm.toolkit.fluxcd.io
+    version: v2
+    kind: HelmRelease
+    name: openbao
+  patch: "apiVersion: helm.toolkit.fluxcd.io/v2\nkind: HelmRelease\nmetadata:\n  name:\
+    \ openbao\n  namespace: secrets\nspec:\n  suspend: false\n  timeout: 15m\n"
+- target:
+    group: helm.toolkit.fluxcd.io
+    version: v2
+    kind: HelmRelease
+    name: openbao
+  patch: "- op: add\n  path: /spec/valuesFrom/-\n  value:\n    kind: ConfigMap\n \
+    \   name: openbao-cluster-values\n    valuesKey: values.yaml\n"
+configMapGenerator:
+- name: openbao-cluster-values
+  namespace: secrets
+  files:
+  - values.yaml
+  options:
+    labels:
+      reconcile.fluxcd.io/watch: Enabled
+generatorOptions:
+  disableNameSuffixHash: true

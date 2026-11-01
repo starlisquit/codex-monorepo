@@ -1,0 +1,9 @@
+server:
+  dataStorage:
+    size: 1Gi
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      memory: 512Mi

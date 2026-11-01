@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../../infrastructure/observability/victoria-metrics-k8s-stack
+patches:
+- target:
+    group: helm.toolkit.fluxcd.io
+    version: v2
+    kind: HelmRelease
+    name: victoria-metrics-k8s-stack
+  patch: "apiVersion: helm.toolkit.fluxcd.io/v2\nkind: HelmRelease\nmetadata:\n  name:\
+    \ victoria-metrics-k8s-stack\n  namespace: observability\nspec:\n  suspend: false\n\
+    \  timeout: 15m\n"
+- target:
+    group: helm.toolkit.fluxcd.io
+    version: v2
+    kind: HelmRelease
+    name: victoria-metrics-k8s-stack
+  patch: "- op: add\n  path: /spec/valuesFrom/-\n  value:\n    kind: ConfigMap\n \
+    \   name: victoria-metrics-k8s-stack-cluster-values\n    valuesKey: values.yaml\n"
+configMapGenerator:
+- name: victoria-metrics-k8s-stack-cluster-values
+  namespace: observability
+  files:
+  - values.yaml
+  options:
+    labels:
+      reconcile.fluxcd.io/watch: Enabled
+generatorOptions:
+  disableNameSuffixHash: true
