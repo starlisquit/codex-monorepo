@@ -74,3 +74,21 @@ spec:
   timeout: 15m
   dependsOn:
   - name: clickhouse-operator
+  healthChecks:
+  - apiVersion: clickhouse.com/v1alpha1
+    kind: KeeperCluster
+    name: verification
+    namespace: databases
+  - apiVersion: clickhouse.com/v1alpha1
+    kind: ClickHouseCluster
+    name: verification
+    namespace: databases
+  healthCheckExprs:
+  - apiVersion: clickhouse.com/v1alpha1
+    kind: KeeperCluster
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
+      && c.status == 'True' && c.observedGeneration == metadata.generation)
+  - apiVersion: clickhouse.com/v1alpha1
+    kind: ClickHouseCluster
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
+      && c.status == 'True' && c.observedGeneration == metadata.generation)

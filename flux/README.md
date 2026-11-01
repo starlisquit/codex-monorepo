@@ -22,6 +22,7 @@ unfinished work separately, including the paused API slowness investigation.
 - `infrastructure/sources/`: shared Helm repositories and OCI chart sources.
 - `infrastructure/storage/rook-ceph/csi-drivers/`: CSI Driver CRs via the separate chart; the operator chart alone does not deploy the driver workloads.
 - Each chart directory contains a HelmRelease, `values.yaml`, and a Kustomize build.
+- `databases/clickhouse/operator/`: official ClickHouse operator (ClickHouseCluster and KeeperCluster CRDs).
 - `databases/cloudnative-pg/operator/`: PostgreSQL operator release.
 - `databases/cloudnative-pg/clusters/application/`: example managed PostgreSQL cluster.
 - `observability/dashboards/`: category subfolders, each with a starter
