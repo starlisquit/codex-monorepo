@@ -52,5 +52,7 @@ claim is made.
 
 ## Teardown
 
-Findings/configuration will be published to both remotes before destroying this
-playground; confirmed destruction will be recorded afterwards.
+Findings and configuration were published to both remotes at identical commit
+`a9594eeb0d462e92d853592fe7d04eba629a768b` before destruction. The destroy API
+returned `ok: true` at 22:51:28 Europe/Istanbul (19:51:28 UTC). This playground
+was destroyed, not stopped; subsequent current-play listings excluded it.

@@ -56,7 +56,9 @@ for production key custody. `configure-openbao.py` changes only the documented
 lab mount/auth policy/role and verification value; do not reuse those names for
 unrelated preexisting policy definitions.
 
-Validation needs Python 3 with PyYAML and Kustomize:
+Validation needs Python 3 with PyYAML and Kustomize. The main command builds
+all bases and every Component through owner compositions, including two-app
+monitor selector checks, Gateway references and RBAC bindings:
 
 ```sh
 python3 -m venv /tmp/flux-validation-venv

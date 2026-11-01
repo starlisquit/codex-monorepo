@@ -4,7 +4,9 @@
   "timezone": "Europe/Istanbul",
   "purpose": "pki-network",
   "flux_path": "./flux/clusters/20261101-222440-pki-network-29d303",
-  "status": "verified",
+  "status": "destroyed",
   "tested_revision": "c3d52c878f9f6c64bc4efbeb103d155ce308d005",
-  "findings": "flux/docs/findings/central-pki-network-2026-11-01.md"
+  "findings": "flux/docs/findings/central-pki-network-2026-11-01.md",
+  "destroyed_at": "2026-11-01T19:51:28Z",
+  "findings_published_revision": "a9594eeb0d462e92d853592fe7d04eba629a768b"
 }

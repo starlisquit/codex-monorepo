@@ -21,7 +21,8 @@ operations. A Bundle does not make every client trust it automatically.
 | VictoriaMetrics Operator webhook | Chart's cert-manager integration uses the central ClusterIssuer |
 | NATS client and cluster endpoints | Central server/client-capable certificate; route peer verification configured; client-certificate enforcement not enabled on the client port |
 | Valkey client endpoint | Central server certificate, TLS-only port and verified exporter connection configured; no client-certificate requirement |
-| CNPG PostgreSQL server and replication | Central server/client leaf Certificates and Cluster references configured; last live reference update failed on an unavailable webhook |
+| Generic CNPG application-db server/replication | Central leaf references configured; the older generic-instance migration remains unverified |
+| LiteLLM/SonarQube PostgreSQL opt-ins | Explicit central server/replication leaves and public trust Bundle; live SQL/app writes, leaf renewal and primary failover verified |
 | CNPG operator's own webhook | Operator-managed PKI; this is the CNPG exception, not its database endpoint |
 | External Secrets webhook | Chart-native cert-manager Certificate uses the central issuer; chart certificate controller disabled to avoid competing writers |
 | Rook/Ceph dashboard | RSA server Certificate from the central issuer, referenced through `cephClusterSpec.dashboard.sslCertificateRef` |
@@ -31,6 +32,9 @@ operations. A Bundle does not make every client trust it automatically.
 | Tetragon | Local Unix-socket control interface, HTTP metrics; no new serving certificate |
 | Trivy Operator | HTTP metrics; registry/database HTTPS uses its configured trust, not automatically our Bundle |
 | Velero | HTTP metrics; object-store HTTPS trust is external-provider/default trust unless a BSL public CA reference is explicitly configured |
+
+See the [focused PostgreSQL verification](../findings/central-pki-postgresql-2026-11-01.md)
+for the new application opt-ins.
 
 Additional operator-managed certificates must not be assumed to use the central
 CA without an explicit integration and verification. This inventory does not

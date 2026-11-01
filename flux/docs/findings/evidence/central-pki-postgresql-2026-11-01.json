@@ -1,0 +1,301 @@
+{
+  "passed": true,
+  "play_id": "6ae791fc46471e13268fb839",
+  "tested_revision": "c3d52c878f9f6c64bc4efbeb103d155ce308d005",
+  "hot_reload_without_database_restart": true,
+  "root_unchanged": true,
+  "captured_at": "2026-11-01T19:50:36.191969+00:00",
+  "before": {
+    "sql": [
+      {
+        "namespace": "ai",
+        "cluster": "litellm-db",
+        "primary": "litellm-db-1",
+        "sql": "CREATE TABLE\nINSERT 0 0\ncentral-ca-verified\nt|TLSv1.3\n1",
+        "ready_instances": 2,
+        "desired_instances": 2
+      },
+      {
+        "namespace": "quality",
+        "cluster": "sonarqube-postgresql",
+        "primary": "sonarqube-postgresql-1",
+        "sql": "CREATE TABLE\nINSERT 0 0\ncentral-ca-verified\nt|TLSv1.3\n1",
+        "ready_instances": 2,
+        "desired_instances": 2
+      }
+    ],
+    "apps": {
+      "litellm_readiness": {
+        "status": "healthy",
+        "db": "connected"
+      },
+      "litellm_model_reply": "proxy-route-verified",
+      "virtual_key_persisted": true,
+      "sonarqube_status": "UP",
+      "sonarqube_version": "26.9.0.129388",
+      "sonarqube_project": "central-pki-validation",
+      "sonarqube_login_valid": true
+    },
+    "tls": {
+      "results": [
+        {
+          "issuer": [
+            [
+              [
+                "commonName",
+                "openbao-injector-ca"
+              ]
+            ]
+          ],
+          "name": "litellm-db",
+          "not_after": "Jan 30 19:33:05 2027 GMT",
+          "serial": "33016A1C62301B90DEA7C6EB4FB5CCB9CC2CD13C",
+          "server_name": "litellm-db-rw.ai.svc.cluster.local",
+          "tls_version": "TLSv1.3",
+          "wrong_ca": {
+            "reason": "self-signed certificate in certificate chain",
+            "rejected": true
+          },
+          "wrong_hostname": {
+            "reason": "Hostname mismatch, certificate is not valid for 'wrong.invalid'.",
+            "rejected": true
+          }
+        },
+        {
+          "issuer": [
+            [
+              [
+                "commonName",
+                "openbao-injector-ca"
+              ]
+            ]
+          ],
+          "name": "sonarqube-postgresql",
+          "not_after": "Jan 30 19:33:11 2027 GMT",
+          "serial": "22B6275588BC2073A61041538A4E7CB4EE135DA5",
+          "server_name": "sonarqube-postgresql-rw.quality.svc.cluster.local",
+          "tls_version": "TLSv1.3",
+          "wrong_ca": {
+            "reason": "self-signed certificate in certificate chain",
+            "rejected": true
+          },
+          "wrong_hostname": {
+            "reason": "Hostname mismatch, certificate is not valid for 'wrong.invalid'.",
+            "rejected": true
+          }
+        }
+      ],
+      "root_sha256": "fe60137d90c4d8767a916a22bab969a4df4f88ca16062858a1388b8153ab299e"
+    },
+    "pods": {
+      "litellm-db-1": "a181a121-2133-4558-9a9d-5bb1a403f04d",
+      "litellm-db-2": "b65be1ed-146f-4683-b7df-e5329870ec2e",
+      "sonarqube-postgresql-1": "2fdca883-5e48-4e53-a331-ec777cd58cf7",
+      "sonarqube-postgresql-2": "d3a316b6-b09d-44c5-b953-881c10f271ef"
+    }
+  },
+  "old_primaries": {
+    "litellm-db": "litellm-db-1",
+    "sonarqube-postgresql": "sonarqube-postgresql-1"
+  },
+  "after_renewal": {
+    "sql": [
+      {
+        "namespace": "ai",
+        "cluster": "litellm-db",
+        "primary": "litellm-db-1",
+        "sql": "CREATE TABLE\nINSERT 0 0\ncentral-ca-verified\nt|TLSv1.3\n1",
+        "ready_instances": 2,
+        "desired_instances": 2
+      },
+      {
+        "namespace": "quality",
+        "cluster": "sonarqube-postgresql",
+        "primary": "sonarqube-postgresql-1",
+        "sql": "CREATE TABLE\nINSERT 0 0\ncentral-ca-verified\nt|TLSv1.3\n1",
+        "ready_instances": 2,
+        "desired_instances": 2
+      }
+    ],
+    "apps": {
+      "litellm_readiness": {
+        "status": "healthy",
+        "db": "connected"
+      },
+      "litellm_model_reply": "proxy-route-verified",
+      "virtual_key_persisted": true,
+      "sonarqube_status": "UP",
+      "sonarqube_version": "26.9.0.129388",
+      "sonarqube_project": "central-pki-validation",
+      "sonarqube_login_valid": true
+    },
+    "tls": {
+      "results": [
+        {
+          "issuer": [
+            [
+              [
+                "commonName",
+                "openbao-injector-ca"
+              ]
+            ]
+          ],
+          "name": "litellm-db",
+          "not_after": "Jan 30 19:47:15 2027 GMT",
+          "serial": "6C3CD278F1CD0C4E5E4E0099883097BE39DAD5B7",
+          "server_name": "litellm-db-rw.ai.svc.cluster.local",
+          "tls_version": "TLSv1.3",
+          "wrong_ca": {
+            "reason": "self-signed certificate in certificate chain",
+            "rejected": true
+          },
+          "wrong_hostname": {
+            "reason": "Hostname mismatch, certificate is not valid for 'wrong.invalid'.",
+            "rejected": true
+          }
+        },
+        {
+          "issuer": [
+            [
+              [
+                "commonName",
+                "openbao-injector-ca"
+              ]
+            ]
+          ],
+          "name": "sonarqube-postgresql",
+          "not_after": "Jan 30 19:47:15 2027 GMT",
+          "serial": "149F0EF018C41DEE77EF14C25703EF1D325814AC",
+          "server_name": "sonarqube-postgresql-rw.quality.svc.cluster.local",
+          "tls_version": "TLSv1.3",
+          "wrong_ca": {
+            "reason": "self-signed certificate in certificate chain",
+            "rejected": true
+          },
+          "wrong_hostname": {
+            "reason": "Hostname mismatch, certificate is not valid for 'wrong.invalid'.",
+            "rejected": true
+          }
+        }
+      ],
+      "root_sha256": "fe60137d90c4d8767a916a22bab969a4df4f88ca16062858a1388b8153ab299e"
+    },
+    "pods": {
+      "litellm-db-1": "a181a121-2133-4558-9a9d-5bb1a403f04d",
+      "litellm-db-2": "b65be1ed-146f-4683-b7df-e5329870ec2e",
+      "sonarqube-postgresql-1": "2fdca883-5e48-4e53-a331-ec777cd58cf7",
+      "sonarqube-postgresql-2": "d3a316b6-b09d-44c5-b953-881c10f271ef"
+    }
+  },
+  "after_failover": {
+    "sql": [
+      {
+        "namespace": "ai",
+        "cluster": "litellm-db",
+        "primary": "litellm-db-2",
+        "sql": "CREATE TABLE\nINSERT 0 0\ncentral-ca-verified\nt|TLSv1.3\n1",
+        "ready_instances": 2,
+        "desired_instances": 2
+      },
+      {
+        "namespace": "quality",
+        "cluster": "sonarqube-postgresql",
+        "primary": "sonarqube-postgresql-2",
+        "sql": "CREATE TABLE\nINSERT 0 0\ncentral-ca-verified\nt|TLSv1.3\n1",
+        "ready_instances": 2,
+        "desired_instances": 2
+      }
+    ],
+    "apps": {
+      "litellm_readiness": {
+        "status": "healthy",
+        "db": "connected"
+      },
+      "litellm_model_reply": "proxy-route-verified",
+      "virtual_key_persisted": true,
+      "sonarqube_status": "UP",
+      "sonarqube_version": "26.9.0.129388",
+      "sonarqube_project": "central-pki-validation",
+      "sonarqube_login_valid": true
+    },
+    "tls": {
+      "results": [
+        {
+          "issuer": [
+            [
+              [
+                "commonName",
+                "openbao-injector-ca"
+              ]
+            ]
+          ],
+          "name": "litellm-db",
+          "not_after": "Jan 30 19:47:15 2027 GMT",
+          "serial": "6C3CD278F1CD0C4E5E4E0099883097BE39DAD5B7",
+          "server_name": "litellm-db-rw.ai.svc.cluster.local",
+          "tls_version": "TLSv1.3",
+          "wrong_ca": {
+            "reason": "self-signed certificate in certificate chain",
+            "rejected": true
+          },
+          "wrong_hostname": {
+            "reason": "Hostname mismatch, certificate is not valid for 'wrong.invalid'.",
+            "rejected": true
+          }
+        },
+        {
+          "issuer": [
+            [
+              [
+                "commonName",
+                "openbao-injector-ca"
+              ]
+            ]
+          ],
+          "name": "sonarqube-postgresql",
+          "not_after": "Jan 30 19:47:15 2027 GMT",
+          "serial": "149F0EF018C41DEE77EF14C25703EF1D325814AC",
+          "server_name": "sonarqube-postgresql-rw.quality.svc.cluster.local",
+          "tls_version": "TLSv1.3",
+          "wrong_ca": {
+            "reason": "self-signed certificate in certificate chain",
+            "rejected": true
+          },
+          "wrong_hostname": {
+            "reason": "Hostname mismatch, certificate is not valid for 'wrong.invalid'.",
+            "rejected": true
+          }
+        }
+      ],
+      "root_sha256": "fe60137d90c4d8767a916a22bab969a4df4f88ca16062858a1388b8153ab299e"
+    },
+    "new_primaries": {
+      "litellm-db": "litellm-db-2",
+      "sonarqube-postgresql": "sonarqube-postgresql-2"
+    }
+  },
+  "replication": [
+    {
+      "cluster": "litellm-db",
+      "primary": "litellm-db-2",
+      "replication_tls": "streaming|t|TLSv1.3|/CN=streaming_replica",
+      "certificate_references": {
+        "clientCASecret": "litellm-db-replication-pki",
+        "replicationTLSSecret": "litellm-db-replication-pki",
+        "serverCASecret": "litellm-db-server-pki",
+        "serverTLSSecret": "litellm-db-server-pki"
+      }
+    },
+    {
+      "cluster": "sonarqube-postgresql",
+      "primary": "sonarqube-postgresql-2",
+      "replication_tls": "streaming|t|TLSv1.3|/CN=streaming_replica",
+      "certificate_references": {
+        "clientCASecret": "sonarqube-postgresql-replication-pki",
+        "replicationTLSSecret": "sonarqube-postgresql-replication-pki",
+        "serverCASecret": "sonarqube-postgresql-server-pki",
+        "serverTLSSecret": "sonarqube-postgresql-server-pki"
+      }
+    }
+  ]
+}

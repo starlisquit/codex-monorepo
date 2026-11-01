@@ -12,11 +12,14 @@ three instances, 20Gi ceph-block storage per instance, database `litellm` and
 owner `litellm`. Superuser remote access is disabled. Configure storage class,
 capacity, replica count and resources for the deployment before selecting it.
 
-CNPG generates the application Secret `litellm-db-app` and TLS CA Secret
-`litellm-db-ca`; no database password is committed or manually copied.
+CNPG generates the application Secret `litellm-db-app`; no database password
+is committed or manually copied. cert-manager supplies the server and replication
+leaf certificates from the central ClusterIssuer.
 The normal read/write endpoint is `litellm-db-rw.ai.svc.cluster.local`.
-The operator manages server certificates and replication TLS, so this opt-in
-does not require the separate platform cert-manager PKI bundles.
+Select `certificates/` after `ClusterIssuer/platform-workload-ca` is Ready and
+before creating the Cluster. The Cluster references those server/replication
+Secrets instead of generating a separate CNPG CA. Select the shared public
+trust Bundle so ConfigMap `platform-ca` exists in namespace `ai`.
 
 `integration/` is a second, separately selectable Kustomization. It creates
 watch-labelled ConfigMap `ai/litellm-postgresql-values`, which the shared
@@ -42,8 +45,10 @@ operator using its namespace/source and documented monitoring prerequisites;
 ensure the chosen StorageClass can provision PVCs. Select LiteLLM's OCI source
 and provision its normal auth/provider Secrets as described in the parent README.
 
-1. Select this directory in a dedicated database Flux Kustomization. It contains
-   only the Cluster resource, not the integration ConfigMap or application.
+1. First select `certificates/` in a separate certificate stage and wait for both
+   Certificates to be Ready. Then select this directory in a database Flux
+   Kustomization. It contains only the Cluster resource, not the integration
+   ConfigMap or application.
 2. Wait for Cluster `ai/litellm-db` to report Ready, with generated Secrets.
 3. Ensure `ai/litellm-auth` contains the existing stable `master-key` and an
    additional high-entropy, persistent `salt-key`. Retain both through upgrades
@@ -56,6 +61,8 @@ For a focused manual lab with the operator and Secrets already provisioned:
 
 ```sh
 kubectl apply -k flux/infrastructure/namespaces/ai
+kubectl apply -k flux/infrastructure/ai/litellm/opt-in/postgresql/certificates
+kubectl -n ai wait certificate/litellm-db-server-pki certificate/litellm-db-replication-pki --for=condition=Ready --timeout=3m
 kubectl apply -k flux/infrastructure/ai/litellm/opt-in/postgresql
 kubectl -n ai wait cluster/litellm-db --for=condition=Ready --timeout=15m
 kubectl apply -k flux/infrastructure/ai/litellm/opt-in/postgresql/integration
@@ -101,3 +108,22 @@ not migrate database-backed keys into database-free mode or delete the database.
 
 See [deployment verification](../../../../../docs/findings/litellm-postgresql-2026-11-01.md)
 for tested behavior, lab overrides and limits.
+
+## Central PKI verification
+
+`certificates/` owns cert-manager server and streaming-replication leaves, using
+90-day lifetimes, 15-day renewal windows, rotating keys and `cnpg.io/reload`
+Secret labels. The CNPG operator still manages its own bootstrap webhook PKI;
+this integration centralizes the database server and replication certificates.
+
+The integration mounts **only** public `ca.crt` from ConfigMap `platform-ca`,
+not a CA signing key or a private server/replication leaf key. Keep this mount
+when overriding Helm lists. Wait for public trust, leaf Certificates, then the
+Cluster to be Ready before enabling the application integration.
+
+[Central PKI runtime verification](../../../../../docs/findings/central-pki-postgresql-2026-11-01.md)
+passed strict TLS and negative probes, app-backed writes, certificate hot renewal
+and primary failover with two healthy instances in each focused test Cluster.
+The default three-instance Ceph topology was not the lab topology. Existing
+independent-CA deployments require a deliberate trust/issuer migration; the test
+verified a fresh deployment and leaf renewal, not that in-place migration.
