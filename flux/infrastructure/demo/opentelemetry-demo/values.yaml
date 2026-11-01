@@ -1,5 +1,3 @@
-# Minimal SDK demo: two standalone services and one OTLP protocol bridge.
-# Explicitly disable the other pinned-chart components; no automatic load generator.
 default:
   envOverrides:
   - name: OTEL_METRICS_EXPORTER
@@ -192,3 +190,5 @@ opentelemetry-collector:
       memory: 96Mi
     limits:
       memory: 192Mi
+  image:
+    repository: docker.io/otel/opentelemetry-collector-contrib

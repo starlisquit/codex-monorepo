@@ -1,6 +1,7 @@
 # Policy templates
 
 - [NetworkPolicy templates and live test](network/README.md): opt-in ingress allowlists and an optional namespace baseline.
+- [Image registry allowlist](images/README.md): built-in Kubernetes policy with Deny enforcement for workload images.
 - `kyverno/`: audit validation policies described below.
 
 ## Kyverno

@@ -31,7 +31,7 @@ spec:
                 values: [node-01, node-02]
       containers:
       - name: emit-logs
-        image: busybox:1.37.0
+        image: docker.io/library/busybox:1.37.0
         env:
         - name: POD_UID
           valueFrom:
