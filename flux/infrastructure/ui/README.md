@@ -41,6 +41,7 @@ References:
 
 ## Flux Web UI
 
-The Flux Web UI is bundled in the operator chart under
-[`gitops/flux-operator`](../gitops/flux-operator). Its README documents bootstrap
-on a cluster without Flux; no separate Web UI release is needed.
+[`flux-ui/`](flux-ui) uses the official chart's standalone web-server mode.
+It does not install or manage Flux controllers, FluxInstances, or operator CRDs.
+Bootstrap Flux separately, then reconcile this suspended UI release. See its
+README for local access and monitoring settings.

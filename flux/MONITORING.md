@@ -39,7 +39,7 @@ continues through the VM stack's built-in native scrape integrations.
 | OpenBao | Server telemetry and ServiceMonitor, plus injector metrics and a separate ServiceMonitor |
 | Grafana Operator | ServiceMonitor |
 | VictoriaTraces agent | ServiceMonitor and configured VTSingle remoteWrite destination |
-| Flux Operator | Operator metrics ServiceMonitor (UI is bundled in the same chart) |
+| Flux Web UI | Standalone web-server metrics ServiceMonitor; no Flux lifecycle operator |
 | KEDA | Operator, metrics adapter, and admission-webhook ServiceMonitors; workload scaling can query the VM API |
 | OpenTelemetry Demo | SDK metrics via VMAgent; OTLP logs via VLAgent; OTLP traces via VTAgent; Collector retained for protocol compatibility |
 | Blackbox Exporter | Exporter self-monitoring and a probe of the existing VictoriaMetrics `/health` endpoint |

@@ -17,8 +17,8 @@ It is a starting scaffold, not a deployment-ready cluster configuration.
   excluded example; the VM chart retains ownership of its default datasources.
 - `observability/prometheus-operator-crds/`: monitoring CRDs only; see
   [monitoring setup](MONITORING.md) for collection and dependency details.
-- `gitops/flux-operator/`: Flux Operator, its bundled Web UI, and a FluxInstance;
-  see its README for operator-first bootstrap on a new cluster.
+- `ui/flux-ui/`: standalone Flux Web UI; Flux is bootstrapped separately, without
+  the Flux Operator managing its lifecycle.
 - `autoscaling/keda/`: KEDA monitoring and an excluded VictoriaMetrics scaling example.
 - `demo/opentelemetry-demo/`: official demo application and generated traffic
   routed through native VM agents, with a Collector for SDK protocol compatibility.

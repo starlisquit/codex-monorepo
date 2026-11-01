@@ -1,9 +1,0 @@
-installCRDs: true
-web:
-  enabled: true
-  ingress:
-    enabled: false
-  httpRoute:
-    enabled: false
-serviceMonitor:
-  create: true
