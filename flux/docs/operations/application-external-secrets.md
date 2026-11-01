@@ -115,3 +115,11 @@ bindings, public-CA-only trust and expected application Secret names/keys. These
 are offline checks, not a new runtime authentication or rotation test. The prior
 OpenBao verification demonstrated the underlying service-account-authenticated
 ESO path; it does not by itself validate each new application mapping live.
+
+## Custom applications using the Deployment primitive
+
+Select the primitive's [External Secrets Component](../../infrastructure/primitives/deployment/opt-in/external-secrets/README.md)
+for environment-based credentials, or its [OpenBao injector Component](../../infrastructure/primitives/deployment/opt-in/openbao-injector/README.md)
+for agent-rendered files. Both include scoped backend examples and preserve
+application identity isolation when composed with name prefixes. They require
+explicit backend provisioning and application-specific KV path configuration.

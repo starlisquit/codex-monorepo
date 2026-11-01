@@ -1,0 +1,8 @@
+nameReference:
+- group: ''
+  version: v1
+  kind: ServiceAccount
+  fieldSpecs:
+  - group: apps
+    kind: Deployment
+    path: spec/template/metadata/annotations/vault.hashicorp.com\/role

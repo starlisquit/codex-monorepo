@@ -1,0 +1,12 @@
+spec:
+  template:
+    spec:
+      containers:
+      - name: application
+        envFrom:
+        - secretRef:
+            name: application-env
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application

@@ -1,0 +1,15 @@
+{
+  "bound_service_account_names": [
+    "api-application-external-secrets"
+  ],
+  "bound_service_account_namespaces": [
+    "demo"
+  ],
+  "audience": "openbao",
+  "token_policies": [
+    "api-application-external-secrets"
+  ],
+  "token_no_default_policy": true,
+  "token_ttl": "15m",
+  "token_max_ttl": "1h"
+}

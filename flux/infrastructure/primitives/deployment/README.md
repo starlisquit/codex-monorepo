@@ -40,8 +40,8 @@ and unique selector label; a name prefix alone does not isolate selectors.
 Selectors are immutable after creation, so keep them stable for deployed apps.
 
 Use native `images`, `replicas` and `patches` in the wrapper to configure the
-application. Credentials must reference existing Secrets. This primitive creates
-no namespace, source, credential, ingress, storage or RBAC objects. If API access
+application. Credentials can reference existing Secrets or use the credential opt-ins below.
+The base primitive creates no namespace, source, credential, ingress, storage or RBAC objects. If API access
 is required, select a dedicated ServiceAccount and scoped permissions explicitly.
 
 In Flux, reconcile the namespace first and health-check the resulting Deployment
@@ -74,3 +74,19 @@ API token. The default starter image itself was not exercised.
 
 See [native Gateway API runtime findings](../../../docs/findings/primitives-cilium-2026-11-01.md)
 for the exact versions, fixture changes, assertions and limits.
+
+## Credential opt-ins
+
+- [`opt-in/external-secrets`](opt-in/external-secrets/README.md): scoped OpenBao
+  SecretStore and ExternalSecret, consumed as application environment variables.
+- [`opt-in/openbao-injector`](opt-in/openbao-injector/README.md): dedicated workload
+  identity, projected login token and agent annotations for file-based credentials.
+
+Both are Components selected through `components:` and support prefixed application
+wrappers. Choose one delivery method, or combine them for distinct credentials.
+Configure scoped OpenBao policies/roles and populate KV separately; example backend
+files are supplied, but Kustomize does not apply them to OpenBao. Neither integration
+manages PKI or operator-generated secrets. See each README for trust, readiness,
+name/path customization and refresh behavior. Runtime authentication/file rendering
+for these new primitive Components has not been tested; routine validation checks
+their rendered references and all combinations with the other Deployment opt-ins.

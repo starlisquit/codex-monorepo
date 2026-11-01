@@ -1,0 +1,43 @@
+spec:
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-inject-containers: application
+        vault.hashicorp.com/agent-pre-populate: 'true'
+        vault.hashicorp.com/agent-pre-populate-only: 'false'
+        vault.hashicorp.com/service: https://openbao-active.secrets.svc:8200
+        vault.hashicorp.com/tls-skip-verify: 'false'
+        vault.hashicorp.com/auth-path: auth/kubernetes
+        vault.hashicorp.com/role: application-openbao-injector
+        vault.hashicorp.com/agent-service-account-token-volume-name: openbao-auth
+        vault.hashicorp.com/agent-run-as-user: '10001'
+        vault.hashicorp.com/agent-run-as-group: '10001'
+        vault.hashicorp.com/agent-inject-token: 'false'
+        vault.hashicorp.com/agent-inject-secret-config.json: kv/data/applications/application/files
+        vault.hashicorp.com/agent-inject-template-config.json: '{{- with secret "kv/data/applications/application/files"
+          -}}
+
+          {{ .Data.data | toJSON }}
+
+          {{- end -}}
+
+          '
+        vault.hashicorp.com/error-on-missing-key-config.json: 'true'
+        vault.hashicorp.com/agent-inject-perms-config.json: '0400'
+    spec:
+      serviceAccountName: application-openbao-injector
+      automountServiceAccountToken: false
+      volumes:
+      - name: openbao-auth
+        projected:
+          defaultMode: 292
+          sources:
+          - serviceAccountToken:
+              path: token
+              audience: openbao
+              expirationSeconds: 600
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application
