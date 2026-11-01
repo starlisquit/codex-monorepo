@@ -1,7 +1,25 @@
-# Template: review against the pinned chart before enabling.
 metrics:
   enabled: true
   service:
     enabled: true
   serviceMonitor:
     enabled: true
+  exporter:
+    args:
+    - --redis.addr=rediss://valkey.databases.svc:6379
+    - --tls-ca-cert-file=/etc/platform-ca/ca.crt
+    extraVolumeMounts:
+    - name: platform-ca
+      mountPath: /etc/platform-ca
+      readOnly: true
+tls:
+  enabled: true
+  existingSecret: valkey-tls
+  serverPublicKey: tls.crt
+  serverKey: tls.key
+  caPublicKey: ca.crt
+  requireClientCertificate: false
+extraVolumes:
+- name: platform-ca
+  configMap:
+    name: platform-ca

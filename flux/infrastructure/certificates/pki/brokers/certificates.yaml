@@ -1,0 +1,60 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: nats-tls
+  namespace: broker
+spec:
+  secretName: nats-tls
+  commonName: nats.broker.svc
+  dnsNames:
+  - nats
+  - nats.broker
+  - nats.broker.svc
+  - nats.broker.svc.cluster.local
+  - nats-headless
+  - nats-headless.broker
+  - nats-headless.broker.svc
+  - nats-headless.broker.svc.cluster.local
+  - '*.nats-headless'
+  - '*.nats-headless.broker'
+  - '*.nats-headless.broker.svc'
+  - '*.nats-headless.broker.svc.cluster.local'
+  duration: 2160h
+  renewBefore: 360h
+  privateKey:
+    rotationPolicy: Always
+  usages:
+  - server auth
+  - client auth
+  issuerRef:
+    name: platform-workload-ca
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: valkey-tls
+  namespace: databases
+spec:
+  secretName: valkey-tls
+  commonName: valkey.databases.svc
+  dnsNames:
+  - valkey
+  - valkey.databases
+  - valkey.databases.svc
+  - valkey.databases.svc.cluster.local
+  - localhost
+  duration: 2160h
+  renewBefore: 360h
+  privateKey:
+    rotationPolicy: Always
+  usages:
+  - server auth
+  issuerRef:
+    name: platform-workload-ca
+    kind: ClusterIssuer
+    group: cert-manager.io
+  ipAddresses:
+  - 127.0.0.1
+  - ::1

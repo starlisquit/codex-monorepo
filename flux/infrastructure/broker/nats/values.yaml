@@ -1,8 +1,12 @@
-# Template: review against the pinned chart before enabling.
 config:
   cluster:
     enabled: true
     replicas: 3
+    tls:
+      enabled: true
+      secretName: nats-tls
+      merge:
+        verify: true
   jetstream:
     enabled: true
     fileStore:
@@ -10,7 +14,20 @@ config:
         enabled: true
         size: 10Gi
         storageClassName: ceph-block
+  nats:
+    tls:
+      enabled: true
+      secretName: nats-tls
 promExporter:
   enabled: true
   podMonitor:
     enabled: true
+tlsCA:
+  enabled: true
+  configMapName: platform-ca
+  key: ca.crt
+natsBox:
+  contexts:
+    default:
+      merge:
+        url: tls://nats.broker.svc:4222

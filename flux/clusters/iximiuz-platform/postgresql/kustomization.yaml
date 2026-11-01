@@ -7,8 +7,17 @@ patches:
     kind: Cluster
     group: postgresql.cnpg.io
     name: application-db
-  patch: "apiVersion: postgresql.cnpg.io/v1\nkind: Cluster\nmetadata:\n  name: application-db\n\
-    \  namespace: databases\nspec:\n  storage:\n    size: 1Gi\n  certificates:\n \
-    \   serverTLSSecret: application-db-server-pki\n    serverCASecret: application-db-server-pki\n\
-    \    replicationTLSSecret: application-db-replication-pki\n    clientCASecret:\
-    \ application-db-replication-pki\n"
+  patch: |
+    apiVersion: postgresql.cnpg.io/v1
+    kind: Cluster
+    metadata:
+      name: application-db
+      namespace: databases
+    spec:
+      storage:
+        size: 1Gi
+      certificates:
+        serverTLSSecret: application-db-server-pki
+        serverCASecret: application-db-server-pki
+        replicationTLSSecret: application-db-replication-pki
+        clientCASecret: application-db-replication-pki

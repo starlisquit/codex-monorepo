@@ -76,3 +76,12 @@ The policy template `platform-pki-issuers` audits permitted Certificate issuer
 references, including explicit bootstrap and Kyverno delegation exceptions. It
 cannot prove a server loaded a certificate or that an HTTP connection uses TLS.
 RBAC must separately protect issuers, signing keys and direct CertificateRequests.
+
+NATS and Valkey also have central server certificates in `pki/brokers`. NATS
+client port 4222 uses TLS and its cluster routes use verified peer TLS. NATS Box
+trusts the public Bundle; its context uses `tls://nats.broker.svc:4222`.
+Valkey uses TLS-only port 6379 (`port 0` disables its plaintext listener), with
+TLS-aware probes and a CA-verifying exporter connection. Client certificates
+are not required on these client-facing ports. NATS monitoring port 8222 and the
+Valkey exporter scrape endpoint remain internal HTTP endpoints; this does not
+claim HTTPS or mTLS everywhere.

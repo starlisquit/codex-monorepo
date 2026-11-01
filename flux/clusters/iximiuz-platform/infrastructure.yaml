@@ -388,6 +388,7 @@ spec:
   dependsOn:
   - name: storage-ready
   - name: monitoring-crds
+  - name: pki-brokers
   healthChecks:
   - apiVersion: helm.toolkit.fluxcd.io/v2
     kind: HelmRelease
@@ -411,6 +412,7 @@ spec:
   dependsOn:
   - name: storage-ready
   - name: monitoring-crds
+  - name: pki-brokers
   healthChecks:
   - apiVersion: helm.toolkit.fluxcd.io/v2
     kind: HelmRelease
@@ -788,3 +790,29 @@ spec:
     kind: Certificate
     namespace: databases
     name: application-db-replication-pki
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: pki-brokers
+  namespace: flux-system
+spec:
+  interval: 10m
+  retryInterval: 30s
+  path: ./flux/infrastructure/certificates/pki/brokers
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: pki-trust
+  timeout: 5m
+  healthChecks:
+  - apiVersion: cert-manager.io/v1
+    kind: Certificate
+    name: nats-tls
+    namespace: broker
+  - apiVersion: cert-manager.io/v1
+    kind: Certificate
+    name: valkey-tls
+    namespace: databases
