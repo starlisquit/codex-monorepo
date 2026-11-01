@@ -72,5 +72,8 @@ remain separate migration procedures.
 
 ## Teardown
 
-Publish these findings and configuration to both remotes before destroying the
-playground; confirmed destruction will be recorded afterwards.
+Findings and configuration were published to both remotes in commit
+`b0375d1e7cce9a97e913d2d9ed1f2902ba6fc3b1` before the playground was
+destroyed. A subsequent playground inventory at **22:59:35 Europe/Istanbul**
+(19:59:35 UTC) confirmed no playgrounds remained, including this run and the
+parallel networking and monitoring runs.
