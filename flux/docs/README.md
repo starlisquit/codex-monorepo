@@ -18,3 +18,5 @@ The findings are dated observations, not a live status dashboard. The fresh
 rebuild record distinguishes current verification from incidents on the destroyed
 play. Render validation, controller readiness, and end-to-end application
 verification are different levels of evidence.
+
+- [Recurring log errors and their relevance](findings/log-error-review.md)

@@ -510,9 +510,9 @@ spec:
           ],
           "options": {
             "showTime": true,
-            "showLabels": true,
+            "showLabels": false,
             "showCommonLabels": false,
-            "wrapLogMessage": true,
+            "wrapLogMessage": false,
             "prettifyLogMessage": false,
             "enableLogDetails": true,
             "sortOrder": "Descending",

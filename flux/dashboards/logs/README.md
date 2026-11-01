@@ -65,3 +65,9 @@ etcd trouble. It subsequently returned `ok`. Native agent logs reported retries
 to the backend during the slow interval. The write-rate cap bounds backfill
 pressure; it is not proof that initial backfill caused every API slowdown.
 The control-plane sizing and existing root-disk pressure limitations still apply.
+
+The log viewer defaults to single-line messages with inline labels hidden. Expand
+a row to inspect metadata and structured error fields. This keeps the timeline
+compact without deleting fields from storage. See the dated
+[error review](../../docs/findings/log-error-review.md) for examples of generic
+messages whose useful cause is in `err` or `error`.
