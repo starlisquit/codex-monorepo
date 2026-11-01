@@ -4,7 +4,9 @@
   "timezone": "Europe/Istanbul",
   "purpose": "deployment-eso",
   "flux_path": "./flux/clusters/20261101-233840-deployment-eso-2bc71a",
-  "status": "verified",
+  "status": "destroyed",
   "tested_revision": "4bfce4a958eb154128833151e3279acc54d76e2c",
-  "findings": "flux/docs/findings/deployment-external-secrets-runtime-2026-11-01.md"
+  "findings": "flux/docs/findings/deployment-external-secrets-runtime-2026-11-01.md",
+  "destroyed_at": "2026-11-01T20:49:19Z",
+  "findings_published_revision": "dbdd6314b92a5c14d70a053f47823bc6ee46808f"
 }

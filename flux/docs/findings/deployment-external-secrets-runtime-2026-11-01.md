@@ -78,5 +78,7 @@ Kustomize builds and whitespace checks.
 
 ## Teardown
 
-Publish this report, evidence and configuration to both remotes before destroying
-this verified playground. Record confirmed destruction afterwards.
+Report, evidence and configuration were published to both remotes in
+`dbdd6314b92a5c14d70a053f47823bc6ee46808f` before playground destruction.
+The destroy API confirmed success at **23:49:19 Europe/Istanbul**
+(20:49:19 UTC). Both parallel validation playgrounds have been destroyed.
