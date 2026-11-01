@@ -1,0 +1,37 @@
+nameReference:
+- kind: Gateway
+  group: gateway.networking.k8s.io
+  fieldSpecs:
+  - kind: HTTPRoute
+    group: gateway.networking.k8s.io
+    path: spec/parentRefs/name
+  - kind: GRPCRoute
+    group: gateway.networking.k8s.io
+    path: spec/parentRefs/name
+  - kind: TLSRoute
+    group: gateway.networking.k8s.io
+    path: spec/parentRefs/name
+  - kind: TCPRoute
+    group: gateway.networking.k8s.io
+    path: spec/parentRefs/name
+  - kind: UDPRoute
+    group: gateway.networking.k8s.io
+    path: spec/parentRefs/name
+- kind: Service
+  version: v1
+  fieldSpecs:
+  - kind: HTTPRoute
+    group: gateway.networking.k8s.io
+    path: spec/rules/backendRefs/name
+  - kind: GRPCRoute
+    group: gateway.networking.k8s.io
+    path: spec/rules/backendRefs/name
+  - kind: TLSRoute
+    group: gateway.networking.k8s.io
+    path: spec/rules/backendRefs/name
+  - kind: TCPRoute
+    group: gateway.networking.k8s.io
+    path: spec/rules/backendRefs/name
+  - kind: UDPRoute
+    group: gateway.networking.k8s.io
+    path: spec/rules/backendRefs/name

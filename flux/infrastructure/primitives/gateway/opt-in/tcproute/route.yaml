@@ -1,0 +1,12 @@
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: application-tcp
+spec:
+  parentRefs:
+  - name: application-gateway
+    sectionName: tcp
+  rules:
+  - backendRefs:
+    - name: application
+      port: 5432

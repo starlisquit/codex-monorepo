@@ -1,0 +1,14 @@
+apiVersion: gateway.networking.k8s.io/v1alpha3
+kind: TLSRoute
+metadata:
+  name: application-tls
+spec:
+  parentRefs:
+  - name: application-gateway
+    sectionName: tls
+  rules:
+  - backendRefs:
+    - name: application
+      port: 8443
+  hostnames:
+  - app.example.com

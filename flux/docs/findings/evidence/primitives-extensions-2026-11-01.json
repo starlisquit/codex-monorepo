@@ -1,0 +1,40 @@
+{
+  "scope": "static build, schema and composition validation; no playground or runtime verification",
+  "kustomize_builds": 137,
+  "gateway_api_release": "v1.4.0",
+  "gateway_compositions": {
+    "each_route_individually": "passed",
+    "all_five_together": "passed",
+    "prefixed_parent_and_backend_refs": "passed",
+    "listener_attachment": "passed",
+    "default_gateway_without_routes": "passed"
+  },
+  "rbac_compositions": {
+    "default_serviceaccount_without_permissions": "passed",
+    "namespaced_binding_subjects_and_role_refs": "passed",
+    "cluster_binding_subjects_and_role_refs": "passed",
+    "cluster_scoped_metadata_without_namespace": "passed"
+  },
+  "native_schema_bundle": "https://github.com/yannh/kubernetes-json-schema/tree/master/v1.34.0-standalone-strict",
+  "native_schemas_validated": [
+    "CronJob",
+    "ServiceAccount",
+    "RoleBinding",
+    "ClusterRole",
+    "ClusterRoleBinding"
+  ],
+  "experimental_crds": {
+    "tcproutes.yaml": {
+      "sha256": "6d63964357133b23fb729d2a50f72fa7816e538bf91708c52af26b17a7c75972",
+      "upstream": "https://github.com/kubernetes-sigs/gateway-api/blob/v1.4.0/config/crd/experimental/gateway.networking.k8s.io_tcproutes.yaml"
+    },
+    "tlsroutes.yaml": {
+      "sha256": "e7c4a3cddb7af8c0c1a6ed6837f649539b670e1d17ddbc68f1f2a5e2a2b476a7",
+      "upstream": "https://github.com/kubernetes-sigs/gateway-api/blob/v1.4.0/config/crd/experimental/gateway.networking.k8s.io_tlsroutes.yaml"
+    },
+    "udproutes.yaml": {
+      "sha256": "225b48380d04ed8549c36ba303db72f5e1dd4c3f5f53c74c1e445c70319a7ad1",
+      "upstream": "https://github.com/kubernetes-sigs/gateway-api/blob/v1.4.0/config/crd/experimental/gateway.networking.k8s.io_udproutes.yaml"
+    }
+  }
+}
