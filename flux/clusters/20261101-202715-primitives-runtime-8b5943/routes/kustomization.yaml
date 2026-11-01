@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../../infrastructure/primitives/gateway
+namespace: demo
+namePrefix: edge-
+components:
+- ../../../infrastructure/primitives/gateway/opt-in/httproute
+- ../../../infrastructure/primitives/gateway/opt-in/grpcroute
+- ../../../infrastructure/primitives/gateway/opt-in/tlsroute
+- ../../../infrastructure/primitives/gateway/opt-in/tcproute
+- ../../../infrastructure/primitives/gateway/opt-in/udproute
+patches:
+- target:
+    kind: Gateway
+  patch: "- op: replace\n  path: /spec/gatewayClassName\n  value: validation-envoy\n"

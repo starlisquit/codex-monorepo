@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../../infrastructure/namespaces/demo
+- ../../../infrastructure/namespaces/proxy
+- source.yaml
+- ../../../infrastructure/networking/gateway-api-crds/opt-in/experimental-routes
