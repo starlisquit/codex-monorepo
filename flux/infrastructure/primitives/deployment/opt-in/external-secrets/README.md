@@ -91,3 +91,11 @@ retains the last value but produces a sync failure. See the shared
 This composes with the injector Component for **different** credentials: ESO
 provides environment variables; the injector independently renders files. The
 starter echo image does not demonstrate application use of `APP_PASSWORD`.
+
+## Runtime verification
+
+Verified on a fresh K3s cluster with two applications: real environment delivery,
+scoped authentication and rejection of cross-app reads/wrong identities, correct
+Secret ownership, provider refresh followed by Pod rollout, and missing-provider
+failure with Secret retention and successful recovery. See
+[findings](../../../../../docs/findings/deployment-external-secrets-runtime-2026-11-01.md).

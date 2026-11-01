@@ -63,5 +63,7 @@ No competing controller-managed Secret was created or adopted by this Component.
 
 ## Teardown
 
-Publish this report, evidence and configuration to both remotes before destroying
-this verified playground. Record confirmed destruction afterwards.
+Report, evidence and configuration were published to both remotes in
+`f1a969508488fec91bab0aa83acd3f06b640a885` before playground destruction.
+The destroy API confirmed success at **23:48:11 Europe/Istanbul**
+(20:48:11 UTC).

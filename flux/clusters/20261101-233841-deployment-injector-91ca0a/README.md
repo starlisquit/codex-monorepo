@@ -24,9 +24,9 @@ After bootstrapping this exact run path, use separate detached processes on
 `dev-machine` (as laborant) and inspect only their sanitized logs/evidence:
 
 ```sh
-python3 probes/backend.py injector /home/laborant/repo
-python3 probes/verify.py injector
-python3 probes/capture.py
+python3 backend.py injector /home/laborant/repo
+python3 verify.py injector
+python3 capture.py
 ```
 
 Run these from the `probes` directory (or copy all three scripts together). The

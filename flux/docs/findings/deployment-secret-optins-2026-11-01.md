@@ -46,3 +46,10 @@ annotation; consumers requiring fail-closed admission must configure it and make
 the application reject a missing credential file. Environment updates require new
 Pods, while file updates require application reload. Token renewal permissions
 apply only to the caller's own token; no default or broad KV policy is granted.
+
+## Runtime follow-up
+
+The initial offline-only scope above was subsequently extended with parallel
+fresh K3s runs. See the [External Secrets runtime report](deployment-external-secrets-runtime-2026-11-01.md)
+and [injector runtime report](deployment-injector-runtime-2026-11-01.md) for actual
+credential delivery, isolation, refresh and failure results.

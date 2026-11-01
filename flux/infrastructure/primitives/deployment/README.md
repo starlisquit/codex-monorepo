@@ -87,6 +87,9 @@ wrappers. Choose one delivery method, or combine them for distinct credentials.
 Configure scoped OpenBao policies/roles and populate KV separately; example backend
 files are supplied, but Kustomize does not apply them to OpenBao. Neither integration
 manages PKI or operator-generated secrets. See each README for trust, readiness,
-name/path customization and refresh behavior. The injector has passed [focused K3s runtime verification](../../../docs/findings/deployment-injector-runtime-2026-11-01.md),
-including scoped authentication, file refresh and agent reauthentication. Routine
-validation also checks all combinations with the other Deployment opt-ins.
+name/path customization and refresh behavior. Both passed focused K3s runtime verification on parallel fresh clusters:
+[External Secrets](../../../docs/findings/deployment-external-secrets-runtime-2026-11-01.md)
+and [OpenBao injector](../../../docs/findings/deployment-injector-runtime-2026-11-01.md).
+Checks cover real application consumption, scoped authentication, refresh behavior
+and failure handling. Routine validation also checks all combinations with the
+other Deployment opt-ins.
