@@ -1,3 +1,44 @@
-# Template: review against the pinned chart before enabling.
+# Keep the bundled Grafana; let Grafana Operator manage dashboards and datasources.
+# Install Grafana Operator CRDs before reconciling this release.
 grafana:
   enabled: true
+  forceDeployDatasource: true
+  sidecar:
+    dashboards:
+      enabled: false
+    datasources:
+      enabled: false
+defaultDashboards:
+  enabled: true
+  grafanaOperator:
+    enabled: true
+    spec:
+      instanceSelector:
+        matchLabels:
+          dashboards: platform
+      allowCrossNamespaceImport: false
+defaultDatasources:
+  grafanaOperator:
+    enabled: true
+    spec:
+      instanceSelector:
+        matchLabels:
+          dashboards: platform
+      allowCrossNamespaceImport: false
+extraObjects:
+- apiVersion: grafana.integreatly.org/v1beta1
+  kind: Grafana
+  metadata:
+    name: platform
+    namespace: '{{ .Release.Namespace }}'
+    labels:
+      dashboards: platform
+  spec:
+    external:
+      url: http://{{ include "grafana.fullname" .Subcharts.grafana }}.{{ .Release.Namespace }}.svc:{{ .Values.grafana.service.port }}
+      adminUser:
+        name: '{{ include "grafana.fullname" .Subcharts.grafana }}'
+        key: admin-user
+      adminPassword:
+        name: '{{ include "grafana.fullname" .Subcharts.grafana }}'
+        key: admin-password

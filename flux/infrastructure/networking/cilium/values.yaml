@@ -1,4 +1,6 @@
-# Review kubeProxyReplacement, API server address, and IPAM for your cluster.
+# Set k8sServiceHost and k8sServicePort to the real API server endpoint before enabling.
+# That endpoint must be reachable without kube-proxy (not the Kubernetes Service IP).
+kubeProxyReplacement: true
 hubble:
   enabled: true
   relay:

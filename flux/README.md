@@ -16,9 +16,9 @@ It is a starting scaffold, not a deployment-ready cluster configuration.
 
 ## Before enabling a release
 
-1. Pin every chart version. The `*` selectors are intentionally unpinned template
-   values; replace them with reviewed exact versions, including the OCI source.
-   Check each version's supported values before enabling it.
+1. Chart versions are pinned to the latest stable releases verified on
+   2026-11-01 (see the table below). Review Kubernetes compatibility and the
+   supported chart values before enabling any release.
 2. Create the target namespaces: `observability`, `rook-ceph`, `databases`,
    `kyverno`, `certificates`, `secrets`, `broker`, and `applications` as needed.
    Cilium targets the existing `kube-system` namespace; sources use `flux-system`.
@@ -43,16 +43,18 @@ Use separate Flux Kustomizations with `dependsOn` and HelmRelease health checks:
 
 - Rook operator -> Ceph cluster -> workloads requiring persistent volumes.
 - CloudNativePG operator + ready storage -> PostgreSQL instance.
-- Grafana Operator + configured Grafana instance -> dashboards.
+- Grafana Operator -> VictoriaMetrics stack (creates Grafana CRs) -> dashboards.
 - Kyverno -> Kyverno policies and custom ClusterPolicies.
 - cert-manager -> trust-manager.
 
 `kustomization.yaml` files assemble manifests; they do not enforce controller
 readiness or installation order.
 
-Configure Cilium for the cluster's API endpoint, IPAM, kube-proxy mode, and
-Gateway API CRDs before installation. CNI installation or replacement requires
-a cluster-specific rollout plan. Hubble and Gateway API are enabled in its values.
+Configure Cilium for the cluster's API endpoint, IPAM, and Gateway API CRDs
+before installation. Kube-proxy replacement, Hubble, Relay, UI, and Gateway API
+are enabled. Set `k8sServiceHost` and `k8sServicePort` to a real API endpoint
+reachable without kube-proxy; do not use the Kubernetes Service IP. CNI
+installation or replacement requires a cluster-specific rollout plan.
 
 Rook intentionally has no selected disks. Configure nodes, unused devices, Ceph
 replication, RBD/CephFS StorageClasses, and RGW explicitly using the pinned chart.
@@ -63,17 +65,28 @@ and exposure according to the selected chart version. OpenBao needs an explicit
 initialization, unseal, storage, and authentication design; External Secrets needs
 a configured SecretStore or ClusterSecretStore.
 
-The original single `victoria-metrics-k8s-stack` release is retained. Its presence
-does not imply that VictoriaLogs, VLAgent, or VictoriaTraces servers are installed;
-check the selected chart's contents. Configure the requested traces agent's
-destination explicitly. No separate logs or traces server releases are included.
+The original single `victoria-metrics-k8s-stack` release is retained. The pinned
+chart supports logs and traces components through its operator; review its values
+for the components you want. This change does not enable additional logs or traces
+servers. Configure the requested traces agent's destination explicitly.
 
-The stack's Grafana is enabled. To use Grafana Operator dashboards with it, add an
-operator-supported external Grafana resource with secure credentials and the label
-`dashboards: platform`. Configure a Prometheus-compatible Grafana datasource named
-`VictoriaMetrics`. Starter dashboard metrics depend on installed exporters and
-their metric naming; adjust queries to match your versions. Dashboard definitions
-do not install exporters, scraping resources, or datasources.
+The stack's bundled Grafana remains enabled. Its `extraObjects` creates an external
+Grafana Operator binding named `platform`, labeled `dashboards: platform`, pointing
+to the bundled Grafana Service and generated admin credential Secret. No credential
+values are committed. If you configure an existing admin Secret later, update the
+binding's Secret references too.
+
+Both `defaultDashboards.grafanaOperator.enabled` and
+`defaultDatasources.grafanaOperator.enabled` are enabled, with matching instance
+selectors. Grafana sidecars are disabled so the operator owns dashboard/datasource
+provisioning. `grafana.forceDeployDatasource` keeps datasource CR generation enabled
+when the datasource sidecar is off. Install Grafana Operator and its CRDs first;
+configure the stack's Flux Kustomization to depend on the operator's ready release.
+The chart's sync job creates the default GrafanaDashboard resources at runtime.
+
+Custom starter dashboards also select `dashboards: platform` and use the
+`VictoriaMetrics` datasource. Their metric queries depend on the installed
+exporters and versions. They do not install exporters or scraping resources.
 
 ## PostgreSQL example
 
@@ -108,7 +121,40 @@ and required external destinations before enabling default deny.
 
 ## Validation
 
+All 21 Kustomize builds and all 16 pinned Helm charts were rendered successfully
+using a Kubernetes 1.35 validation profile. Cilium used a test-only API endpoint,
+and the traces agent used a test-only `remoteWrite[0].url`; neither test address
+is saved in these manifests. The traces agent cannot render as committed until
+you supply its real `remoteWrite` destination. The Grafana and GrafanaDatasource
+resources were also validated against the pinned Grafana Operator CRD schemas.
+
 Run `kustomize build` for each directory containing `kustomization.yaml`.
-Rendered manifests must additionally be checked against your selected chart
-versions and Kubernetes/CRD schemas before deployment. No cluster has been
-bootstrapped or reconciled by adding these templates.
+Check Kubernetes compatibility and render again with your actual cluster settings
+before deployment. Helm rendering does not establish live readiness or validate
+the chart's runtime dashboard sync job. No cluster has been bootstrapped or
+reconciled by adding these templates.
+
+## Pinned chart versions
+
+Verified against official Helm indexes and the Grafana Operator stable release
+and OCI artifact on 2026-11-01. Prerelease and deprecated chart entries were excluded.
+These are chart versions, not application image versions.
+
+| Chart | Version |
+| --- | --- |
+| nats | `2.15.2` |
+| cert-manager | `v1.21.3` |
+| trust-manager | `v0.26.0` |
+| cloudnative-pg | `0.29.1` |
+| valkey | `0.12.1` |
+| cilium | `1.20.4` |
+| prometheus-blackbox-exporter | `11.20.2` |
+| victoria-metrics-k8s-stack | `0.97.0` |
+| victoria-traces-agent | `0.2.1` |
+| kyverno | `3.9.2` |
+| kyverno-policies | `3.9.2` |
+| external-secrets | `2.14.0` |
+| openbao | `0.30.6` |
+| rook-ceph-cluster | `1.21.1` |
+| rook-ceph | `1.21.1` |
+| grafana-operator | `5.25.0` |

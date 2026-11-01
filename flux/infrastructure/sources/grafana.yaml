@@ -7,4 +7,4 @@ spec:
   interval: 1h
   url: oci://ghcr.io/grafana/helm-charts/grafana-operator
   ref:
-    semver: '*'
+    tag: 5.25.0
