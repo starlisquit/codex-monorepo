@@ -63,7 +63,9 @@ Configure Cilium for the cluster's API endpoint, IPAM, and Gateway API CRDs
 before installation. Kube-proxy replacement, Hubble, Relay, UI, and Gateway API
 are enabled. Set `k8sServiceHost` and `k8sServicePort` to a real API endpoint
 reachable without kube-proxy; do not use the Kubernetes Service IP. CNI
-installation or replacement requires a cluster-specific rollout plan.
+installation or replacement requires a cluster-specific rollout plan. Envoy, L7
+proxy/configuration, opt-in service load balancing, and Gateway HTTP/2 protocol
+support are explicitly enabled; see [Cilium mesh and gRPC notes](infrastructure/networking/cilium/README.md).
 
 Rook intentionally has no selected disks. Configure nodes, unused devices, Ceph
 replication, RBD/CephFS StorageClasses, and RGW explicitly using the pinned chart.
