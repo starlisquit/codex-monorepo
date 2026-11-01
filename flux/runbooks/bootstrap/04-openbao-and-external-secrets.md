@@ -26,7 +26,7 @@ material for a lab; use an approved independent custody process for production.
 ```sh
 python3 flux/runbooks/scripts/initialize-openbao.py
 stat -c '%a %n' /home/laborant/.config/codex-platform/openbao-init.json
-kubectl -n secrets rollout status statefulset/openbao --timeout=5m
+kubectl -n secrets wait --for=jsonpath='{.status.readyReplicas}'=3 statefulset/openbao --timeout=5m
 for pod in openbao-0 openbao-1 openbao-2; do
   kubectl -n secrets exec "$pod" -- bao status -format=json
 done
@@ -67,3 +67,6 @@ SecretSynced. The root token is not used as the External Secrets credential.
 The auth/mount configuration lives in OpenBao's persistent data, not in the
 SecretStore CR. Repeat configuration for a fresh cluster after initialization.
 See [recovery](../recovery/openbao.md) for unsealing an existing cluster.
+
+OpenBao uses an `OnDelete` StatefulSet. Use the ready-replica check above;
+`kubectl rollout status statefulset/openbao` does not support this update strategy.

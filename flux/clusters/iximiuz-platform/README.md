@@ -8,11 +8,10 @@ suspended for other clusters; this overlay enables each selected release.
 ## Playground
 
 - Playground: `codex-platform-243e14fd` (base: `k8s-omni`).
-- Play: <https://labs.iximiuz.com/playgrounds/codex-platform-243e14fd/6ae6c40156e9b785c3220466>.
-- Three Kubernetes nodes: `cplane-01`, `node-01`, `node-02`, each requesting
-  3 vCPUs, 5 GiB RAM, a 20 GiB system disk, and a raw 25 GiB `/dev/vdb` in
-  the recorded running play. Future definitions now prioritize the control
-  plane: 4 vCPUs/6 GiB, workers 2 vCPUs/4608 MiB, dev 1 vCPU/1 GiB.
+- Play: <https://labs.iximiuz.com/playgrounds/codex-platform-243e14fd/6ae6cfaf789ac234e32e00bf>.
+- `cplane-01`: 4 vCPUs and 6 GiB requested RAM.
+- `node-01` and `node-02`: 2 vCPUs and 4608 MiB requested RAM each.
+- Every Kubernetes node has a 20 GiB system disk and raw 25 GiB `/dev/vdb`.
 - `dev-machine`: 1 vCPU, 1 GiB RAM, 10 GiB system disk.
 - kubeadm skips `addon/kube-proxy`; Cilium uses the direct API endpoint
   `172.16.0.2:6443`, Kubernetes IPAM, and kube-proxy replacement.
@@ -74,9 +73,10 @@ plaintext credentials are committed.
 - [Exact bootstrap and recovery procedures](../../runbooks/README.md)
 - [Future playground sizing](../../docs/architecture/playground-sizing.md)
 
-The API slowness investigation is paused. Full demo readiness and end-to-end
-telemetry are not claimed. Subsequent template changes keep demo services on
-workers and limit Kustomize controller concurrency to four to reduce API bursts.
+The prior full-platform play was destroyed at the user's request and rebuilt
+from the runbooks using the revised sizing and minimal demo. Historical resource
+pressure findings refer to that previous play. Demo services stay on workers and
+Kustomize controller concurrency is capped at four to reduce API bursts.
 
 ## Operations
 

@@ -27,8 +27,8 @@ applies the committed Flux installation and Git source. Neither creates a new
 repository or pushes bootstrap commits.
 
 The Python OpenBao helpers need only the standard library and kubectl. Their
-initialization flow was exercised during deployment; the checked-in helpers add
-file-permission and initialization safeguards and were syntax-checked locally.
+checked-in initialization and configuration helpers were exercised on the fresh
+2026-11-01 rebuild, including file-permission and initialization safeguards.
 They retain all recovery material together for this lab. Use a separate process
 for production key custody. `configure-openbao.py` changes only the documented
 lab mount/auth policy/role and verification value; do not reuse those names for

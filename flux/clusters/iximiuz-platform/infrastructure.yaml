@@ -439,6 +439,10 @@ spec:
     kind: StatefulSet
     name: openbao
     namespace: secrets
+  healthCheckExprs:
+  - apiVersion: apps/v1
+    kind: StatefulSet
+    current: has(status.readyReplicas) && status.readyReplicas == spec.replicas
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization

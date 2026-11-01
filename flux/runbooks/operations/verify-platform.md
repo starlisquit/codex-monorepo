@@ -128,4 +128,44 @@ Use Grafana Explore to query recent application series in VictoriaMetrics,
 actual demo SDK log records in VictoriaLogs (DS), and recent service traces in
 VictoriaTraces. Check service names and recent timestamps. Backend health,
 Collector configuration, or scrape metrics alone do not prove all three signals.
-This end-to-end demo verification was not completed during the recorded rollout.
+The [fresh rebuild](../../docs/findings/rebuild-verification.md) verified all three
+signals from quote traffic. Repeat these checks for the current play.
+
+
+For reproducible backend queries, open three additional local forwards in separate
+terminals:
+
+```sh
+kubectl -n observability port-forward svc/vmsingle-victoria-metrics-k8s-stack 18428:8428
+kubectl -n observability port-forward svc/vlsingle-victoria-metrics-k8s-stack 19428:9428
+kubectl -n observability port-forward svc/vtsingle-victoria-metrics-k8s-stack 10428:10428
+```
+
+After generating quote traffic, query recent metric samples and SDK logs:
+
+```sh
+python3 - <<'PYTHON'
+import json, time, urllib.parse, urllib.request
+
+def get(base, params):
+    url = base + '?' + urllib.parse.urlencode(params)
+    return urllib.request.urlopen(url, timeout=10).read().decode()
+
+now = time.time()
+print(get('http://127.0.0.1:18428/api/v1/query_range',
+          {'query': 'quotes', 'start': now-300, 'end': now, 'step': '10s'}))
+logs = get('http://127.0.0.1:19428/select/logsql/query',
+           {'query': '_time:5m "Calculated quote"', 'limit': 3})
+print(logs)
+records = [json.loads(line) for line in logs.splitlines() if line.strip()]
+if not records:
+    raise SystemExit('No SDK logs yet; allow export/ingestion time and retry')
+trace_id = records[0]['trace_id']
+url = 'http://127.0.0.1:10428/select/jaeger/api/traces/' + trace_id
+print(urllib.request.urlopen(url, timeout=10).read().decode())
+PYTHON
+```
+
+Expect nonempty metric samples, SDK log records, and a trace matching a log's
+`trace_id`. Recent range queries avoid mistaking an instant-query visibility lag
+for absent ingestion. Stop the port forwards when finished.
