@@ -13,6 +13,8 @@ It is a starting scaffold, not a deployment-ready cluster configuration.
 - `observability/dashboards/`: category subfolders, each with a starter
   `overview.yaml` and its own `kustomization.yaml`. Add more dashboard files to
   a category and list them in that category's Kustomization.
+- `observability/datasources/`: additional GrafanaDatasource resources and an
+  excluded example; the VM chart retains ownership of its default datasources.
 - `policy/cluster-policies/`: example Kyverno policies in Audit mode, scoped to `applications`.
 - `policy/network-policies/`: example policies scoped to `applications`.
 

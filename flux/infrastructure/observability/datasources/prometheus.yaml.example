@@ -1,0 +1,16 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: additional-prometheus
+  namespace: observability
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: platform
+  datasource:
+    name: Additional Prometheus
+    uid: additional-prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus.example.invalid:9090
+    isDefault: false
