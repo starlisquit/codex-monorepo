@@ -20,6 +20,7 @@ spec:
   dependsOn:
   - name: monitoring-crds
   - name: gateway-api
+  - name: pki-trust
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -201,6 +202,7 @@ spec:
   dependsOn:
   - name: storage-ready
   - name: grafana-operator
+  - name: pki-issuer
   healthChecks:
   - apiVersion: helm.toolkit.fluxcd.io/v2
     kind: HelmRelease
@@ -251,6 +253,7 @@ spec:
   timeout: 15m
   dependsOn:
   - name: cert-manager
+  - name: pki-issuer
   healthChecks:
   - apiVersion: helm.toolkit.fluxcd.io/v2
     kind: HelmRelease
@@ -273,6 +276,7 @@ spec:
   timeout: 15m
   dependsOn:
   - name: monitoring-crds
+  - name: pki-issuer
   healthChecks:
   - apiVersion: helm.toolkit.fluxcd.io/v2
     kind: HelmRelease
@@ -430,6 +434,7 @@ spec:
   dependsOn:
   - name: storage-ready
   - name: cert-manager
+  - name: pki-issuer
   healthChecks:
   - apiVersion: helm.toolkit.fluxcd.io/v2
     kind: HelmRelease
@@ -527,6 +532,7 @@ spec:
   dependsOn:
   - name: storage-ready
   - name: cnpg-operator
+  - name: pki-postgresql
   healthChecks:
   - apiVersion: postgresql.cnpg.io/v1
     kind: Cluster
@@ -666,6 +672,7 @@ spec:
   dependsOn:
   - name: monitoring-crds
   - name: cert-manager
+  - name: pki-issuer
   healthChecks:
   - apiVersion: helm.toolkit.fluxcd.io/v2
     kind: HelmRelease
@@ -680,7 +687,6 @@ spec:
     current: has(status.conditions) && status.conditions.exists(c, c.type == 'Available'
       && c.status == 'True')
   timeout: 5m
-
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -713,3 +719,72 @@ spec:
   - apiVersion: policies.kyverno.io/v1
     kind: ValidatingPolicy
     current: has(status.conditionStatus) && status.conditionStatus.ready == true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: pki-issuer
+  namespace: flux-system
+spec:
+  interval: 10m
+  retryInterval: 30s
+  path: ./flux/infrastructure/certificates/pki/issuer
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: cert-manager
+  timeout: 5m
+  healthChecks:
+  - apiVersion: cert-manager.io/v1
+    kind: ClusterIssuer
+    name: platform-workload-ca
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: pki-trust
+  namespace: flux-system
+spec:
+  interval: 10m
+  retryInterval: 30s
+  path: ./flux/infrastructure/certificates/pki/trust
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: pki-issuer
+  - name: trust-manager
+  timeout: 5m
+  healthChecks:
+  - apiVersion: trust.cert-manager.io/v1alpha1
+    kind: Bundle
+    name: platform-ca
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: pki-postgresql
+  namespace: flux-system
+spec:
+  interval: 10m
+  retryInterval: 30s
+  path: ./flux/infrastructure/certificates/pki/postgresql
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: pki-issuer
+  timeout: 5m
+  healthChecks:
+  - apiVersion: cert-manager.io/v1
+    kind: Certificate
+    namespace: databases
+    name: application-db-server-pki
+  - apiVersion: cert-manager.io/v1
+    kind: Certificate
+    namespace: databases
+    name: application-db-replication-pki
