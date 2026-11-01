@@ -1,0 +1,27 @@
+backupsEnabled: true
+snapshotsEnabled: false
+credentials:
+  useSecret: true
+  existingSecret: velero-cloud-credentials
+initContainers:
+- name: velero-plugin-for-aws
+  image: docker.io/velero/velero-plugin-for-aws:v1.14.4
+  imagePullPolicy: IfNotPresent
+  volumeMounts:
+  - mountPath: /target
+    name: plugins
+configuration:
+  backupStorageLocation:
+  - name: default
+    provider: aws
+    bucket: velero-validation
+    default: true
+    prefix: infra-eso
+    config:
+      region: us-east-1
+      s3Url: http://s3-fixture.velero.svc:9000
+      s3ForcePathStyle: 'true'
+  volumeSnapshotLocation: []
+metrics:
+  serviceMonitor:
+    enabled: false

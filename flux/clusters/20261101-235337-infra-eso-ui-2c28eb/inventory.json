@@ -1,0 +1,35 @@
+{
+  "mode": "ui",
+  "opt_ins": [
+    "ui/redisinsight/opt-in/external-secrets",
+    "ui/nui/opt-in/external-secrets"
+  ],
+  "credentials": [
+    {
+      "namespace": "ui",
+      "target": "redisinsight-encryption",
+      "data": [
+        {
+          "secretKey": "key",
+          "remoteRef": {
+            "key": "infrastructure/ui/redisinsight/encryption",
+            "property": "key"
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "broker",
+      "target": "nui-contexts",
+      "data": [
+        {
+          "secretKey": "platform.json",
+          "remoteRef": {
+            "key": "infrastructure/broker/nui/contexts",
+            "property": "platform.json"
+          }
+        }
+      ]
+    }
+  ]
+}

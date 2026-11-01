@@ -1,0 +1,35 @@
+{
+  "mode": "ci",
+  "opt_ins": [
+    "ci/gitlab-runner/opt-in/external-secrets",
+    "ci/renovate/opt-in/external-secrets"
+  ],
+  "credentials": [
+    {
+      "namespace": "ci",
+      "target": "gitlab-runner-auth",
+      "data": [
+        {
+          "secretKey": "runner-token",
+          "remoteRef": {
+            "key": "infrastructure/ci/gitlab-runner/auth",
+            "property": "runner-token"
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "ci",
+      "target": "renovate-credentials",
+      "data": [
+        {
+          "secretKey": "RENOVATE_TOKEN",
+          "remoteRef": {
+            "key": "infrastructure/ci/renovate/credentials",
+            "property": "RENOVATE_TOKEN"
+          }
+        }
+      ]
+    }
+  ]
+}

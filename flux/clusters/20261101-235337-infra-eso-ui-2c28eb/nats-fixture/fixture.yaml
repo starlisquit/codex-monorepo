@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nats-validation
+  namespace: broker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nats-validation
+  template:
+    metadata:
+      labels:
+        app: nats-validation
+    spec:
+      containers:
+      - name: nats-validation
+        image: nats:2.12.1-alpine
+        ports:
+        - containerPort: 4222
+        env:
+        - name: NATS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: nats-validation
+              key: token
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            memory: 512Mi
+        command:
+        - sh
+        - -ec
+        args:
+        - exec nats-server -js --store_dir /data --auth "$NATS_TOKEN"
+        volumeMounts:
+        - name: data
+          mountPath: /data
+      volumes:
+      - name: data
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nats-validation
+  namespace: broker
+spec:
+  selector:
+    app: nats-validation
+  ports:
+  - port: 4222
+    targetPort: 4222

@@ -1,0 +1,8 @@
+nodeSelector:
+  kubernetes.io/hostname: node-02
+persistence:
+  storageClass: local-path
+  size: 1Gi
+resources:
+  limits:
+    memory: 3Gi

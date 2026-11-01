@@ -1,0 +1,8 @@
+{
+  "play_id": "6ae7a6d27f32053bde2c2902",
+  "created_at": "2026-11-01T20:53:38.243000+00:00",
+  "timezone": "Europe/Istanbul",
+  "purpose": "infra-eso-ci",
+  "flux_path": "./flux/clusters/20261101-235338-infra-eso-ci-2c2902",
+  "status": "preparing"
+}

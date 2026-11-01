@@ -1,0 +1,69 @@
+{
+  "mode": "apps",
+  "opt_ins": [
+    "ai/litellm/opt-in/external-secrets",
+    "quality/sonarqube/opt-in/external-secrets",
+    "quality/sonarqube/opt-in/external-database-secrets"
+  ],
+  "credentials": [
+    {
+      "namespace": "ai",
+      "target": "litellm-auth",
+      "data": [
+        {
+          "secretKey": "master-key",
+          "remoteRef": {
+            "key": "infrastructure/ai/litellm/auth",
+            "property": "master-key"
+          }
+        },
+        {
+          "secretKey": "salt-key",
+          "remoteRef": {
+            "key": "infrastructure/ai/litellm/auth",
+            "property": "salt-key"
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "ai",
+      "target": "litellm-provider-credentials",
+      "data": [
+        {
+          "secretKey": "OPENAI_API_KEY",
+          "remoteRef": {
+            "key": "infrastructure/ai/litellm/providers",
+            "property": "OPENAI_API_KEY"
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "quality",
+      "target": "sonarqube-monitoring",
+      "data": [
+        {
+          "secretKey": "passcode",
+          "remoteRef": {
+            "key": "infrastructure/quality/sonarqube/monitoring",
+            "property": "passcode"
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "quality",
+      "target": "sonarqube-database",
+      "data": [
+        {
+          "secretKey": "password",
+          "remoteRef": {
+            "key": "infrastructure/quality/sonarqube/database",
+            "property": "password"
+          }
+        }
+      ]
+    }
+  ]
+}

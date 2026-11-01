@@ -1,0 +1,248 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: foundation
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 20s
+  path: ./flux/clusters/20261101-235338-infra-eso-ci-2c2902/foundation
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  timeout: 5m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: monitoring-crds
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 15s
+  path: ./flux/clusters/20261101-235338-infra-eso-ci-2c2902/monitoring-crds
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 15m
+  dependsOn:
+  - name: foundation
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: prometheus-operator-crds
+    namespace: observability
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cert-manager
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 15s
+  path: ./flux/clusters/20261101-235338-infra-eso-ci-2c2902/cert-manager
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 10m
+  dependsOn:
+  - name: monitoring-crds
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: cert-manager
+    namespace: certificates
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: pki-issuer
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 15s
+  path: ./flux/clusters/20261101-235338-infra-eso-ci-2c2902/pki-issuer
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 10m
+  dependsOn:
+  - name: cert-manager
+  healthChecks:
+  - apiVersion: cert-manager.io/v1
+    kind: Certificate
+    name: platform-root
+    namespace: certificates
+  - apiVersion: cert-manager.io/v1
+    kind: ClusterIssuer
+    name: platform-workload-ca
+  healthCheckExprs:
+  - apiVersion: cert-manager.io/v1
+    kind: Certificate
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
+      && c.status == 'True')
+  - apiVersion: cert-manager.io/v1
+    kind: ClusterIssuer
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
+      && c.status == 'True')
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: trust-manager
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 15s
+  path: ./flux/clusters/20261101-235338-infra-eso-ci-2c2902/trust-manager
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 10m
+  dependsOn:
+  - name: pki-issuer
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: trust-manager
+    namespace: certificates
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: pki-trust
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 15s
+  path: ./flux/clusters/20261101-235338-infra-eso-ci-2c2902/pki-trust
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 10m
+  dependsOn:
+  - name: trust-manager
+  healthChecks:
+  - apiVersion: trust.cert-manager.io/v1alpha1
+    kind: Bundle
+    name: platform-ca
+  healthCheckExprs:
+  - apiVersion: trust.cert-manager.io/v1alpha1
+    kind: Bundle
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Synced'
+      && c.status == 'True')
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: openbao
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 15s
+  path: ./flux/clusters/20261101-235338-infra-eso-ci-2c2902/openbao
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 10m
+  dependsOn:
+  - name: pki-trust
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: openbao
+    namespace: secrets
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: external-secrets
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 15s
+  path: ./flux/clusters/20261101-235338-infra-eso-ci-2c2902/external-secrets
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 10m
+  dependsOn:
+  - name: pki-trust
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: external-secrets
+    namespace: secrets
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: credentials
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 15s
+  path: ./flux/clusters/20261101-235338-infra-eso-ci-2c2902/credentials
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 15m
+  dependsOn:
+  - name: openbao
+  - name: external-secrets
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: gitlab-runner
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 15s
+  path: ./flux/clusters/20261101-235338-infra-eso-ci-2c2902/gitlab-runner
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 15m
+  dependsOn:
+  - name: credentials
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: gitlab-runner
+    namespace: ci
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: renovate
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 15s
+  path: ./flux/clusters/20261101-235338-infra-eso-ci-2c2902/renovate
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 15m
+  dependsOn:
+  - name: credentials
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: renovate
+    namespace: ci

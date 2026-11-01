@@ -1,0 +1,49 @@
+# Isolated validation only; create Secret ui/redis-validation first.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-validation
+  namespace: ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-validation
+  template:
+    metadata:
+      labels:
+        app: redis-validation
+    spec:
+      containers:
+      - name: redis
+        image: redis:8.2.2-alpine
+        command: [sh, -c]
+        args:
+        - exec redis-server --requirepass "$REDIS_PASSWORD" --appendonly yes
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redis-validation
+              key: password
+        ports:
+        - containerPort: 6379
+        resources:
+          requests:
+            memory: 64Mi
+            cpu: 50m
+          limits:
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-validation
+  namespace: ui
+spec:
+  selector:
+    app: redis-validation
+  ports:
+  - port: 6379
+    targetPort: 6379
+

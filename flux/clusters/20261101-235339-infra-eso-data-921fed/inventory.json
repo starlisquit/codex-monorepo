@@ -1,0 +1,35 @@
+{
+  "mode": "data",
+  "opt_ins": [
+    "databases/clickhouse/cluster/opt-in/external-secrets",
+    "backup/velero/opt-in/external-secrets"
+  ],
+  "credentials": [
+    {
+      "namespace": "databases",
+      "target": "clickhouse-auth",
+      "data": [
+        {
+          "secretKey": "password",
+          "remoteRef": {
+            "key": "infrastructure/databases/clickhouse/auth",
+            "property": "password"
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "velero",
+      "target": "velero-cloud-credentials",
+      "data": [
+        {
+          "secretKey": "cloud",
+          "remoteRef": {
+            "key": "infrastructure/velero/velero/s3",
+            "property": "cloud"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarqube-postgresql
+  namespace: quality
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sonarqube-postgresql
+  template:
+    metadata:
+      labels:
+        app: sonarqube-postgresql
+    spec:
+      containers:
+      - name: sonarqube-postgresql
+        image: postgres:18.6
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: sonarqube
+        - name: POSTGRES_USER
+          value: sonarqube
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: sonarqube-database
+              key: password
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            memory: 512Mi
+        volumeMounts:
+        - name: pgdata
+          mountPath: /var/lib/postgresql
+      volumes:
+      - name: pgdata
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarqube-postgresql
+  namespace: quality
+spec:
+  selector:
+    app: sonarqube-postgresql
+  ports:
+  - port: 5432
+    targetPort: 5432
