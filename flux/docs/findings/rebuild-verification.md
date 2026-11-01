@@ -1,5 +1,9 @@
 # Fresh platform rebuild — 2026-11-01
 
+This is historical evidence from the initial successful bootstrap. The play was
+later destroyed after an unfinished PKI migration; see the
+[last-run report](pki-last-run.md) for its final state.
+
 The previous full-platform play `6ae6c40156e9b785c3220466` was destroyed at the
 user's request. This was a fresh bootstrap, with no application data migration.
 The separate original small `iximiuz-labs` play was retained.
@@ -21,7 +25,7 @@ was subsequently reconciled by its Flux HelmRelease.
 
 Both checked-in OpenBao Python helpers ran successfully. The first initialized
 the Raft cluster once and unsealed all three replicas; the second configured the
-scoped lab Kubernetes auth role and verification value. Recovery material remains
+scoped lab Kubernetes auth role and verification value. At that check, recovery material was retained
 in `/home/laborant/.config/codex-platform/openbao-init.json` with mode `0600`;
 its contents were neither printed nor committed. Retain it independently before
 discarding this playground.

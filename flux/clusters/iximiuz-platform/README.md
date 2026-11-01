@@ -7,8 +7,13 @@ suspended for other clusters; this overlay enables each selected release.
 
 ## Playground
 
+The recorded full-platform play was **destroyed on 2026-11-01**. No replacement
+is running from this task. The latest PKI migration was incomplete; read the
+[last-run report](../../docs/findings/pki-last-run.md) before another bootstrap.
+
+
 - Playground: `codex-platform-243e14fd` (base: `k8s-omni`).
-- Play: <https://labs.iximiuz.com/playgrounds/codex-platform-243e14fd/6ae6cfaf789ac234e32e00bf>.
+- Historical play (destroyed): <https://labs.iximiuz.com/playgrounds/codex-platform-243e14fd/6ae6cfaf789ac234e32e00bf>.
 - `cplane-01`: 4 vCPUs and 6 GiB requested RAM.
 - `node-01` and `node-02`: 2 vCPUs and 4608 MiB requested RAM each.
 - Every Kubernetes node has a 20 GiB system disk and raw 25 GiB `/dev/vdb`.

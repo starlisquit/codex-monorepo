@@ -15,6 +15,8 @@ API address, or cluster domain, edit the corresponding references before applyin
 
 ## Operations and recovery
 
+- [Central PKI configuration, migration limits, and Vault/OpenBao integration](operations/pki.md)
+
 - [Container log collection and dashboard verification](operations/container-logging.md)
 
 - [Ingress NetworkPolicy templates and enforcement test](../policies/network/README.md)
