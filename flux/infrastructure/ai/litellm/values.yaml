@@ -1,0 +1,38 @@
+fullnameOverride: litellm
+replicaCount: 1
+numWorkers: 1
+image:
+  pullPolicy: IfNotPresent
+masterkeySecretName: litellm-auth
+masterkeySecretKey: master-key
+environmentSecrets:
+- litellm-provider-credentials
+serviceAccount:
+  create: true
+  automount: false
+service:
+  type: ClusterIP
+  port: 4000
+db:
+  deployStandalone: false
+  useExisting: false
+redis:
+  enabled: false
+migrationJob:
+  enabled: false
+proxy_config:
+  model_list:
+  - model_name: gpt-4o-mini
+    litellm_params:
+      model: openai/gpt-4o-mini
+      api_key: os.environ/OPENAI_API_KEY
+  general_settings:
+    master_key: os.environ/PROXY_MASTER_KEY
+ingress:
+  enabled: false
+resources:
+  requests:
+    cpu: 100m
+    memory: 512Mi
+  limits:
+    memory: 2Gi

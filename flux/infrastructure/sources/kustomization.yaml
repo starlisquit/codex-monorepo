@@ -24,3 +24,5 @@ resources:
 - gitlab.yaml
 - sonarqube.yaml
 - renovate.yaml
+- nginx.yaml
+- litellm.yaml

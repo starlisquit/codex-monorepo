@@ -1,0 +1,22 @@
+# LiteLLM lab-only override: route only to the disposable local test backend.
+nodeSelector:
+  kubernetes.io/hostname: node-02
+proxy_config:
+  model_list:
+  - model_name: validation-model
+    litellm_params:
+      model: openai/validation-model
+      api_base: http://mock-openai.ai.svc.cluster.local:8080/v1
+      api_key: os.environ/OPENAI_API_KEY
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+  - host: litellm.validation.local
+    paths:
+    - path: /
+      pathType: Prefix
+  tls:
+  - secretName: litellm-validation-tls
+    hosts:
+    - litellm.validation.local

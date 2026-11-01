@@ -74,6 +74,6 @@ full-platform acceptance queue is not completed by this focused test.
 
 ## Teardown
 
-The user requested findings publication and immediate destruction of this lab.
-Commit and verify these findings on both remotes before destroying the playground;
-append the confirmed destruction outcome afterward. Do not retain a stopped play.
+Findings were committed as `40a70b1` and verified on both remotes before teardown.
+At 12:49:47 Europe/Istanbul / 09:49:47 UTC, the destroy API returned `ok: true`
+for play `6ae704a6789ac234e3344799`. It was destroyed, not stopped or retained.
