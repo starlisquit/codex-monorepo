@@ -1,0 +1,110 @@
+default:
+  envOverrides:
+  - name: OTEL_METRICS_EXPORTER
+    value: otlp
+  - name: OTEL_TRACES_EXPORTER
+    value: otlp
+  - name: OTEL_LOGS_EXPORTER
+    value: otlp
+  - name: OTEL_METRIC_EXPORT_INTERVAL
+    value: '10000'
+  - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+    value: cumulative
+  - name: OTEL_RESOURCE_ATTRIBUTES
+    value: service.version={{ .Chart.AppVersion }},service.namespace=opentelemetry-demo,deployment.environment.name=demo
+components:
+  load-generator:
+    enabled: true
+    envOverrides:
+    - name: LOCUST_USERS
+      value: '5'
+    - name: LOCUST_AUTOSTART
+      value: 'true'
+prometheus:
+  enabled: false
+grafana:
+  enabled: false
+jaeger:
+  enabled: false
+opensearch:
+  enabled: false
+otel-ebpf-profiler:
+  enabled: false
+opentelemetry-collector:
+  enabled: true
+  mode: deployment
+  replicaCount: 1
+  presets:
+    hostMetrics:
+      enabled: false
+    kubeletMetrics:
+      enabled: false
+    clusterMetrics:
+      enabled: false
+  ports:
+    metrics:
+      enabled: false
+    prometheus:
+      enabled: true
+      containerPort: 9464
+      servicePort: 9464
+      protocol: TCP
+    jaeger-compact:
+      enabled: false
+    jaeger-grpc:
+      enabled: false
+    jaeger-thrift:
+      enabled: false
+    zipkin:
+      enabled: false
+    otlp:
+      hostPort: null
+    otlp-http:
+      hostPort: null
+  serviceMonitor:
+    enabled: true
+    metricsEndpoints:
+    - port: prometheus
+      interval: 15s
+  config:
+    receivers:
+      jaeger: null
+      zipkin: null
+    exporters:
+      prometheus:
+        endpoint: 0.0.0.0:9464
+        enable_open_metrics: true
+        resource_to_telemetry_conversion:
+          enabled: true
+      otlp_http/victorialogs:
+        logs_endpoint: http://vlsingle-victoria-metrics-k8s-stack.observability.svc.cluster.local:9428/insert/opentelemetry/v1/logs
+      otlp_http/victoriatraces:
+        traces_endpoint: http://vtsingle-victoria-metrics-k8s-stack.observability.svc.cluster.local:10428/insert/opentelemetry/v1/traces
+      otlp_grpc/jaeger: null
+      otlp_http/prometheus: null
+      opensearch: null
+      otlp_grpc/firepit: null
+    connectors:
+      span_metrics:
+        dimensions:
+        - name: rpc.system
+        - name: rpc.system.name
+        - name: rpc.service
+        - name: rpc.method
+        - name: rpc.grpc.status_code
+        - name: rpc.response.status_code
+    service:
+      pipelines:
+        traces:
+          receivers:
+          - otlp
+          exporters:
+          - otlp_http/victoriatraces
+          - span_metrics
+        metrics:
+          exporters:
+          - prometheus
+        logs:
+          exporters:
+          - otlp_http/victorialogs
+        profiles: null

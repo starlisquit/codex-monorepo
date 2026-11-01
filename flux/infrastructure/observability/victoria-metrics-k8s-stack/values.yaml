@@ -1,5 +1,3 @@
-# Keep the bundled Grafana; let Grafana Operator manage dashboards and datasources.
-# Install Grafana Operator CRDs before reconciling this release.
 grafana:
   enabled: true
   forceDeployDatasource: true
@@ -8,6 +6,9 @@ grafana:
       enabled: false
     datasources:
       enabled: false
+  plugins:
+  - victoriametrics-metrics-datasource
+  - victoriametrics-logs-datasource
 defaultDashboards:
   enabled: true
   grafanaOperator:
@@ -57,3 +58,21 @@ kube-state-metrics:
   enabled: true
   vmScrape:
     enabled: true
+vlsingle:
+  enabled: true
+  spec:
+    retentionPeriod: 7d
+    storage:
+      storageClassName: ceph-block
+      resources:
+        requests:
+          storage: 10Gi
+vtsingle:
+  enabled: true
+  spec:
+    retentionPeriod: 7d
+    storage:
+      storageClassName: ceph-block
+      resources:
+        requests:
+          storage: 10Gi

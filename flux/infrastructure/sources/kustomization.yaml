@@ -16,3 +16,4 @@ resources:
 - headlamp.yaml
 - flux-operator.yaml
 - keda.yaml
+- opentelemetry.yaml

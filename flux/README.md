@@ -20,6 +20,8 @@ It is a starting scaffold, not a deployment-ready cluster configuration.
 - `gitops/flux-operator/`: Flux Operator, its bundled Web UI, and a FluxInstance;
   see its README for operator-first bootstrap on a new cluster.
 - `autoscaling/keda/`: KEDA monitoring and an excluded VictoriaMetrics scaling example.
+- `demo/opentelemetry-demo/`: instrumented application, generated traffic, and a
+  Grafana dashboard feeding metrics/logs/traces into the existing VM stack.
 - `ui/headlamp/`: Kubernetes web UI with its own suspended HelmRelease.
 - `policy/kyverno/`: Kyverno engine only; each cluster defines its own policies.
 
@@ -30,6 +32,7 @@ It is a starting scaffold, not a deployment-ready cluster configuration.
    supported chart values before enabling any release.
 2. Create the target namespaces: `observability`, `rook-ceph`, `databases`,
    `kyverno`, `certificates`, `secrets`, `broker`, `ui`, `autoscaling`, and `applications` as needed.
+   The demo component creates its own `demo` namespace.
    Cilium targets the existing `kube-system` namespace; sources use `flux-system`.
 3. Build the desired component with `kustomize build <component-directory>`.
    Kustomize generates a stable values ConfigMap; `valuesFrom` connects it to
@@ -77,10 +80,11 @@ unseal, backups, and authentication still need configuration (see
 [monitoring and OpenBao notes](MONITORING.md)). External Secrets needs
 a configured SecretStore or ClusterSecretStore.
 
-The original single `victoria-metrics-k8s-stack` release is retained. The pinned
-chart supports logs and traces components through its operator; review its values
-for the components you want. This change does not enable additional logs or traces
-servers. Configure the requested traces agent's destination explicitly.
+The single `victoria-metrics-k8s-stack` release now enables its operator-managed
+VictoriaLogs and VictoriaTraces backends for the full OpenTelemetry demo. Each
+uses a 10Gi `ceph-block` volume with seven-day retention. The existing traces agent
+is configured to forward to that VictoriaTraces backend; the demo Collector sends
+OTLP directly. See the [demo guide](infrastructure/demo/opentelemetry-demo/README.md).
 
 The stack's bundled Grafana remains enabled. Its `extraObjects` creates an external
 Grafana Operator binding named `platform`, labeled `dashboards: platform`, pointing
@@ -122,11 +126,10 @@ included under `infrastructure/policy/`.
 
 ## Validation
 
-All 31 Kustomize builds and all 19 pinned Helm charts were rendered successfully
+All 32 Kustomize builds and all 20 pinned Helm charts were rendered successfully
 using a Kubernetes 1.35 validation profile. Cilium used a test-only API endpoint,
-and the traces agent used a test-only `remoteWrite[0].url`; neither test address
-is saved in these manifests. The traces agent cannot render as committed until
-you supply its real `remoteWrite` destination. The Grafana and GrafanaDatasource
+which is not saved in these manifests. The traces agent now has a real VTSingle
+remoteWrite destination. The Grafana and GrafanaDatasource
 resources were also validated against the pinned Grafana Operator CRD schemas.
 
 Run `kustomize build` for each directory containing `kustomization.yaml`.
@@ -160,6 +163,6 @@ These are chart versions, not application image versions.
 | grafana-operator | `5.25.0` |
 | headlamp | `0.46.0` |
 | prometheus-operator-crds | `32.0.2` |
-
 | flux-operator | `0.62.1` |
 | keda | `2.21.0` |
+| opentelemetry-demo | `0.42.6` |

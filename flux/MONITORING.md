@@ -38,9 +38,10 @@ continues through the VM stack's built-in native scrape integrations.
 | External Secrets | Metrics Services and ServiceMonitors for the controller, webhook, and certificate controller |
 | OpenBao | Server telemetry and ServiceMonitor, plus injector metrics and a separate ServiceMonitor |
 | Grafana Operator | ServiceMonitor |
-| VictoriaTraces agent | ServiceMonitor; a real remoteWrite destination is still required |
+| VictoriaTraces agent | ServiceMonitor and configured VTSingle remoteWrite destination |
 | Flux Operator | Operator metrics ServiceMonitor (UI is bundled in the same chart) |
 | KEDA | Operator, metrics adapter, and admission-webhook ServiceMonitors; workload scaling can query the VM API |
+| OpenTelemetry Demo | OTLP SDK and span metrics exposed by its Collector and collected through a ServiceMonitor |
 | Blackbox Exporter | Exporter self-monitoring and a probe of the existing VictoriaMetrics `/health` endpoint |
 
 Rook creates Ceph and CSI runtime resources after reconciliation; their service
@@ -111,8 +112,8 @@ before switching them to HTTPS. Never copy a CA or server private key to clients
 ## Validation and deployment checks
 
 All chart renders use a Kubernetes 1.35 validation profile with the monitoring CRDs
-advertised to Helm. Cilium's API address and the traces agent's remoteWrite URL use
-test-only overrides during rendering, not committed destination values. Monitors
+advertised to Helm. Cilium's API address uses a test-only override during
+rendering. The traces agent now uses the configured VTSingle destination. Monitors
 are checked against the pinned CRD schemas and static Service port references.
 The structured OpenBao Raft configuration is checked against the rendered JSON,
 StatefulSet, and persistent volume settings.
@@ -123,3 +124,11 @@ initialization/unseal, exporter connectivity, runtime Ceph/CSI services, namespa
 access, and network policies still require live-cluster validation. Network
 policies are owned by each consuming cluster; permit the actual metrics ports
 when restricting access to infrastructure namespaces.
+
+## Full OpenTelemetry demo
+
+The [demo](infrastructure/demo/opentelemetry-demo/README.md) explicitly emits
+metrics, logs, and traces. Its Collector exposes Prometheus metrics for VMAgent
+and sends OTLP logs/traces directly to the stack's newly enabled VLSingle and
+VTSingle. Those backends and their Grafana datasources stay within the existing
+VM stack release; no separate backend chart releases are introduced.
