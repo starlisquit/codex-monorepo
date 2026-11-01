@@ -124,5 +124,7 @@ runtime status for the primitives tested here. Autoscaling remains with KEDA.
 
 ## Teardown
 
-Publish these findings and configuration to both remotes before destruction.
-Confirmed destruction will be recorded after the API returns success.
+Findings and configuration were published to both remotes at identical commit
+`464abbd25387f666c06230cba9ad431a1d04ed0a` before destruction. The destroy API
+returned `ok: true` at 20:54:06 Europe/Istanbul (17:54:06 UTC). The playground
+was destroyed, not stopped. A subsequent current-play listing was empty.

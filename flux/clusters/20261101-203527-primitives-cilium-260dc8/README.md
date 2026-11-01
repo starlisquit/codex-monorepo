@@ -43,3 +43,11 @@ listener and every route, not just the Gateway-level Programmed condition.
 `verify-rbac.py` uses actual short-lived ServiceAccount tokens in memory; it never
 prints or saves them. `verify-cronjob.py` records scheduler completion and Forbid
 skip events; runtime TLS keys remain only in the disposable playground.
+
+## Completed
+
+All five protocols, 21 RBAC checks, CronJob execution/concurrency and Deployment
+security checks passed. See [findings](../../docs/findings/primitives-cilium-2026-11-01.md).
+Findings were pushed to both remotes before the playground was destroyed at
+20:54:06 Europe/Istanbul on 2026-11-01. This folder is retained evidence; do not
+reuse it for a new playground.
