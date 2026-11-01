@@ -59,8 +59,9 @@ server template or weakens its bootstrap checks. Scanner image digest:
 
 ## Teardown protocol
 
-Findings and updates are committed and pushed to both remotes before this
-focused playground is destroyed. The temporary GitLab runner and validation
-branch have been removed. Playground destruction is the next operation after
-publishing this report; its confirmed outcome will be appended afterward.
-Do not stop and retain an unused playground.
+Findings and updates were committed as `afbd35b` and verified on both remotes
+before destroying the playground. The temporary GitLab runner and validation
+branch were removed. At 12:17:59 Europe/Istanbul / 09:17:59 UTC, the destroy API
+returned `ok: true` for play `6ae6ffdf789ac234e333b048`; subsequent listing showed
+no running plays. It was destroyed, not retained in a stopped state. The earlier
+full-platform playground had already been destroyed at the user's request.
