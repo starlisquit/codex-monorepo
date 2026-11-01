@@ -45,7 +45,7 @@ unfinished work separately, including the paused API slowness investigation.
 - `proxy/nginx/`: official open-source NGINX Ingress Controller with an explicit ingress class and streaming-friendly proxy settings.
 - `broker/nui/`: official experimental NUI chart with pinned image and startup compatibility fixes; real browser workflows verified (see findings).
 - `ui/redisinsight/`: official Redis manifests; Redis publishes no official RedisInsight Helm chart.
-- `ai/litellm/`: official LiteLLM chart with external credential Secrets and a database-free proxy default.
+- `ai/litellm/`: official LiteLLM chart with a database-free default and an opt-in CNPG PostgreSQL Cluster plus TLS/migration integration.
 
 The CI/quality templates require their documented credential Secrets and, for
 SonarQube, a database. They are opt-in components for consuming cluster overlays;
@@ -88,7 +88,8 @@ Every shared HelmRelease natively references an optional
 `<HelmRelease-name>-cluster-values` ConfigMap in its own namespace, using key
 `values.yaml`. Generate that ConfigMap with a stable name and watch label when
 cluster overrides are needed; no `valuesFrom` patch is required. Flux merges
-shared values first, cluster values second, and inline `spec.values` last.
+shared values first, optional feature layers next, cluster values after those,
+and inline `spec.values` last.
 Missing optional ConfigMaps are ignored; missing keys, invalid YAML and other
 errors still fail. Removing the ConfigMap drops that override layer.
 

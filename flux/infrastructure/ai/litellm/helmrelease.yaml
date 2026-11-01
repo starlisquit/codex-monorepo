@@ -11,6 +11,10 @@ spec:
     name: litellm-values
     valuesKey: values.yaml
   - kind: ConfigMap
+    name: litellm-postgresql-values
+    valuesKey: values.yaml
+    optional: true
+  - kind: ConfigMap
     name: litellm-cluster-values
     valuesKey: values.yaml
     optional: true

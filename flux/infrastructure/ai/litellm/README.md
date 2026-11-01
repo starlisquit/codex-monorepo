@@ -35,10 +35,11 @@ not a verified persistent virtual-key, budget, spend-history or admin-UI deploym
 In this database-free mode, missing API keys returned 401 and an invalid key
 returned 400 with an error (the database-backed virtual-key fallback is unavailable).
 Neither response exposed the model list or reached the upstream fixture.
-To enable database-backed features, configure an external dedicated PostgreSQL
-database and credential Secret, persistent encryption/salt key custody, and schema
-migrations. An excluded example is provided at `opt-in/postgresql/values.example.yaml`; its connection and recovery behavior
-must be verified in the consuming environment. No database credentials belong in Git.
+For database-backed features, the [PostgreSQL opt-in](opt-in/postgresql/README.md)
+provides a dedicated CloudNativePG Cluster and a separately selectable TLS/migration
+integration. Deploy the Cluster first and wait for readiness, then enable the
+integration. Supply a persistent salt-key alongside master-key in litellm-auth.
+The base template remains database-free. No database credentials belong in Git.
 
 ```sh
 kustomize build flux/infrastructure/ai/litellm

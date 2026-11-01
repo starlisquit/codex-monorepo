@@ -2,6 +2,8 @@
 
 > The namespace bundle was subsequently split into selectable bases; see
 > [selective namespaces and sources](selective-foundation-2026-11-01.md).
+> LiteLLM’s values-only PostgreSQL example was later replaced with a
+> [deployable Cluster and integration](litellm-postgresql-2026-11-01.md).
 
 Optional additions now live under their owning resource's `opt-in/` directory.
 All individual `namespace.yaml` files have been removed from the templates;

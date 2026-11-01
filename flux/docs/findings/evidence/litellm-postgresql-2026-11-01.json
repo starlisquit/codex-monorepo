@@ -1,0 +1,162 @@
+{
+  "play_id": "6ae7603746471e132687f4f5",
+  "created_at_utc": "2026-11-01T15:52:23Z",
+  "initial_api": [
+    {
+      "name": "LiteLLM DB-backed readiness",
+      "passed": true
+    },
+    {
+      "name": "Invalid key rejected in DB mode",
+      "passed": true
+    },
+    {
+      "name": "DB-backed virtual key generated",
+      "passed": true
+    },
+    {
+      "name": "Generated key authenticates",
+      "passed": true
+    }
+  ],
+  "prisma_tls": [
+    {
+      "name": "Prisma strict TLS connection succeeds",
+      "passed": true
+    },
+    {
+      "name": "App role is dedicated litellm user",
+      "passed": true
+    },
+    {
+      "name": "Prisma migrations present",
+      "passed": true,
+      "count": 213
+    },
+    {
+      "name": "Untrusted database CA rejected",
+      "passed": true
+    },
+    {
+      "name": "Database hostname mismatch rejected",
+      "passed": true
+    }
+  ],
+  "recovery": {
+    "checks": [
+      {
+        "name": "Proxy Pod replaced",
+        "passed": true
+      },
+      {
+        "name": "Original primary Pod replaced",
+        "passed": true
+      },
+      {
+        "name": "CNPG promoted a replica",
+        "passed": true
+      },
+      {
+        "name": "All three PostgreSQL instances recovered",
+        "passed": true
+      },
+      {
+        "name": "Proxy DB readiness recovered",
+        "passed": true
+      },
+      {
+        "name": "Virtual key survives proxy restart and PostgreSQL failover",
+        "passed": true
+      },
+      {
+        "name": "Virtual key record persisted in PostgreSQL",
+        "passed": true
+      }
+    ],
+    "before": {
+      "app_pod": "litellm-665c4d4667-vtw77",
+      "app_uid": "b9adfd2a-8617-4081-865e-aef997930193",
+      "primary_pod": "litellm-db-1",
+      "primary_uid": "23d3dbeb-0283-4dd6-8fec-2627adc2dc83"
+    },
+    "after": {
+      "app_pod": "litellm-665c4d4667-c9xhx",
+      "app_uid": "2a125fb2-c02c-4271-b831-81d738d04855",
+      "primary_pod": "litellm-db-2",
+      "original_primary_new_uid": "e3975edd-5827-4891-a989-e673e3302c0a"
+    }
+  },
+  "chart": "litellm-helm 1.106.6",
+  "operator_chart": "cloudnative-pg 0.29.1",
+  "lab_storage_override": {
+    "storageClass": "local-path",
+    "size": "1Gi"
+  },
+  "integration_values_sha256": "126279464c12d01c1c91010b7bf61d09ab32a0bb7b588044ed0b04e39de18c0b",
+  "initial_migration_1Gi_limit": "OOMKilled",
+  "final_migration_2Gi_limit": "completed",
+  "provider_inference_calls": 0,
+  "postgresql": {
+    "image": "ghcr.io/cloudnative-pg/postgresql:18.6-system-trixie",
+    "instances": 3,
+    "readyInstances": 3,
+    "currentPrimary": "litellm-db-2"
+  },
+  "pods": [
+    {
+      "name": "litellm-665c4d4667-c9xhx",
+      "uid": "2a125fb2-c02c-4271-b831-81d738d04855",
+      "containers": [
+        {
+          "imageID": "ghcr.io/berriai/litellm@sha256:37e2dafb088a7723beb998590682957386dfc83ffea1848486f8e0e5cfac0b06",
+          "ready": true,
+          "restartCount": 0
+        }
+      ]
+    },
+    {
+      "name": "litellm-db-1",
+      "uid": "e3975edd-5827-4891-a989-e673e3302c0a",
+      "containers": [
+        {
+          "imageID": "ghcr.io/cloudnative-pg/postgresql@sha256:348997438269fddc0e2825e00594367ad61751adb08a7698a0a14f793b0dc2ce",
+          "ready": true,
+          "restartCount": 0
+        }
+      ]
+    },
+    {
+      "name": "litellm-db-2",
+      "uid": "1436d46c-befc-461f-917c-ca1dbe67806c",
+      "containers": [
+        {
+          "imageID": "ghcr.io/cloudnative-pg/postgresql@sha256:348997438269fddc0e2825e00594367ad61751adb08a7698a0a14f793b0dc2ce",
+          "ready": true,
+          "restartCount": 0
+        }
+      ]
+    },
+    {
+      "name": "litellm-db-3",
+      "uid": "b6fa1e70-e2a6-48c5-b093-51b6a0a77297",
+      "containers": [
+        {
+          "imageID": "ghcr.io/cloudnative-pg/postgresql@sha256:348997438269fddc0e2825e00594367ad61751adb08a7698a0a14f793b0dc2ce",
+          "ready": true,
+          "restartCount": 0
+        }
+      ]
+    },
+    {
+      "name": "litellm-pg-tls-check",
+      "uid": "52d02597-f572-4645-91a6-cd1cc25dbd23",
+      "containers": [
+        {
+          "imageID": "ghcr.io/berriai/litellm@sha256:37e2dafb088a7723beb998590682957386dfc83ffea1848486f8e0e5cfac0b06",
+          "ready": false,
+          "restartCount": 0
+        }
+      ]
+    }
+  ]
+}
