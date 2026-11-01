@@ -8,7 +8,8 @@ Optional objects live in the owning primitive's `opt-in/` folder.
 
 Available:
 
-- [`deployment`](deployment): stateless HTTP workload, optional internal Service.
+- [`deployment`](deployment): stateless HTTP workload, optional internal Service,
+  PodMonitor or ServiceMonitor.
 - [`cronjob`](cronjob): scheduled task with bounded retries and runtime.
 - [`gateway`](gateway): Gateway with individually selectable HTTP, gRPC, TLS,
   TCP and UDP routes/listeners.

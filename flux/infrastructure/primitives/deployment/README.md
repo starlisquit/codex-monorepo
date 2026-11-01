@@ -48,6 +48,24 @@ In Flux, reconcile the namespace first and health-check the resulting Deployment
 (or use `wait: true`). Optional Service selects the Deployment over its named
 HTTP port. No traffic is exposed outside the cluster.
 
+## Monitoring opt-ins
+
+Keep workload-specific scrape definitions here; monitoring CRDs, operators and
+collectors belong under `infrastructure/observability`.
+
+- [`opt-in/podmonitor`](opt-in/podmonitor): scrape the Pods directly; no Service
+  required.
+- [`opt-in/servicemonitor`](opt-in/servicemonitor): scrape through an included,
+  dedicated internal metrics Service; the HTTP Service opt-in is independent.
+
+Both add a named `metrics` container port (8081) and default to `/metrics`, 30s
+interval and 10s timeout. They select targets in the consuming namespace, and
+custom Kustomize selector mappings keep them aligned with consumer label changes.
+Normally choose one monitor per workload. The app must serve Prometheus metrics;
+the starter HTTP echo image does not. Select monitoring CRDs and a collector
+separately, and gate these resources on CRD readiness in Flux. See each component's
+README for composition examples and collection prerequisites.
+
 Validation: repository Kustomize builds and a two-application composition check
 cover object names, namespace transforms and selector isolation, including the
 optional Service. The primitive was also deployed with a Python protocol fixture, verifying
