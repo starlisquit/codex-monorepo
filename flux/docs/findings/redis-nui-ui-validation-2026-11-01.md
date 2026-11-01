@@ -145,5 +145,9 @@ so production connection settings must still match their actual backends.
 
 ## Publication and teardown
 
-Findings and implementation will be pushed to both remotes before destruction;
-confirmed teardown will be recorded after the destroy API succeeds.
+Findings, fixes and browser evidence were published as `c3e1918`; both GitHub
+and GitLab main commit IDs were verified equal before teardown. The explicit
+destroy API returned `ok: true` for `6ae71991789ac234e3366509` at
+2026-11-01 11:07:40 UTC (14:07:40 Europe/Istanbul). The playground was destroyed,
+not stopped; the immediate listing reported it non-running while deletion
+propagated.
