@@ -33,7 +33,10 @@ advertisement was not configured or tested. No cloud load balancer is allocated.
 
 The initial host-network attempt passed HTTP/gRPC/TLS but explicitly rejected
 TCP/UDP as unsupported. After changing host-network mode, restarting the Cilium
-operator was required to pick up its new startup configuration. Fresh bootstrap
+operator and agents was required to pick up their startup configuration. The
+generated Service retained the old `service.cilium.io/node-selector` annotation;
+it was explicitly removed so traffic also worked from a newly scheduled Pod on
+another node. Fresh bootstrap
 uses LoadBalancer mode from the outset. Gateway readiness now checks every
 listener and every route, not just the Gateway-level Programmed condition.
 

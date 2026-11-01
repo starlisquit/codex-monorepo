@@ -4,5 +4,7 @@
   "timezone": "Europe/Istanbul",
   "purpose": "primitives-cilium",
   "flux_path": "./flux/clusters/20261101-203527-primitives-cilium-260dc8",
-  "status": "preparing"
+  "status": "verified",
+  "tested_revision": "aee8dc6737e7b4fa08f5c47304ccfbe013b71ed9",
+  "findings": "flux/docs/findings/primitives-cilium-2026-11-01.md"
 }

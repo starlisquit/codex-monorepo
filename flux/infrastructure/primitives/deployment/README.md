@@ -50,4 +50,9 @@ HTTP port. No traffic is exposed outside the cluster.
 
 Validation: repository Kustomize builds and a two-application composition check
 cover object names, namespace transforms and selector isolation, including the
-optional Service. This primitive has not been deployed in a playground.
+optional Service. The primitive was also deployed with a Python protocol fixture, verifying
+readiness, rollout, non-root execution, read-only root filesystem and no mounted
+API token. The default starter image itself was not exercised.
+
+See [native Gateway API runtime findings](../../../docs/findings/primitives-cilium-2026-11-01.md)
+for the exact versions, fixture changes, assertions and limits.

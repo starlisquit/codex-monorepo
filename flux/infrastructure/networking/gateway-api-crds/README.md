@@ -2,7 +2,8 @@
 
 Vendored upstream Gateway API Standard channel **v1.6.3** core definitions:
 GatewayClass, Gateway, HTTPRoute, GRPCRoute, BackendTLSPolicy and ReferenceGrant.
-This matches the documented Gateway API version for Cilium 1.20.4.
+This matches the documented Gateway API version for Cilium 1.20.4. That controller also requires the TLSRoute CRD; select the
+L4 opt-in with Cilium Gateway API even when no TLSRoute instance is created.
 Select this directory once per cluster and wait for CRDs to be Established
 before enabling Cilium Gateway API support. No controller is installed here.
 

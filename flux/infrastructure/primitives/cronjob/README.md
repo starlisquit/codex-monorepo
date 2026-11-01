@@ -46,5 +46,8 @@ kubectl -n demo delete job maintenance-check
 
 Suspend scheduling with `spec.suspend: true` for maintenance; this does not stop
 Jobs already running. A Flux readiness check on the CronJob alone does not prove
-that its task completed. Build/composition checks have passed; runtime execution
-has not been verified in a playground.
+that its task completed. Runtime verification passed: the starter Job completed, and a minute-schedule
+wrapper demonstrated successful scheduling plus a Forbid skip event.
+
+See [native Gateway API runtime findings](../../../docs/findings/primitives-cilium-2026-11-01.md)
+for the exact versions, fixture changes, assertions and limits.

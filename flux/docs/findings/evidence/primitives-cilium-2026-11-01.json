@@ -1,0 +1,766 @@
+{
+  "play_id": "6ae7785f7f32053bde260dc8",
+  "run_path": "flux/clusters/20261101-203527-primitives-cilium-260dc8",
+  "captured_at": "2026-11-01T17:51:42.153337+00:00",
+  "tested_revision": "aee8dc6737e7b4fa08f5c47304ccfbe013b71ed9",
+  "api_server": "v1.37.2",
+  "flux": [
+    {
+      "name": "cilium",
+      "revision": "main@sha1:aee8dc6737e7b4fa08f5c47304ccfbe013b71ed9",
+      "conditions": {
+        "Ready": {
+          "status": "True",
+          "reason": "ReconciliationSucceeded",
+          "observedGeneration": 1
+        }
+      }
+    },
+    {
+      "name": "flux-system",
+      "revision": "main@sha1:aee8dc6737e7b4fa08f5c47304ccfbe013b71ed9",
+      "conditions": {
+        "Ready": {
+          "status": "True",
+          "reason": "ReconciliationSucceeded",
+          "observedGeneration": 1
+        }
+      }
+    },
+    {
+      "name": "foundation",
+      "revision": "main@sha1:aee8dc6737e7b4fa08f5c47304ccfbe013b71ed9",
+      "conditions": {
+        "Ready": {
+          "status": "True",
+          "reason": "ReconciliationSucceeded",
+          "observedGeneration": 1
+        }
+      }
+    },
+    {
+      "name": "gateway-ip-pool",
+      "revision": "main@sha1:aee8dc6737e7b4fa08f5c47304ccfbe013b71ed9",
+      "conditions": {
+        "Ready": {
+          "status": "True",
+          "reason": "ReconciliationSucceeded",
+          "observedGeneration": 1
+        }
+      }
+    },
+    {
+      "name": "gateway-routes",
+      "revision": "main@sha1:aee8dc6737e7b4fa08f5c47304ccfbe013b71ed9",
+      "conditions": {
+        "Ready": {
+          "status": "True",
+          "reason": "ReconciliationSucceeded",
+          "observedGeneration": 3
+        }
+      }
+    },
+    {
+      "name": "primitive-cronjobs",
+      "revision": "main@sha1:aee8dc6737e7b4fa08f5c47304ccfbe013b71ed9",
+      "conditions": {
+        "Ready": {
+          "status": "True",
+          "reason": "ReconciliationSucceeded",
+          "observedGeneration": 1
+        }
+      }
+    },
+    {
+      "name": "primitive-rbac",
+      "revision": "main@sha1:aee8dc6737e7b4fa08f5c47304ccfbe013b71ed9",
+      "conditions": {
+        "Ready": {
+          "status": "True",
+          "reason": "ReconciliationSucceeded",
+          "observedGeneration": 1
+        }
+      }
+    },
+    {
+      "name": "protocol-backends",
+      "revision": "main@sha1:aee8dc6737e7b4fa08f5c47304ccfbe013b71ed9",
+      "conditions": {
+        "Ready": {
+          "status": "True",
+          "reason": "ReconciliationSucceeded",
+          "observedGeneration": 1
+        }
+      }
+    }
+  ],
+  "gateway": {
+    "name": "edge-application-gateway",
+    "generation": 1,
+    "address": [
+      {
+        "type": "IPAddress",
+        "value": "172.16.0.200"
+      }
+    ],
+    "conditions": {
+      "Accepted": {
+        "status": "True",
+        "reason": "Accepted",
+        "observedGeneration": 1
+      },
+      "Programmed": {
+        "status": "True",
+        "reason": "Programmed",
+        "observedGeneration": 1
+      }
+    },
+    "listeners": [
+      {
+        "name": "http",
+        "attachedRoutes": 1,
+        "conditions": {
+          "ResolvedRefs": {
+            "status": "True",
+            "reason": "ResolvedRefs",
+            "observedGeneration": 1
+          },
+          "Accepted": {
+            "status": "True",
+            "reason": "Accepted",
+            "observedGeneration": 1
+          },
+          "Programmed": {
+            "status": "True",
+            "reason": "Programmed",
+            "observedGeneration": 1
+          }
+        }
+      },
+      {
+        "name": "grpc",
+        "attachedRoutes": 1,
+        "conditions": {
+          "ResolvedRefs": {
+            "status": "True",
+            "reason": "ResolvedRefs",
+            "observedGeneration": 1
+          },
+          "Accepted": {
+            "status": "True",
+            "reason": "Accepted",
+            "observedGeneration": 1
+          },
+          "Programmed": {
+            "status": "True",
+            "reason": "Programmed",
+            "observedGeneration": 1
+          }
+        }
+      },
+      {
+        "name": "tls",
+        "attachedRoutes": 1,
+        "conditions": {
+          "ResolvedRefs": {
+            "status": "True",
+            "reason": "ResolvedRefs",
+            "observedGeneration": 1
+          },
+          "Accepted": {
+            "status": "True",
+            "reason": "Accepted",
+            "observedGeneration": 1
+          },
+          "Programmed": {
+            "status": "True",
+            "reason": "Programmed",
+            "observedGeneration": 1
+          }
+        }
+      },
+      {
+        "name": "tcp",
+        "attachedRoutes": 1,
+        "conditions": {
+          "ResolvedRefs": {
+            "status": "True",
+            "reason": "ResolvedRefs",
+            "observedGeneration": 1
+          },
+          "Accepted": {
+            "status": "True",
+            "reason": "Accepted",
+            "observedGeneration": 1
+          },
+          "Programmed": {
+            "status": "True",
+            "reason": "Programmed",
+            "observedGeneration": 1
+          }
+        }
+      },
+      {
+        "name": "udp",
+        "attachedRoutes": 1,
+        "conditions": {
+          "ResolvedRefs": {
+            "status": "True",
+            "reason": "ResolvedRefs",
+            "observedGeneration": 1
+          },
+          "Accepted": {
+            "status": "True",
+            "reason": "Accepted",
+            "observedGeneration": 1
+          },
+          "Programmed": {
+            "status": "True",
+            "reason": "Programmed",
+            "observedGeneration": 1
+          }
+        }
+      }
+    ]
+  },
+  "routes": [
+    {
+      "kind": "HTTPRoute",
+      "apiVersion": "gateway.networking.k8s.io/v1",
+      "name": "edge-application-http",
+      "generation": 1,
+      "parents": [
+        {
+          "ref": {
+            "group": "gateway.networking.k8s.io",
+            "kind": "Gateway",
+            "name": "edge-application-gateway",
+            "sectionName": "http"
+          },
+          "controller": "io.cilium/gateway-controller",
+          "conditions": {
+            "Accepted": {
+              "status": "True",
+              "reason": "Accepted",
+              "observedGeneration": 1
+            },
+            "ResolvedRefs": {
+              "status": "True",
+              "reason": "ResolvedRefs",
+              "observedGeneration": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "kind": "GRPCRoute",
+      "apiVersion": "gateway.networking.k8s.io/v1",
+      "name": "edge-application-grpc",
+      "generation": 2,
+      "parents": [
+        {
+          "ref": {
+            "group": "gateway.networking.k8s.io",
+            "kind": "Gateway",
+            "name": "edge-application-gateway",
+            "sectionName": "grpc"
+          },
+          "controller": "io.cilium/gateway-controller",
+          "conditions": {
+            "Accepted": {
+              "status": "True",
+              "reason": "Accepted",
+              "observedGeneration": 2
+            },
+            "ResolvedRefs": {
+              "status": "True",
+              "reason": "ResolvedRefs",
+              "observedGeneration": 2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "kind": "TLSRoute",
+      "apiVersion": "gateway.networking.k8s.io/v1",
+      "name": "edge-application-tls",
+      "generation": 1,
+      "parents": [
+        {
+          "ref": {
+            "group": "gateway.networking.k8s.io",
+            "kind": "Gateway",
+            "name": "edge-application-gateway",
+            "sectionName": "tls"
+          },
+          "controller": "io.cilium/gateway-controller",
+          "conditions": {
+            "Accepted": {
+              "status": "True",
+              "reason": "Accepted",
+              "observedGeneration": 1
+            },
+            "ResolvedRefs": {
+              "status": "True",
+              "reason": "ResolvedRefs",
+              "observedGeneration": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "kind": "TCPRoute",
+      "apiVersion": "gateway.networking.k8s.io/v1",
+      "name": "edge-application-tcp",
+      "generation": 1,
+      "parents": [
+        {
+          "ref": {
+            "group": "gateway.networking.k8s.io",
+            "kind": "Gateway",
+            "name": "edge-application-gateway",
+            "sectionName": "tcp"
+          },
+          "controller": "io.cilium/gateway-controller",
+          "conditions": {
+            "Accepted": {
+              "status": "True",
+              "reason": "Accepted",
+              "observedGeneration": 1
+            },
+            "ResolvedRefs": {
+              "status": "True",
+              "reason": "ResolvedRefs",
+              "observedGeneration": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "kind": "UDPRoute",
+      "apiVersion": "gateway.networking.k8s.io/v1",
+      "name": "edge-application-udp",
+      "generation": 1,
+      "parents": [
+        {
+          "ref": {
+            "group": "gateway.networking.k8s.io",
+            "kind": "Gateway",
+            "name": "edge-application-gateway",
+            "sectionName": "udp"
+          },
+          "controller": "io.cilium/gateway-controller",
+          "conditions": {
+            "Accepted": {
+              "status": "True",
+              "reason": "Accepted",
+              "observedGeneration": 1
+            },
+            "ResolvedRefs": {
+              "status": "True",
+              "reason": "ResolvedRefs",
+              "observedGeneration": 1
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "service": {
+    "spec": {
+      "allocateLoadBalancerNodePorts": true,
+      "clusterIP": "10.111.83.159",
+      "clusterIPs": [
+        "10.111.83.159"
+      ],
+      "externalTrafficPolicy": "Cluster",
+      "internalTrafficPolicy": "Cluster",
+      "ipFamilies": [
+        "IPv4"
+      ],
+      "ipFamilyPolicy": "SingleStack",
+      "ports": [
+        {
+          "name": "port-15051",
+          "nodePort": 30533,
+          "port": 15051,
+          "protocol": "TCP",
+          "targetPort": 15051
+        },
+        {
+          "name": "port-15353-udp",
+          "nodePort": 31092,
+          "port": 15353,
+          "protocol": "UDP",
+          "targetPort": 15353
+        },
+        {
+          "name": "port-15432",
+          "nodePort": 31214,
+          "port": 15432,
+          "protocol": "TCP",
+          "targetPort": 15432
+        },
+        {
+          "name": "port-18080",
+          "nodePort": 30323,
+          "port": 18080,
+          "protocol": "TCP",
+          "targetPort": 18080
+        },
+        {
+          "name": "port-18443",
+          "nodePort": 31780,
+          "port": 18443,
+          "protocol": "TCP",
+          "targetPort": 18443
+        }
+      ],
+      "sessionAffinity": "None",
+      "type": "LoadBalancer"
+    },
+    "status": {
+      "conditions": [
+        {
+          "lastTransitionTime": "2026-11-01T17:44:08Z",
+          "message": "",
+          "reason": "satisfied",
+          "status": "True",
+          "type": "cilium.io/IPAMRequestSatisfied"
+        }
+      ],
+      "loadBalancer": {
+        "ingress": [
+          {
+            "ip": "172.16.0.200",
+            "ipMode": "VIP"
+          }
+        ]
+      }
+    }
+  },
+  "cronjobs": [
+    {
+      "name": "manual-scheduled-task",
+      "spec": {
+        "schedule": "0 3 * * *",
+        "timeZone": "Europe/Istanbul",
+        "concurrencyPolicy": "Forbid",
+        "startingDeadlineSeconds": 300
+      },
+      "status": {
+        "lastSuccessfulTime": "2026-11-01T17:41:11Z"
+      }
+    },
+    {
+      "name": "scheduled-scheduled-task",
+      "spec": {
+        "schedule": "* * * * *",
+        "timeZone": "Europe/Istanbul",
+        "concurrencyPolicy": "Forbid",
+        "startingDeadlineSeconds": 300
+      },
+      "status": {
+        "active": [
+          {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "name": "scheduled-scheduled-task-29892591",
+            "namespace": "demo",
+            "resourceVersion": "5176",
+            "uid": "472cfc5a-dac3-4cbe-b8b0-1aa51198722a"
+          }
+        ],
+        "lastScheduleTime": "2026-11-01T17:51:00Z",
+        "lastSuccessfulTime": "2026-11-01T17:51:25Z"
+      }
+    }
+  ],
+  "manual_job": {
+    "status": {
+      "completionTime": "2026-11-01T17:41:11Z",
+      "conditions": [
+        {
+          "lastProbeTime": "2026-11-01T17:41:11Z",
+          "lastTransitionTime": "2026-11-01T17:41:11Z",
+          "message": "Reached expected number of succeeded pods",
+          "reason": "CompletionsReached",
+          "status": "True",
+          "type": "SuccessCriteriaMet"
+        },
+        {
+          "lastProbeTime": "2026-11-01T17:41:11Z",
+          "lastTransitionTime": "2026-11-01T17:41:11Z",
+          "message": "Reached expected number of succeeded pods",
+          "reason": "CompletionsReached",
+          "status": "True",
+          "type": "Complete"
+        }
+      ],
+      "ready": 0,
+      "startTime": "2026-11-01T17:41:06Z",
+      "succeeded": 1,
+      "terminating": 0,
+      "uncountedTerminatedPods": {}
+    },
+    "logs": "2026-11-01T17:41:09+00:00\nReplace this starter command with your scheduled task"
+  },
+  "backend_pod": [
+    {
+      "name": "application-69b4f6cb6f-lzvhr",
+      "node": "node-02",
+      "image": "python:3.13.9-slim",
+      "imageID": "docker.io/library/python@sha256:326df678c20c78d465db501563f3492d17c42a4afe33a1f2bf5406a1d56b0e86",
+      "ready": true,
+      "securityContext": {
+        "fsGroup": 10001,
+        "runAsGroup": 10001,
+        "runAsNonRoot": true,
+        "runAsUser": 10001,
+        "seccompProfile": {
+          "type": "RuntimeDefault"
+        }
+      },
+      "containerSecurityContext": {
+        "allowPrivilegeEscalation": false,
+        "capabilities": {
+          "drop": [
+            "ALL"
+          ]
+        },
+        "readOnlyRootFilesystem": true
+      },
+      "automountServiceAccountToken": false
+    }
+  ],
+  "gateway_api_crds": [
+    {
+      "kind": "BackendTLSPolicy",
+      "bundle": "v1.6.3",
+      "stored": [
+        "v1"
+      ]
+    },
+    {
+      "kind": "GatewayClass",
+      "bundle": "v1.6.3",
+      "stored": [
+        "v1"
+      ]
+    },
+    {
+      "kind": "Gateway",
+      "bundle": "v1.6.3",
+      "stored": [
+        "v1"
+      ]
+    },
+    {
+      "kind": "GRPCRoute",
+      "bundle": "v1.6.3",
+      "stored": [
+        "v1"
+      ]
+    },
+    {
+      "kind": "HTTPRoute",
+      "bundle": "v1.6.3",
+      "stored": [
+        "v1"
+      ]
+    },
+    {
+      "kind": "ReferenceGrant",
+      "bundle": "v1.6.3",
+      "stored": [
+        "v1beta1"
+      ]
+    },
+    {
+      "kind": "TCPRoute",
+      "bundle": "v1.6.3",
+      "stored": [
+        "v1"
+      ]
+    },
+    {
+      "kind": "TLSRoute",
+      "bundle": "v1.6.3",
+      "stored": [
+        "v1"
+      ]
+    },
+    {
+      "kind": "UDPRoute",
+      "bundle": "v1.6.3",
+      "stored": [
+        "v1"
+      ]
+    }
+  ],
+  "cilium": {
+    "helm_revision": "1.20.4",
+    "daemonset": {
+      "currentNumberScheduled": 3,
+      "desiredNumberScheduled": 3,
+      "numberAvailable": 3,
+      "numberMisscheduled": 0,
+      "numberReady": 3,
+      "observedGeneration": 2,
+      "updatedNumberScheduled": 3
+    }
+  },
+  "traffic": {
+    "grpc": "SERVING",
+    "http": "http:primitive-runtime-ok",
+    "tcp": "tcp:primitive-runtime-ok",
+    "tls": "tls:primitive-runtime-ok",
+    "tls_version": "TLSv1.3",
+    "udp": "udp:primitive-runtime-ok"
+  },
+  "negative_routes": {
+    "unmatched_http_host_status": 404,
+    "unmatched_tls_sni_rejected": "ConnectionResetError"
+  },
+  "rbac": {
+    "assertions_passed": 21,
+    "results": [
+      {
+        "expected": 403,
+        "identity": "baseline",
+        "status": 403,
+        "test": "list-own-pods"
+      },
+      {
+        "expected": 403,
+        "identity": "baseline",
+        "status": 403,
+        "test": "get-own-pod"
+      },
+      {
+        "expected": 403,
+        "identity": "baseline",
+        "status": 403,
+        "test": "watch-own-pods"
+      },
+      {
+        "expected": 403,
+        "identity": "baseline",
+        "status": 403,
+        "test": "list-other-pods"
+      },
+      {
+        "expected": 403,
+        "identity": "baseline",
+        "status": 403,
+        "test": "list-all-pods"
+      },
+      {
+        "expected": 403,
+        "identity": "baseline",
+        "status": 403,
+        "test": "read-secrets"
+      },
+      {
+        "expected": 403,
+        "identity": "baseline",
+        "status": 403,
+        "test": "create-pod"
+      },
+      {
+        "expected": 200,
+        "identity": "namespace-reader",
+        "status": 200,
+        "test": "list-own-pods"
+      },
+      {
+        "expected": 200,
+        "identity": "namespace-reader",
+        "status": 200,
+        "test": "get-own-pod"
+      },
+      {
+        "expected": 200,
+        "identity": "namespace-reader",
+        "status": 200,
+        "test": "watch-own-pods"
+      },
+      {
+        "expected": 403,
+        "identity": "namespace-reader",
+        "status": 403,
+        "test": "list-other-pods"
+      },
+      {
+        "expected": 403,
+        "identity": "namespace-reader",
+        "status": 403,
+        "test": "list-all-pods"
+      },
+      {
+        "expected": 403,
+        "identity": "namespace-reader",
+        "status": 403,
+        "test": "read-secrets"
+      },
+      {
+        "expected": 403,
+        "identity": "namespace-reader",
+        "status": 403,
+        "test": "create-pod"
+      },
+      {
+        "expected": 200,
+        "identity": "cluster-reader",
+        "status": 200,
+        "test": "list-own-pods"
+      },
+      {
+        "expected": 200,
+        "identity": "cluster-reader",
+        "status": 200,
+        "test": "get-own-pod"
+      },
+      {
+        "expected": 200,
+        "identity": "cluster-reader",
+        "status": 200,
+        "test": "watch-own-pods"
+      },
+      {
+        "expected": 200,
+        "identity": "cluster-reader",
+        "status": 200,
+        "test": "list-other-pods"
+      },
+      {
+        "expected": 200,
+        "identity": "cluster-reader",
+        "status": 200,
+        "test": "list-all-pods"
+      },
+      {
+        "expected": 403,
+        "identity": "cluster-reader",
+        "status": 403,
+        "test": "read-secrets"
+      },
+      {
+        "expected": 403,
+        "identity": "cluster-reader",
+        "status": 403,
+        "test": "create-pod"
+      }
+    ]
+  },
+  "runtime_security": {
+    "uid": 10001,
+    "gid": 10001,
+    "api_token_mounted": false,
+    "rootfs_write_errno": 30
+  }
+}

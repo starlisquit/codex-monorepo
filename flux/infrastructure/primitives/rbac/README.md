@@ -51,7 +51,10 @@ projected token). Changing the ServiceAccount setting alone cannot override a
 Pod's `automountServiceAccountToken: false`.
 
 Composition checks verify namespaced and cluster-scoped bindings, renamed
-references and transformed subject namespaces. Live authorization has not been
-tested. After deployment, use `kubectl auth can-i --as=system:serviceaccount:demo:api-application`
+references and transformed subject namespaces. Live authorization passed 21 allowed/denied API checks with actual short-lived
+ServiceAccount tokens. After deployment, use `kubectl auth can-i --as=system:serviceaccount:demo:api-application`
 for the intended verbs/resources and namespace; confirm disallowed operations
 and cross-namespace access remain denied for a namespaced binding.
+
+See [native Gateway API runtime findings](../../../docs/findings/primitives-cilium-2026-11-01.md)
+for the exact versions, fixture changes, assertions and limits.

@@ -4,9 +4,9 @@ The base creates only Gateway `application-gateway`, using GatewayClass `cilium`
 and a same-namespace HTTP listener on port 80. Supply an existing, Accepted
 GatewayClass backed by your controller or patch `spec.gatewayClassName`.
 Creating Gateway API objects does not install a controller or ensure it supports
-every route/protocol. In particular, the default class is not a claim that Cilium
-supports every optional L4 route below. Select a controller with the required
-conformance/features before enabling a route.
+every route/protocol. Cilium 1.20.4 has been runtime-verified for all five route types in
+LoadBalancer mode. Its host-network mode rejects TCPRoute and UDPRoute. Select
+a compatible controller and exposure mode before enabling a route.
 
 ## Select routes
 
@@ -69,9 +69,16 @@ explicit multi-namespace policy is needed.
 
 Build/composition and upstream v1.6.3 CRD schema checks cover all five route
 types, their listener attachments and prefixed parent/backend references.
-No controller/data-plane verification has been performed for these primitives.
+Cilium 1.20.4 runtime traffic checks passed for HTTP, gRPC, TLS passthrough, TCP
+and UDP, including unmatched HTTP Host/TLS SNI rejection. Cilium may report the
+Gateway Programmed even with rejected listeners: check every listener and route.
+When changing Cilium exposure modes, restart agents/operator and remove stale
+Service node-selection annotations as described in the runtime findings.
 In a consuming cluster, check Gateway `Accepted`/`Programmed` and listener status,
 then each route's parent `Accepted`/`ResolvedRefs`, followed by actual HTTP,
 gRPC, TLS, TCP or UDP traffic to its backend. Schema acceptance alone does not
 prove routing. Account for load balancer/listener exposure costs when selecting
 extra protocols.
+
+See [native Gateway API runtime findings](../../../docs/findings/primitives-cilium-2026-11-01.md)
+for the exact versions, fixture changes, assertions and limits.
