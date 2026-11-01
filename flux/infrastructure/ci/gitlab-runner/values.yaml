@@ -1,0 +1,37 @@
+gitlabUrl: https://gitlab.com/
+replicas: 1
+strategy:
+  type: Recreate
+concurrent: 5
+checkInterval: 10
+rbac:
+  create: true
+  clusterWideAccess: false
+serviceAccount:
+  create: true
+runners:
+  secret: gitlab-runner-auth
+  config: |
+    [[runners]]
+      executor = "kubernetes"
+      limit = 5
+      [runners.kubernetes]
+        namespace = "{{ .Release.Namespace }}"
+        image = "docker.io/library/alpine:3.22"
+        privileged = false
+        cpu_request = "100m"
+        memory_request = "128Mi"
+        memory_limit = "512Mi"
+        helper_cpu_request = "50m"
+        helper_memory_request = "64Mi"
+        helper_memory_limit = "256Mi"
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    memory: 512Mi
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: false

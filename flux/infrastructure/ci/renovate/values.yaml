@@ -1,0 +1,26 @@
+cronjob:
+  schedule: "0 3 * * *"
+  timeZone: Europe/Istanbul
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 2
+  activeDeadlineSeconds: 3600
+  jobBackoffLimit: 1
+existingSecret: renovate-credentials
+renovate:
+  config: |
+    {
+      "platform": "gitlab",
+      "endpoint": "https://gitlab.com/api/v4/",
+      "autodiscover": false,
+      "repositories": ["basarsubasi-gitops/kubernetes/flux"],
+      "onboarding": false,
+      "requireConfig": "optional",
+      "dryRun": "full"
+    }
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    memory: 2Gi

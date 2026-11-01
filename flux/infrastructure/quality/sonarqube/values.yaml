@@ -1,0 +1,31 @@
+community:
+  enabled: true
+  buildNumber: "26.9.0.129388"
+monitoringPasscodeSecretName: sonarqube-monitoring
+monitoringPasscodeSecretKey: passcode
+jdbcOverwrite:
+  enabled: true
+  jdbcUrl: jdbc:postgresql://sonarqube-postgresql.quality.svc.cluster.local:5432/sonarqube
+  jdbcUsername: sonarqube
+  jdbcSecretName: sonarqube-database
+  jdbcSecretPasswordKey: password
+persistence:
+  enabled: true
+  size: 5Gi
+resources:
+  requests:
+    cpu: 500m
+    memory: 2Gi
+    ephemeral-storage: 1Gi
+  limits:
+    cpu: "2"
+    memory: 4Gi
+    ephemeral-storage: 5Gi
+sonarProperties:
+  sonar.web.javaOpts: -Xms128m -Xmx512m
+  sonar.ce.javaOpts: -Xms128m -Xmx512m
+  sonar.search.javaOpts: -Xms512m -Xmx512m
+ingress:
+  enabled: false
+service:
+  type: ClusterIP

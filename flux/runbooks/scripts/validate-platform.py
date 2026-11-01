@@ -46,7 +46,27 @@ for manifest in (flux_root / "infrastructure").rglob("helmrelease.yaml"):
     release = yaml.safe_load(manifest.read_text())
     if release["spec"].get("suspend", False):
         raise SystemExit(f"Shared release must reconcile when selected: {manifest}")
-    expected_releases.add((release["metadata"]["namespace"], release["metadata"]["name"]))
+
+# Credential-dependent templates may remain unselected. Check readiness coverage
+# for resources actually referenced by this overlay, including nested components.
+seen_paths = set()
+def selected_releases(path):
+    path = path.resolve()
+    if path in seen_paths:
+        return
+    seen_paths.add(path)
+    if path.is_dir():
+        config = yaml.safe_load((path / "kustomization.yaml").read_text())
+        for reference in config.get("resources", []):
+            if "://" not in reference:
+                selected_releases(path / reference)
+    else:
+        for release in yaml.safe_load_all(path.read_text()):
+            if release and release.get("kind") == "HelmRelease":
+                expected_releases.add((release["metadata"]["namespace"], release["metadata"]["name"]))
+
+for resource in resources:
+    selected_releases(flux_root.parent / resource["spec"]["path"].removeprefix("./"))
 checked_releases = {
     (check["namespace"], check["name"])
     for resource in resources for check in resource["spec"].get("healthChecks", [])

@@ -21,3 +21,6 @@ resources:
 - metrics-server.yaml
 - aquasecurity.yaml
 - velero.yaml
+- gitlab.yaml
+- sonarqube.yaml
+- renovate.yaml
