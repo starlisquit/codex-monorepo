@@ -1,5 +1,9 @@
 # Central PKI: LiteLLM and SonarQube PostgreSQL — 2026-11-01
 
+> Historical run location: its cluster folder was subsequently removed at the
+> user's request. The original configuration/probes remain in Git history at
+> publication commit `b0375d1e7cce9a97e913d2d9ed1f2902ba6fc3b1`; the evidence linked below remains in this tree.
+
 Fresh K3s playground `6ae791fc46471e13268fb839`, Flux path
 `./flux/clusters/20261101-222444-pki-databases-8fb839`, configuration revision
 `c3d52c878f9f6c64bc4efbeb103d155ce308d005`. Evidence captured at 22:50:36
@@ -53,7 +57,7 @@ operator-managed. This does not replace Kubernetes/bootstrap PKI.
 
 [Sanitized before/renewal/failover evidence](evidence/central-pki-postgresql-2026-11-01.json)
 contains only results, serials, public CA fingerprints, Pod identifiers and
-certificate references. Reproduction scripts are retained in the run's `probes/`.
+certificate references. Reproduction scripts were captured in the historical run's `probes/` (see the publication commit above).
 
 ## Scope
 

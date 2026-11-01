@@ -1,5 +1,9 @@
 # Central PKI: Hubble and ClickHouse operator — 2026-11-01
 
+> Historical run location: its cluster folder was subsequently removed at the
+> user's request. The original configuration/probes remain in Git history at
+> publication commit `a9594eeb0d462e92d853592fe7d04eba629a768b`; the evidence linked below remains in this tree.
+
 Verified on fresh kubeadm playground `6ae791f87f32053bde29d303`, using Flux path
 `./flux/clusters/20261101-222440-pki-network-29d303` and configuration revision
 `c3d52c878f9f6c64bc4efbeb103d155ce308d005`. No separate Envoy Gateway controller
@@ -49,7 +53,7 @@ were unchanged: certificates hot-reloaded without workload restarts.
 
 [Sanitized before/after evidence](evidence/central-pki-network-2026-11-01.json)
 records issuer refs, TLS failures, serials, CA fingerprints, admission and RPC
-results. Probe manifests/scripts are retained under this run's `probes/`.
+results. Probe manifests/scripts were captured under the historical run's `probes/` (see the publication commit above).
 
 ## Scope
 

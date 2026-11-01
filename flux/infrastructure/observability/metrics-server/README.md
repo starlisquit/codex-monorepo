@@ -27,18 +27,18 @@ Secret reference alongside the chart settings.
 
 Kubelet TLS verification is a **separate** connection. The shared template retains
 verification and expects trusted kubelet serving certificates with appropriate
-address SANs. The `iximiuz-platform` overlay explicitly adds
-`--kubelet-insecure-tls` for the default kubeadm lab certificates and schedules
-Metrics Server on a worker. Do not copy that exception into a cluster with
+address SANs. A historical `iximiuz-platform` overlay used
+`--kubelet-insecure-tls` for default kubeadm lab certificates; that overlay has
+been removed. Shared values do not add that flag. Do not copy the historical exception into a cluster with
 properly issued serving certificates. It does not disable TLS verification for
 the aggregated Metrics API or the ServiceMonitor.
 
 ## Enable and verify
 
-The full platform overlay includes a Kustomization depending on monitoring CRDs
-and cert-manager, with health checks for both HelmRelease and APIService. For
-another cluster, reconcile the `metrics-server` HelmRepository, create the target
-namespace, and select this component with equivalent dependencies.
+A consuming Flux Kustomization must depend on monitoring CRDs and cert-manager
+and check both HelmRelease and APIService readiness. Select the template's chart
+source, create the target namespace, and include this component in that cluster's
+own run/configuration; there is no retained shared full-platform cluster overlay.
 
 From the cluster's admin shell:
 

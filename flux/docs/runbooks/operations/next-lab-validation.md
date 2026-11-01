@@ -105,34 +105,41 @@ only claim those if actually exercised with an appropriate proxy path/workload.
 
 Follow [platform verification](verify-platform.md) and the component runbooks.
 
-## 4. Central PKI — unfinished migration and new integrations
+## 4. Central PKI — remaining acceptance
 
-Use [PKI procedures](pki.md), [coverage inventory](../../architecture/pki-coverage.md)
-and [last-run failures](../../findings/pki-last-run.md).
+PKI scope updated 2026-11-02 (Europe/Istanbul); other sections retain their
+original handoff scope. Use [current PKI procedures](pki.md) and the
+[coverage inventory](../../architecture/pki-coverage.md). The
+[interrupted full-platform run](../../findings/pki-last-run.md) remains historical.
 
-- [ ] Fresh root, central ClusterIssuer, delegated issuers and leaf Certificates
-  become Ready; actual certificate lifetimes match intent. Bundle `platform-ca`
-  is distributed with only public CA material to intended namespaces.
-- [ ] Kyverno leaf revisions settle without `SecretMismatch` or competing writers.
-  Confirm running Pods have the intended certificate-controller flags, not just
-  the Deployment template. Test admission and cleanup webhooks after rollout.
-- [ ] Verify served chains/hostnames against our CA for OpenBao server/injector,
-  Metrics Server, trust-manager, Hubble, VM Operator, NATS, Valkey, CNPG database
-  and replication, External Secrets webhook, and Rook dashboard.
-- [ ] Confirm CNPG external server/replication Secret references actually apply,
-  its operator webhook is reachable, and replication continues using those certs.
-- [ ] Confirm ESO's old certificate controller is disabled and its webhook works;
-  confirm Rook actually loads `rook-ceph-dashboard-tls` rather than its own cert.
-- [ ] For each applicable connection, test successful hostname/CA verification,
-  wrong-CA rejection, probes, exporters, and client reconnection. Check NATS
-  route peer verification and Valkey plaintext-port rejection. Do not claim
-  client mTLS on endpoints that do not require client certificates.
-- [ ] Renew representative leaves one service at a time. Verify a changed served
-  serial and working clients after reload/restart, including OpenBao's OnDelete
-  strategy. Certificate Ready alone is insufficient.
-- [ ] Inventory remaining self-signed/operator-managed certs and compare with the
-  documented exceptions. Kubernetes PKI, cert-manager bootstrap webhook and CNPG
-  operator webhook remain independent; internal HTTP is intentionally retained.
+Already verified in focused fresh runs: Hubble/node and explicitly enabled Relay
+TLS/mTLS/flows, ClickHouse operator TLS/admission, and dedicated LiteLLM/SonarQube
+PostgreSQL TLS/replication/application use. Those runs also verified changed served
+serials/hot renewal; PostgreSQL primary failover passed. Real ESO and injected
+agents subsequently authenticated to OpenBao with verified HTTPS. These results
+do not establish a full-platform in-place CA migration.
+
+- [ ] On the new selected deployment, confirm root/issuer readiness, actual
+  validity/key identity, and public Bundle distribution before workload issuance.
+  The current architecture signs leaves directly from the online root; there is
+  no deployed intermediate/Vault issuer to assume ready.
+- [ ] Complete a fresh stable Kyverno rollout, confirm disabled competing writers,
+  settled leaf revisions and successful admission/cleanup webhooks.
+- [ ] Complete NATS route/client TLS, quorum continuity, NATS Box trust, and Valkey
+  plaintext rejection/probe/exporter verification, then test renewal/reload.
+- [ ] Verify OpenBao/injector, ESO and other configured webhook serving chains,
+  CA bundles, changed serials and clients after leaf renewal. Token renewal and
+  application credential refresh do not substitute for TLS renewal acceptance.
+- [ ] Complete Metrics Server serving/kubelet trust acceptance, VM Operator webhook
+  renewal and Rook dashboard served-chain/reload checks for selected templates.
+- [ ] Verify the generic application-db integration and any existing-cluster CA
+  handover separately; preserve trust overlap and client reconnection behavior.
+- [ ] Regress the previously verified Hubble/ClickHouse operator and dedicated
+  PostgreSQL paths if versions/configuration change or they enter a broader
+  deployment. Preserve the distinction between shared defaults and lab overrides.
+- [ ] Inventory exceptions: Kubernetes PKI, cert-manager bootstrap webhook and
+  CNPG operator webhook stay independent. Protect signing keys/issuers through
+  RBAC; no certificate-policy template enforces central issuer selection.
 
 ## 5. Observability and dashboards — end-to-end regression
 

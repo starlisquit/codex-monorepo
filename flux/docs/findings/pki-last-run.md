@@ -1,4 +1,10 @@
-# Last platform run and PKI migration — 2026-11-01
+# Historical full-platform run and interrupted PKI migration — 2026-11-01
+
+> This records that destroyed full-platform run only. Later focused tests
+> verified Hubble/ClickHouse operator TLS and renewal, dedicated application
+> PostgreSQL TLS/renewal/failover, and real OpenBao/ESO/injector use. See the
+> [current PKI inventory](../architecture/pki-coverage.md) and
+> [operational runbook](../runbooks/operations/pki.md) for current scope.
 
 Play `6ae6cfaf789ac234e32e00bf` of playground `codex-platform-243e14fd`
 was permanently destroyed at the user's request. No replacement was started.
