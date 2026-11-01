@@ -28,13 +28,22 @@ envoy:
     serviceMonitor:
       enabled: false
 hubble:
+  # Central PKI and its CRDs do not exist until Flux installs cert-manager.
+  enabled: false
+  tls:
+    auto:
+      enabled: false
   relay:
+    enabled: false
     prometheus:
       serviceMonitor:
         enabled: false
   metrics:
     serviceMonitor:
       enabled: false
+tls:
+  caBundle:
+    enabled: false
 YAML
 helm repo add cilium https://helm.cilium.io/ --force-update
 helm repo update cilium

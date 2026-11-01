@@ -17,7 +17,9 @@ flux/runbooks/scripts/bootstrap-cilium.sh flux/clusters/iximiuz-platform 172.16.
 The kube-proxy query should return no resource. The helper installs Helm release
 `cilium` in `kube-system`, merges shared values and cluster overrides, then disables
 Gateway API and ServiceMonitor creation for the initial seed. Those CRDs do not
-exist yet. It retains the direct API endpoint and kube-proxy replacement.
+exist yet. Hubble and its central CA bundle are also deferred until Flux installs
+cert-manager and the platform PKI. It retains the direct API endpoint,
+kube-proxy replacement, and WireGuard encryption.
 
 Verify replacement on each agent:
 
