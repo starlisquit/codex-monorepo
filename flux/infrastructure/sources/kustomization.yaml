@@ -17,3 +17,4 @@ resources:
 - flux-operator.yaml
 - keda.yaml
 - opentelemetry.yaml
+- ceph-csi.yaml

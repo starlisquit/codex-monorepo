@@ -199,7 +199,7 @@ spec:
     name: flux-system
   timeout: 15m
   dependsOn:
-  - name: ceph
+  - name: storage-ready
   - name: grafana-operator
   healthChecks:
   - apiVersion: helm.toolkit.fluxcd.io/v2
@@ -354,7 +354,7 @@ spec:
     name: flux-system
   timeout: 15m
   dependsOn:
-  - name: ceph
+  - name: storage-ready
   - name: monitoring-crds
   healthChecks:
   - apiVersion: helm.toolkit.fluxcd.io/v2
@@ -377,7 +377,7 @@ spec:
     name: flux-system
   timeout: 15m
   dependsOn:
-  - name: ceph
+  - name: storage-ready
   - name: monitoring-crds
   healthChecks:
   - apiVersion: helm.toolkit.fluxcd.io/v2
@@ -400,7 +400,7 @@ spec:
     name: flux-system
   timeout: 15m
   dependsOn:
-  - name: ceph
+  - name: storage-ready
   - name: cert-manager
   healthChecks:
   - apiVersion: helm.toolkit.fluxcd.io/v2
@@ -489,7 +489,7 @@ spec:
     name: flux-system
   timeout: 15m
   dependsOn:
-  - name: ceph
+  - name: storage-ready
   - name: cnpg-operator
   healthChecks:
   - apiVersion: postgresql.cnpg.io/v1
@@ -532,3 +532,48 @@ spec:
     name: flux-system
   dependsOn:
   - name: foundation
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: csi-drivers
+  namespace: flux-system
+spec:
+  interval: 10m
+  retryInterval: 30s
+  path: ./flux/clusters/iximiuz-platform/csi-drivers
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: rook-operator
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: ceph-csi-drivers
+    namespace: rook-ceph
+  timeout: 15m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: storage-ready
+  namespace: flux-system
+spec:
+  interval: 10m
+  retryInterval: 30s
+  path: ./flux/clusters/iximiuz-platform/storage-check
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: ceph
+  - name: csi-drivers
+  healthChecks:
+  - apiVersion: batch/v1
+    kind: Job
+    name: ceph-storage-check
+    namespace: rook-ceph
+  timeout: 15m

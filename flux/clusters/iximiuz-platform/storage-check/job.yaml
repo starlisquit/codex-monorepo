@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ceph-storage-check
+  namespace: rook-ceph
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: check
+        image: busybox:1.37
+        command:
+        - sh
+        - -ec
+        - echo ceph-read-write-ok > /data/check; sync; test "$(cat /data/check)" =
+          ceph-read-write-ok; echo PASS
+        volumeMounts:
+        - name: data
+          mountPath: /data
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: ceph-storage-check
