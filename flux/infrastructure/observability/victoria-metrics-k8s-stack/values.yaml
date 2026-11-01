@@ -101,6 +101,7 @@ vlagent:
       effect: NoSchedule
     extraArgs:
       remoteWrite.maxDiskUsagePerURL: 128MiB
+      remoteWrite.rateLimit: 262144
     resources:
       requests:
         cpu: 25m
