@@ -8,7 +8,7 @@ resources:
 - rook
 - cloudnative-pg
 - valkey
-- ${KYVERNO_NAMESPACE:=kyverno}
+- kyverno
 - jetstack
 - openbao
 - external-secrets
@@ -20,7 +20,7 @@ resources:
 - ceph-csi
 - metrics-server
 - aquasecurity
-- ${VELERO_NAMESPACE:=velero}
+- velero
 - gitlab
 - sonarqube
 - renovate
