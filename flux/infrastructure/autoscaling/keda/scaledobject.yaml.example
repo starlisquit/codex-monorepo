@@ -1,0 +1,18 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: example-worker
+  namespace: applications
+spec:
+  scaleTargetRef:
+    name: REPLACE_WITH_DEPLOYMENT_NAME
+  minReplicaCount: 1
+  maxReplicaCount: 10
+  pollingInterval: 30
+  triggers:
+  - type: prometheus
+    metadata:
+      serverAddress: http://vmsingle-victoria-metrics-k8s-stack.observability.svc.cluster.local:8428
+      query: sum(rate(http_requests_total{job="REPLACE_WITH_JOB"}[2m]))
+      threshold: '100'
+      ignoreNullValues: 'false'

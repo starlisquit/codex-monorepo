@@ -39,6 +39,8 @@ continues through the VM stack's built-in native scrape integrations.
 | OpenBao | Server telemetry and ServiceMonitor, plus injector metrics and a separate ServiceMonitor |
 | Grafana Operator | ServiceMonitor |
 | VictoriaTraces agent | ServiceMonitor; a real remoteWrite destination is still required |
+| Flux Operator | Operator metrics ServiceMonitor (UI is bundled in the same chart) |
+| KEDA | Operator, metrics adapter, and admission-webhook ServiceMonitors; workload scaling can query the VM API |
 | Blackbox Exporter | Exporter self-monitoring and a probe of the existing VictoriaMetrics `/health` endpoint |
 
 Rook creates Ceph and CSI runtime resources after reconciliation; their service

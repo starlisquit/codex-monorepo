@@ -1,0 +1,25 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: flux-operator
+  namespace: flux-system
+spec:
+  suspend: true
+  interval: 30m
+  valuesFrom:
+  - kind: ConfigMap
+    name: flux-operator-values
+    valuesKey: values.yaml
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  dependsOn:
+  - name: prometheus-operator-crds
+    namespace: observability
+  chartRef:
+    kind: OCIRepository
+    name: flux-operator
+    namespace: flux-system

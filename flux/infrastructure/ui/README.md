@@ -38,3 +38,9 @@ References:
 - [Headlamp chart](https://github.com/kubernetes-sigs/headlamp/tree/main/charts/headlamp)
 - [NATS chart](https://github.com/nats-io/k8s/tree/main/helm/charts/nats)
 - [NATS monitoring](https://docs.nats.io/running-a-nats-service/nats_admin/monitoring)
+
+## Flux Web UI
+
+The Flux Web UI is bundled in the operator chart under
+[`gitops/flux-operator`](../gitops/flux-operator). Its README documents bootstrap
+on a cluster without Flux; no separate Web UI release is needed.

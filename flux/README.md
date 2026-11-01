@@ -17,6 +17,9 @@ It is a starting scaffold, not a deployment-ready cluster configuration.
   excluded example; the VM chart retains ownership of its default datasources.
 - `observability/prometheus-operator-crds/`: monitoring CRDs only; see
   [monitoring setup](MONITORING.md) for collection and dependency details.
+- `gitops/flux-operator/`: Flux Operator, its bundled Web UI, and a FluxInstance;
+  see its README for operator-first bootstrap on a new cluster.
+- `autoscaling/keda/`: KEDA monitoring and an excluded VictoriaMetrics scaling example.
 - `ui/headlamp/`: Kubernetes web UI with its own suspended HelmRelease.
 - `policy/cluster-policies/`: example Kyverno policies in Audit mode, scoped to `applications`.
 - `policy/network-policies/`: example policies scoped to `applications`.
@@ -27,7 +30,7 @@ It is a starting scaffold, not a deployment-ready cluster configuration.
    2026-11-01 (see the table below). Review Kubernetes compatibility and the
    supported chart values before enabling any release.
 2. Create the target namespaces: `observability`, `rook-ceph`, `databases`,
-   `kyverno`, `certificates`, `secrets`, `broker`, `ui`, and `applications` as needed.
+   `kyverno`, `certificates`, `secrets`, `broker`, `ui`, `autoscaling`, and `applications` as needed.
    Cilium targets the existing `kube-system` namespace; sources use `flux-system`.
 3. Build the desired component with `kustomize build <component-directory>`.
    Kustomize generates a stable values ConfigMap; `valuesFrom` connects it to
@@ -129,7 +132,7 @@ and required external destinations before enabling default deny.
 
 ## Validation
 
-All 32 Kustomize builds and all 18 pinned Helm charts were rendered successfully
+All 34 Kustomize builds and all 20 pinned Helm charts were rendered successfully
 using a Kubernetes 1.35 validation profile. Cilium used a test-only API endpoint,
 and the traces agent used a test-only `remoteWrite[0].url`; neither test address
 is saved in these manifests. The traces agent cannot render as committed until
@@ -168,3 +171,6 @@ These are chart versions, not application image versions.
 | grafana-operator | `5.25.0` |
 | headlamp | `0.46.0` |
 | prometheus-operator-crds | `32.0.2` |
+
+| flux-operator | `0.62.1` |
+| keda | `2.21.0` |
