@@ -19,6 +19,10 @@ bao policy write eso-velero-velero policy.hcl
 bao write auth/kubernetes/role/eso-velero-velero @role.json
 ```
 
+The policy also permits lookup, renewal and revocation of the authenticated
+client's own short-lived token, required for ESO provider validation/lifecycle.
+It grants no additional application paths or writes.
+
 These files contain no credential values. Populate the listed KV keys through
 your secure administrative workflow before deployment. Paths are relative to
 the KV mount; policies intentionally use the API's `kv/data/` prefix. Override

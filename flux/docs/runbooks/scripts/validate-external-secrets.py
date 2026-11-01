@@ -119,7 +119,8 @@ for relative, (namespace, expected) in contracts.items():
         observed[target['name']] = keys
     assert observed == expected, f'Consumer contract drift: {relative}'
     expected_policy = ''.join('path "kv/data/' + p + '" {\n  capabilities = ["read"]\n}\n' for p in paths)
-    assert (directory / 'policy.hcl').read_text() == expected_policy, 'Policy exceeds exact referenced paths'
+    expected_policy += '\n# Only lifecycle operations on this client\'s own short-lived token.\npath "auth/token/lookup-self" {\n  capabilities = ["read"]\n}\npath "auth/token/renew-self" {\n  capabilities = ["update"]\n}\npath "auth/token/revoke-self" {\n  capabilities = ["update"]\n}\n'
+    assert (directory / 'policy.hcl').read_text() == expected_policy, 'Policy differs from exact paths and self-token lifecycle scope'
     unique(compose([owner, directory]))
     all_resources.update([owner, directory])
 unique(compose(sorted(all_resources)))

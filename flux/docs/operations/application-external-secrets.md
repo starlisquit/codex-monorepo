@@ -31,7 +31,9 @@ application defaults and manually provisioned Secrets remain supported.
    TLS using only that public CA; they never mount OpenBao's private TLS key.
 4. Provision each opt-in's `policy.hcl` and `role.json` through an authenticated,
    TLS-verified OpenBao administration session, then securely populate its listed
-   KV keys. The policy grants read access to exact application paths only. The
+   KV keys. The policy grants read access to exact application paths and lookup/renew/revoke
+   operations on the caller's own token. ESO needs self-lookup to validate the
+   provider when the OpenBao default policy is disabled. The
    role binds one application service account in one namespace with the `openbao`
    audience and short-lived tokens. No root token is delivered to ESO.
 5. Apply the selected credential directories in a separate cluster-owned Flux
