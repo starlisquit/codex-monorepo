@@ -1,0 +1,556 @@
+{
+  "passed": true,
+  "root_unchanged": true,
+  "serving_serials_changed": true,
+  "hot_reload_without_pod_restart": true,
+  "play_id": "6ae791f87f32053bde29d303",
+  "tested_revision": "c3d52c878f9f6c64bc4efbeb103d155ce308d005",
+  "before": {
+    "tls": {
+      "results": [
+        {
+          "issuer": [
+            [
+              [
+                "commonName",
+                "openbao-injector-ca"
+              ]
+            ]
+          ],
+          "missing_client_certificate_rejected": true,
+          "name": "hubble-cplane-01",
+          "not_after": "Nov  1 19:32:58 2027 GMT",
+          "serial": "7DCFBAD85532C1192CF7558A389D23DADB5EB7AA",
+          "server_name": "cplane-01.default.hubble-grpc.cilium.io",
+          "tls_version": "TLSv1.3",
+          "wrong_ca": {
+            "reason": "unable to get local issuer certificate",
+            "rejected": true
+          },
+          "wrong_hostname": {
+            "reason": "Hostname mismatch, certificate is not valid for 'wrong.invalid'.",
+            "rejected": true
+          }
+        },
+        {
+          "issuer": [
+            [
+              [
+                "commonName",
+                "openbao-injector-ca"
+              ]
+            ]
+          ],
+          "missing_client_certificate_rejected": true,
+          "name": "hubble-node-01",
+          "not_after": "Nov  1 19:32:58 2027 GMT",
+          "serial": "7DCFBAD85532C1192CF7558A389D23DADB5EB7AA",
+          "server_name": "node-01.default.hubble-grpc.cilium.io",
+          "tls_version": "TLSv1.3",
+          "wrong_ca": {
+            "reason": "unable to get local issuer certificate",
+            "rejected": true
+          },
+          "wrong_hostname": {
+            "reason": "Hostname mismatch, certificate is not valid for 'wrong.invalid'.",
+            "rejected": true
+          }
+        },
+        {
+          "issuer": [
+            [
+              [
+                "commonName",
+                "openbao-injector-ca"
+              ]
+            ]
+          ],
+          "missing_client_certificate_rejected": true,
+          "name": "hubble-node-02",
+          "not_after": "Nov  1 19:32:58 2027 GMT",
+          "serial": "7DCFBAD85532C1192CF7558A389D23DADB5EB7AA",
+          "server_name": "node-02.default.hubble-grpc.cilium.io",
+          "tls_version": "TLSv1.3",
+          "wrong_ca": {
+            "reason": "unable to get local issuer certificate",
+            "rejected": true
+          },
+          "wrong_hostname": {
+            "reason": "Hostname mismatch, certificate is not valid for 'wrong.invalid'.",
+            "rejected": true
+          }
+        },
+        {
+          "issuer": [
+            [
+              [
+                "commonName",
+                "openbao-injector-ca"
+              ]
+            ]
+          ],
+          "missing_client_certificate_rejected": true,
+          "name": "hubble-relay",
+          "not_after": "Nov  1 19:32:58 2027 GMT",
+          "serial": "46ECD742C69C368F3DC4EA6B65A7EA38E2E90105",
+          "server_name": "hubble-relay.kube-system.svc",
+          "tls_version": "TLSv1.3",
+          "wrong_ca": {
+            "reason": "unable to get local issuer certificate",
+            "rejected": true
+          },
+          "wrong_hostname": {
+            "reason": "Hostname mismatch, certificate is not valid for 'wrong.invalid'.",
+            "rejected": true
+          }
+        },
+        {
+          "issuer": [
+            [
+              [
+                "commonName",
+                "openbao-injector-ca"
+              ]
+            ]
+          ],
+          "name": "clickhouse-webhook",
+          "not_after": "Jan 30 19:33:19 2027 GMT",
+          "serial": "2DDDECFD2C7A73E5252300FB07B2EA34AF2839A2",
+          "server_name": "clickhouse-operator-webhook-service.databases.svc",
+          "tls_version": "TLSv1.3",
+          "wrong_ca": {
+            "reason": "unable to get local issuer certificate",
+            "rejected": true
+          },
+          "wrong_hostname": {
+            "reason": "Hostname mismatch, certificate is not valid for 'wrong.invalid'.",
+            "rejected": true
+          }
+        },
+        {
+          "issuer": [
+            [
+              [
+                "commonName",
+                "openbao-injector-ca"
+              ]
+            ]
+          ],
+          "name": "clickhouse-metrics",
+          "not_after": "Jan 30 19:33:19 2027 GMT",
+          "serial": "7DF3DCF1871C656EDAC1B96834BD82864C7E2975",
+          "server_name": "clickhouse-operator-metrics-service.databases.svc",
+          "tls_version": "TLSv1.3",
+          "wrong_ca": {
+            "reason": "unable to get local issuer certificate",
+            "rejected": true
+          },
+          "wrong_hostname": {
+            "reason": "Hostname mismatch, certificate is not valid for 'wrong.invalid'.",
+            "rejected": true
+          }
+        }
+      ],
+      "root_sha256": "c1ee711d423cf401c28445efd48bbe114ef937d6b241af55cf1c5b6a0c0284d0"
+    },
+    "hubble": {
+      "status": "Healthcheck (via 127.0.0.1:14245): Ok\nCurrent/Max Flows: 12,285/12,285 (100.00%)\nFlows/s: 36.97\nConnected Nodes: 3/3",
+      "flow_messages": 9,
+      "flow_nodes": [
+        "cplane-01",
+        "node-01",
+        "node-02"
+      ]
+    },
+    "admission": {
+      "webhook_ca_bundles": [
+        {
+          "configuration": "clickhouse-operator-validating-webhook-configuration",
+          "webhook": "vclickhousecluster-v1alpha1.kb.io",
+          "ca_sha256": "c1ee711d423cf401c28445efd48bbe114ef937d6b241af55cf1c5b6a0c0284d0"
+        },
+        {
+          "configuration": "clickhouse-operator-validating-webhook-configuration",
+          "webhook": "vkeepercluster.kb.io",
+          "ca_sha256": "c1ee711d423cf401c28445efd48bbe114ef937d6b241af55cf1c5b6a0c0284d0"
+        },
+        {
+          "configuration": "clickhouse-operator-mutating-webhook-configuration",
+          "webhook": "mclickhousecluster-v1alpha1.kb.io",
+          "ca_sha256": "c1ee711d423cf401c28445efd48bbe114ef937d6b241af55cf1c5b6a0c0284d0"
+        },
+        {
+          "configuration": "clickhouse-operator-mutating-webhook-configuration",
+          "webhook": "mkeepercluster.kb.io",
+          "ca_sha256": "c1ee711d423cf401c28445efd48bbe114ef937d6b241af55cf1c5b6a0c0284d0"
+        }
+      ],
+      "server_dry_runs": [
+        {
+          "kind": "KeeperCluster",
+          "dry_run": "keepercluster.clickhouse.com/pki-admission-validation created (server dry run)"
+        },
+        {
+          "kind": "ClickHouseCluster",
+          "dry_run": "clickhousecluster.clickhouse.com/pki-admission-validation created (server dry run)"
+        }
+      ]
+    },
+    "pods": {
+      "cilium-envoy-h5vcd": "851274b8-d569-4c3a-9b92-741834a1b252",
+      "cilium-envoy-n2zhl": "07444fda-d9fa-4917-a7f7-5dca1dcbca3e",
+      "cilium-envoy-xcvlp": "e56c873c-75d8-48a2-a6ce-124dda76a255",
+      "cilium-f7t7z": "f19d778d-4c4c-45b3-a7e2-5079b91a41c6",
+      "cilium-operator-d5cc58df4-f4q2b": "9081b86d-7511-4f1d-ab71-1f35f8fd3798",
+      "cilium-x62ml": "073b9fd5-b93f-4bab-987c-3fdc82e8b4ce",
+      "cilium-x89xp": "abe7cc73-98ac-4a11-bb7d-be1027bbbc57",
+      "hubble-relay-5dc8f794c9-nj2s7": "89a54175-5ffd-47b5-b59a-d7fd42f55a01",
+      "clickhouse-operator-controller-manager-6964b677b7-4nh8s": "f1b4bb51-4f83-4171-999b-8e615b7ab1d5"
+    },
+    "certificates": [
+      {
+        "name": "platform-root",
+        "namespace": "certificates",
+        "issuer": {
+          "kind": "Issuer",
+          "name": "platform-root-bootstrap"
+        },
+        "revision": 1
+      },
+      {
+        "name": "trust-manager",
+        "namespace": "certificates",
+        "issuer": {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "name": "platform-workload-ca"
+        },
+        "revision": 1
+      },
+      {
+        "name": "clickhouse-operator-metrics-certs",
+        "namespace": "databases",
+        "issuer": {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "name": "platform-workload-ca"
+        },
+        "revision": 1
+      },
+      {
+        "name": "clickhouse-operator-serving-cert",
+        "namespace": "databases",
+        "issuer": {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "name": "platform-workload-ca"
+        },
+        "revision": 1
+      },
+      {
+        "name": "hubble-relay-client-certs",
+        "namespace": "kube-system",
+        "issuer": {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "name": "platform-workload-ca"
+        },
+        "revision": 1
+      },
+      {
+        "name": "hubble-relay-server-certs",
+        "namespace": "kube-system",
+        "issuer": {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "name": "platform-workload-ca"
+        },
+        "revision": 1
+      },
+      {
+        "name": "hubble-server-certs",
+        "namespace": "kube-system",
+        "issuer": {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "name": "platform-workload-ca"
+        },
+        "revision": 1
+      }
+    ]
+  },
+  "after": {
+    "tls": {
+      "results": [
+        {
+          "issuer": [
+            [
+              [
+                "commonName",
+                "openbao-injector-ca"
+              ]
+            ]
+          ],
+          "missing_client_certificate_rejected": true,
+          "name": "hubble-cplane-01",
+          "not_after": "Nov  1 19:43:26 2027 GMT",
+          "serial": "743EC8B71629597EF6C2A6E3128DB457628955E1",
+          "server_name": "cplane-01.default.hubble-grpc.cilium.io",
+          "tls_version": "TLSv1.3",
+          "wrong_ca": {
+            "reason": "unable to get local issuer certificate",
+            "rejected": true
+          },
+          "wrong_hostname": {
+            "reason": "Hostname mismatch, certificate is not valid for 'wrong.invalid'.",
+            "rejected": true
+          }
+        },
+        {
+          "issuer": [
+            [
+              [
+                "commonName",
+                "openbao-injector-ca"
+              ]
+            ]
+          ],
+          "missing_client_certificate_rejected": true,
+          "name": "hubble-node-01",
+          "not_after": "Nov  1 19:43:26 2027 GMT",
+          "serial": "743EC8B71629597EF6C2A6E3128DB457628955E1",
+          "server_name": "node-01.default.hubble-grpc.cilium.io",
+          "tls_version": "TLSv1.3",
+          "wrong_ca": {
+            "reason": "unable to get local issuer certificate",
+            "rejected": true
+          },
+          "wrong_hostname": {
+            "reason": "Hostname mismatch, certificate is not valid for 'wrong.invalid'.",
+            "rejected": true
+          }
+        },
+        {
+          "issuer": [
+            [
+              [
+                "commonName",
+                "openbao-injector-ca"
+              ]
+            ]
+          ],
+          "missing_client_certificate_rejected": true,
+          "name": "hubble-node-02",
+          "not_after": "Nov  1 19:43:26 2027 GMT",
+          "serial": "743EC8B71629597EF6C2A6E3128DB457628955E1",
+          "server_name": "node-02.default.hubble-grpc.cilium.io",
+          "tls_version": "TLSv1.3",
+          "wrong_ca": {
+            "reason": "unable to get local issuer certificate",
+            "rejected": true
+          },
+          "wrong_hostname": {
+            "reason": "Hostname mismatch, certificate is not valid for 'wrong.invalid'.",
+            "rejected": true
+          }
+        },
+        {
+          "issuer": [
+            [
+              [
+                "commonName",
+                "openbao-injector-ca"
+              ]
+            ]
+          ],
+          "missing_client_certificate_rejected": true,
+          "name": "hubble-relay",
+          "not_after": "Nov  1 19:43:26 2027 GMT",
+          "serial": "1048A097C7737DECD1321A183A2F514EC57B541F",
+          "server_name": "hubble-relay.kube-system.svc",
+          "tls_version": "TLSv1.3",
+          "wrong_ca": {
+            "reason": "unable to get local issuer certificate",
+            "rejected": true
+          },
+          "wrong_hostname": {
+            "reason": "Hostname mismatch, certificate is not valid for 'wrong.invalid'.",
+            "rejected": true
+          }
+        },
+        {
+          "issuer": [
+            [
+              [
+                "commonName",
+                "openbao-injector-ca"
+              ]
+            ]
+          ],
+          "name": "clickhouse-webhook",
+          "not_after": "Jan 30 19:43:26 2027 GMT",
+          "serial": "728E748AE942B14E3F7A2FD5848071ED10E6194C",
+          "server_name": "clickhouse-operator-webhook-service.databases.svc",
+          "tls_version": "TLSv1.3",
+          "wrong_ca": {
+            "reason": "unable to get local issuer certificate",
+            "rejected": true
+          },
+          "wrong_hostname": {
+            "reason": "Hostname mismatch, certificate is not valid for 'wrong.invalid'.",
+            "rejected": true
+          }
+        },
+        {
+          "issuer": [
+            [
+              [
+                "commonName",
+                "openbao-injector-ca"
+              ]
+            ]
+          ],
+          "name": "clickhouse-metrics",
+          "not_after": "Jan 30 19:43:26 2027 GMT",
+          "serial": "02C44C620F1E1E61166C3FB63F93210781AD6A05",
+          "server_name": "clickhouse-operator-metrics-service.databases.svc",
+          "tls_version": "TLSv1.3",
+          "wrong_ca": {
+            "reason": "unable to get local issuer certificate",
+            "rejected": true
+          },
+          "wrong_hostname": {
+            "reason": "Hostname mismatch, certificate is not valid for 'wrong.invalid'.",
+            "rejected": true
+          }
+        }
+      ],
+      "root_sha256": "c1ee711d423cf401c28445efd48bbe114ef937d6b241af55cf1c5b6a0c0284d0"
+    },
+    "hubble": {
+      "status": "Healthcheck (via 127.0.0.1:14245): Ok\nCurrent/Max Flows: 12,285/12,285 (100.00%)\nFlows/s: 108.62\nConnected Nodes: 3/3",
+      "flow_messages": 9,
+      "flow_nodes": [
+        "cplane-01",
+        "node-01",
+        "node-02"
+      ]
+    },
+    "admission": {
+      "webhook_ca_bundles": [
+        {
+          "configuration": "clickhouse-operator-validating-webhook-configuration",
+          "webhook": "vclickhousecluster-v1alpha1.kb.io",
+          "ca_sha256": "c1ee711d423cf401c28445efd48bbe114ef937d6b241af55cf1c5b6a0c0284d0"
+        },
+        {
+          "configuration": "clickhouse-operator-validating-webhook-configuration",
+          "webhook": "vkeepercluster.kb.io",
+          "ca_sha256": "c1ee711d423cf401c28445efd48bbe114ef937d6b241af55cf1c5b6a0c0284d0"
+        },
+        {
+          "configuration": "clickhouse-operator-mutating-webhook-configuration",
+          "webhook": "mclickhousecluster-v1alpha1.kb.io",
+          "ca_sha256": "c1ee711d423cf401c28445efd48bbe114ef937d6b241af55cf1c5b6a0c0284d0"
+        },
+        {
+          "configuration": "clickhouse-operator-mutating-webhook-configuration",
+          "webhook": "mkeepercluster.kb.io",
+          "ca_sha256": "c1ee711d423cf401c28445efd48bbe114ef937d6b241af55cf1c5b6a0c0284d0"
+        }
+      ],
+      "server_dry_runs": [
+        {
+          "kind": "KeeperCluster",
+          "dry_run": "keepercluster.clickhouse.com/pki-admission-validation created (server dry run)"
+        },
+        {
+          "kind": "ClickHouseCluster",
+          "dry_run": "clickhousecluster.clickhouse.com/pki-admission-validation created (server dry run)"
+        }
+      ]
+    },
+    "pods": {
+      "cilium-envoy-h5vcd": "851274b8-d569-4c3a-9b92-741834a1b252",
+      "cilium-envoy-n2zhl": "07444fda-d9fa-4917-a7f7-5dca1dcbca3e",
+      "cilium-envoy-xcvlp": "e56c873c-75d8-48a2-a6ce-124dda76a255",
+      "cilium-f7t7z": "f19d778d-4c4c-45b3-a7e2-5079b91a41c6",
+      "cilium-operator-d5cc58df4-f4q2b": "9081b86d-7511-4f1d-ab71-1f35f8fd3798",
+      "cilium-x62ml": "073b9fd5-b93f-4bab-987c-3fdc82e8b4ce",
+      "cilium-x89xp": "abe7cc73-98ac-4a11-bb7d-be1027bbbc57",
+      "hubble-relay-5dc8f794c9-nj2s7": "89a54175-5ffd-47b5-b59a-d7fd42f55a01",
+      "clickhouse-operator-controller-manager-6964b677b7-4nh8s": "f1b4bb51-4f83-4171-999b-8e615b7ab1d5"
+    },
+    "certificates": [
+      {
+        "name": "platform-root",
+        "namespace": "certificates",
+        "issuer": {
+          "kind": "Issuer",
+          "name": "platform-root-bootstrap"
+        },
+        "revision": 1
+      },
+      {
+        "name": "trust-manager",
+        "namespace": "certificates",
+        "issuer": {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "name": "platform-workload-ca"
+        },
+        "revision": 1
+      },
+      {
+        "name": "clickhouse-operator-metrics-certs",
+        "namespace": "databases",
+        "issuer": {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "name": "platform-workload-ca"
+        },
+        "revision": 2
+      },
+      {
+        "name": "clickhouse-operator-serving-cert",
+        "namespace": "databases",
+        "issuer": {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "name": "platform-workload-ca"
+        },
+        "revision": 2
+      },
+      {
+        "name": "hubble-relay-client-certs",
+        "namespace": "kube-system",
+        "issuer": {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "name": "platform-workload-ca"
+        },
+        "revision": 2
+      },
+      {
+        "name": "hubble-relay-server-certs",
+        "namespace": "kube-system",
+        "issuer": {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "name": "platform-workload-ca"
+        },
+        "revision": 2
+      },
+      {
+        "name": "hubble-server-certs",
+        "namespace": "kube-system",
+        "issuer": {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "name": "platform-workload-ca"
+        },
+        "revision": 2
+      }
+    ]
+  }
+}

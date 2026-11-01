@@ -30,3 +30,17 @@ availability must be chosen for each consuming cluster. The single-replica
 fixture in the validation run is deliberately non-HA and uses local-path storage.
 
 See [validation findings](../../../../docs/findings/clickhouse-operator-2026-11-01.md).
+
+## Central PKI
+
+The chart now uses `ClusterIssuer/platform-workload-ca` explicitly for webhook
+and metrics serving certificates. Provision the shared issuer before reconciling
+this release; the cert-manager HelmRelease dependency alone does not gate the
+ClusterIssuer's readiness. The chart no longer creates its self-signed Issuer.
+Use `certManager.issuerRef` in cluster values only when deliberately selecting a
+different authority. Kubernetes CA injection remains chart-native.
+
+[Focused runtime verification](../../../../docs/findings/central-pki-network-2026-11-01.md)
+passed verified TLS, wrong-CA/name rejection, admission and certificate renewal
+with changed serving serials and no operator Pod restart. Database listener TLS
+is a separate ClickHouseCluster setting and is not enabled by this operator option.

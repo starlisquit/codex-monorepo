@@ -51,6 +51,10 @@ monitor `port: metrics` continue resolving by name. Change the Service's numeric
 port too if clients must use the new number. Normally choose either this component
 or PodMonitor for the same target to avoid duplicate scraping.
 
-Build/selector/schema checks passed; end-to-end scraping of these new opt-ins
-has not been runtime-tested. Verify collector discovery, target health and an
+Build/selector/schema checks passed; runtime scraping has also been verified in a focused cluster. Verify collector discovery, target health and an
 actual app metric after deployment.
+
+[Focused runtime scraping verification](../../../../../docs/findings/monitor-components-runtime-2026-11-01.md)
+passed through VictoriaMetrics conversion and VMAgent, including namespace
+isolation, a broken selector and recovery after Pod replacement. Routine
+`validate.sh` now exercises all Component combinations and selector contracts.

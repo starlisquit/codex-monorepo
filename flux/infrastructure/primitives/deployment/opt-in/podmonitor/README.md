@@ -47,6 +47,10 @@ metrics port changes, patch the container port named `metrics`; discovery still
 uses the port name. Normally select either PodMonitor or ServiceMonitor for the
 same target, since enabling both can duplicate scrapes.
 
-Build/selector/schema checks passed. End-to-end scraping of these new opt-ins
-has not been runtime-tested. After deployment, verify collector discovery, target
+Build/selector/schema checks passed. Runtime scraping has also been verified in a focused cluster. After deployment, verify collector discovery, target
 health and an actual application metric; monitor existence alone is insufficient.
+
+[Focused runtime scraping verification](../../../../../docs/findings/monitor-components-runtime-2026-11-01.md)
+passed through VictoriaMetrics conversion and VMAgent, including namespace
+isolation, a broken selector and recovery after Pod replacement. Routine
+`validate.sh` now exercises all Component combinations and selector contracts.

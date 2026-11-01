@@ -1,0 +1,198 @@
+{
+  "play_id": "6ae791fa7f32053bde29d314",
+  "tested_revision": "c3d52c878f9f6c64bc4efbeb103d155ce308d005",
+  "captured_at": "2026-11-01T19:48:00.453605+00:00",
+  "initial_targets": [
+    {
+      "labels": {
+        "container": "application",
+        "endpoint": "metrics",
+        "instance": "10.42.0.17:8081",
+        "job": "applications/worker-application",
+        "namespace": "applications",
+        "pod": "worker-application-8766cbc8b-d59sz"
+      },
+      "pool": "podScrape/applications/worker-application/0",
+      "url": "http://10.42.0.17:8081/metrics",
+      "health": "up",
+      "error": "",
+      "last_scrape": "2026-11-01T19:45:12.424Z"
+    },
+    {
+      "labels": {
+        "container": "application",
+        "endpoint": "metrics",
+        "instance": "10.42.2.8:8081",
+        "job": "api-application-metrics",
+        "namespace": "applications",
+        "pod": "api-application-76fbb499d-srhbq",
+        "service": "api-application-metrics"
+      },
+      "pool": "serviceScrape/applications/api-application/0",
+      "url": "http://10.42.2.8:8081/metrics",
+      "health": "up",
+      "error": "",
+      "last_scrape": "2026-11-01T19:45:14.958Z"
+    }
+  ],
+  "initial_metrics": [
+    {
+      "metric": {
+        "__name__": "template_probe",
+        "app": "worker",
+        "container": "application",
+        "endpoint": "metrics",
+        "instance": "10.42.0.17:8081",
+        "job": "applications/worker-application",
+        "namespace": "applications",
+        "pod": "worker-application-8766cbc8b-d59sz",
+        "prometheus": "observability/validation"
+      },
+      "value": [
+        1793562317,
+        "1"
+      ]
+    },
+    {
+      "metric": {
+        "__name__": "template_probe",
+        "app": "api",
+        "container": "application",
+        "endpoint": "metrics",
+        "instance": "10.42.2.8:8081",
+        "job": "api-application-metrics",
+        "namespace": "applications",
+        "pod": "api-application-76fbb499d-srhbq",
+        "prometheus": "observability/validation",
+        "service": "api-application-metrics"
+      },
+      "value": [
+        1793562317,
+        "1"
+      ]
+    }
+  ],
+  "cross_namespace_decoys_scraped": false,
+  "broken_selector_failed_closed": true,
+  "worker_remained_up_during_negative_test": true,
+  "decoy_resources": [
+    {
+      "kind": "Pod",
+      "name": "metrics-decoy-api",
+      "namespace": "default"
+    },
+    {
+      "kind": "Pod",
+      "name": "metrics-decoy-worker",
+      "namespace": "default"
+    },
+    {
+      "kind": "Service",
+      "name": "metrics-decoy-api",
+      "namespace": "default"
+    }
+  ],
+  "restored_targets": [
+    {
+      "labels": {
+        "container": "application",
+        "endpoint": "metrics",
+        "instance": "10.42.0.17:8081",
+        "job": "applications/worker-application",
+        "namespace": "applications",
+        "pod": "worker-application-8766cbc8b-d59sz"
+      },
+      "pool": "podScrape/applications/worker-application/0",
+      "url": "http://10.42.0.17:8081/metrics",
+      "health": "up",
+      "error": "",
+      "last_scrape": "2026-11-01T19:46:12.424Z"
+    },
+    {
+      "labels": {
+        "container": "application",
+        "endpoint": "metrics",
+        "instance": "10.42.2.8:8081",
+        "job": "api-application-metrics",
+        "namespace": "applications",
+        "pod": "api-application-76fbb499d-srhbq",
+        "service": "api-application-metrics"
+      },
+      "pool": "serviceScrape/applications/api-application/0",
+      "url": "http://10.42.2.8:8081/metrics",
+      "health": "up",
+      "error": "",
+      "last_scrape": "2026-11-01T19:46:14.958Z"
+    }
+  ],
+  "after_rollout_targets": [
+    {
+      "labels": {
+        "container": "application",
+        "endpoint": "metrics",
+        "instance": "10.42.0.20:8081",
+        "job": "applications/worker-application",
+        "namespace": "applications",
+        "pod": "worker-application-8766cbc8b-hrszl"
+      },
+      "pool": "podScrape/applications/worker-application/0",
+      "url": "http://10.42.0.20:8081/metrics",
+      "health": "up",
+      "error": "",
+      "last_scrape": "2026-11-01T19:47:14.3Z"
+    },
+    {
+      "labels": {
+        "container": "application",
+        "endpoint": "metrics",
+        "instance": "10.42.0.21:8081",
+        "job": "api-application-metrics",
+        "namespace": "applications",
+        "pod": "api-application-76fbb499d-vx7p7",
+        "service": "api-application-metrics"
+      },
+      "pool": "serviceScrape/applications/api-application/0",
+      "url": "http://10.42.0.21:8081/metrics",
+      "health": "up",
+      "error": "",
+      "last_scrape": "2026-11-01T19:47:29.226Z"
+    }
+  ],
+  "after_rollout_metrics": [
+    {
+      "metric": {
+        "__name__": "template_probe",
+        "app": "worker",
+        "container": "application",
+        "endpoint": "metrics",
+        "instance": "10.42.0.20:8081",
+        "job": "applications/worker-application",
+        "namespace": "applications",
+        "pod": "worker-application-8766cbc8b-hrszl",
+        "prometheus": "observability/validation"
+      },
+      "value": [
+        1793562480,
+        "1"
+      ]
+    },
+    {
+      "metric": {
+        "__name__": "template_probe",
+        "app": "api",
+        "container": "application",
+        "endpoint": "metrics",
+        "instance": "10.42.0.21:8081",
+        "job": "api-application-metrics",
+        "namespace": "applications",
+        "pod": "api-application-76fbb499d-vx7p7",
+        "prometheus": "observability/validation",
+        "service": "api-application-metrics"
+      },
+      "value": [
+        1793562480,
+        "1"
+      ]
+    }
+  ]
+}

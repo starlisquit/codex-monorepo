@@ -4,5 +4,7 @@
   "timezone": "Europe/Istanbul",
   "purpose": "pki-network",
   "flux_path": "./flux/clusters/20261101-222440-pki-network-29d303",
-  "status": "preparing"
+  "status": "verified",
+  "tested_revision": "c3d52c878f9f6c64bc4efbeb103d155ce308d005",
+  "findings": "flux/docs/findings/central-pki-network-2026-11-01.md"
 }

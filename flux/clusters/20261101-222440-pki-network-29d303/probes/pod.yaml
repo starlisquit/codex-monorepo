@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pki-probe
+  namespace: kube-system
+spec:
+  restartPolicy: Never
+  automountServiceAccountToken: false
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 10001
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+  - name: probe
+    image: python:3.13.9-slim
+    command:
+    - python
+    - -c
+    - import time; time.sleep(36000)
+    securityContext:
+      readOnlyRootFilesystem: true
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        memory: 128Mi
+    volumeMounts:
+    - name: ca
+      mountPath: /ca
+      readOnly: true
+    - name: code
+      mountPath: /scripts
+      readOnly: true
+    - name: client
+      mountPath: /client
+      readOnly: true
+  volumes:
+  - name: ca
+    configMap:
+      name: platform-ca
+  - name: code
+    configMap:
+      name: pki-probe-code
+  - name: client
+    secret:
+      secretName: hubble-relay-client-certs

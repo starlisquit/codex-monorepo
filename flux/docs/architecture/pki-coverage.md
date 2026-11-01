@@ -1,7 +1,8 @@
 # Application PKI coverage in the templates
 
-This is a desired-configuration inventory, not a live audit. No playground is
-running. The last migration did not complete end-to-end verification; see the
+This describes the templates and their verification scope. Focused Hubble and
+ClickHouse verification is recorded in the [central PKI network findings](../findings/central-pki-network-2026-11-01.md).
+The earlier full-platform migration remains incomplete; see its
 [last-run findings](../findings/pki-last-run.md).
 
 **Not every bootstrapped application uses our CA.** Central certificate issuance,
@@ -14,7 +15,8 @@ operations. A Bundle does not make every client trust it automatically.
 | Metrics Server serving endpoint | Central ClusterIssuer, APIService CA injection and monitoring verification |
 | Metrics Server to kubelets | Kubernetes/kubeadm certificates; lab overlay still uses `--kubelet-insecure-tls` (encrypted but unverified) |
 | trust-manager serving endpoint | Certificate issuer patched to the central ClusterIssuer |
-| Hubble server/relay client | Cilium chart's cert-manager integration and shared public CA Bundle |
+| Hubble server/relay client | Explicit central ClusterIssuer via chart cert-manager integration; live TLS/mTLS, flow RPCs and hot renewal verified |
+| ClickHouse operator webhook/metrics | Explicit central ClusterIssuer; live TLS, API admission and hot renewal verified; database listener TLS remains separate |
 | Kyverno webhooks | Central-root-signed leaves and public CA Secret from trust-manager; delegated chains are incompatible with the pinned admission readiness validator |
 | VictoriaMetrics Operator webhook | Chart's cert-manager integration uses the central ClusterIssuer |
 | NATS client and cluster endpoints | Central server/client-capable certificate; route peer verification configured; client-certificate enforcement not enabled on the client port |
