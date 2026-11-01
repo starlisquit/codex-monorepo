@@ -161,7 +161,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "kubernetes.pod_namespace:~\"^${namespace:regex}$\" AND kubernetes.pod_name:~\"^${pod:regex}$\" AND kubernetes.container_name:~\"^${container:regex}$\" AND (level:~\"(?i)^${level:regex}$\" OR severity_text:~\"(?i)^${level:regex}$\" OR severity:~\"(?i)^${level:regex}$\") AND _msg:~\"${search:raw}\"",
+              "expr": "kubernetes.pod_namespace:* AND kubernetes.pod_namespace:~\"^${namespace:regex}$\" AND kubernetes.pod_name:~\"^${pod:regex}$\" AND kubernetes.container_name:~\"^${container:regex}$\" AND (level:~\"(?i)^${level:regex}$\" OR severity_text:~\"(?i)^${level:regex}$\" OR severity:~\"(?i)^${level:regex}$\") AND _msg:~\"${search:raw}\"",
               "queryType": "instant",
               "editorMode": "code",
               "maxLines": 1000

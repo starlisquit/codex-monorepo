@@ -33,3 +33,19 @@ this dashboard is filtering, not authorization: users of this datasource can
 query all collected namespaces. Avoid logging secrets in applications.
 
 Runbook: [verify container logging](../../runbooks/operations/container-logging.md).
+
+
+## Live deployment findings — 2026-11-01
+
+The collector ran on all three nodes in the rebuilt play. Backend field-value
+queries returned logs from all three node names and 11 infrastructure namespaces
+in a five-minute sample. Parsed levels included info/warn/error and uppercase
+variants, alongside unclassified plain-text records. The exact dashboard query
+with kube-system, etcd Pod/container and WARN filters returned matching records
+with the expected node and stderr fields.
+
+During the first backfill the API timed out and `/readyz` temporarily reported
+etcd trouble. It subsequently returned `ok`. Native agent logs reported retries
+to the backend during the slow interval. The write-rate cap bounds backfill
+pressure; it is not proof that initial backfill caused every API slowdown.
+The control-plane sizing and existing root-disk pressure limitations still apply.
