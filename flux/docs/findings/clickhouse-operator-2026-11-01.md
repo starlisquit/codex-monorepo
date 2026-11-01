@@ -82,3 +82,18 @@ Findings and configuration published to both remotes at identical commit
 `8a2630910541050b159f07be237cd24fa4ada874` before destruction.
 The destroy API returned `ok: true` at 20:00:48 Europe/Istanbul
 (17:00:48 UTC). The playground was destroyed, not stopped.
+
+## Reusable cluster base
+
+Added `infrastructure/databases/clickhouse/cluster` as a separately selectable
+base containing both `KeeperCluster` and `ClickHouseCluster`, named `clickhouse`
+in `databases`. It reuses the verified image digests and defaults to three Keeper
+replicas, one shard with two ClickHouse replicas, and 20Gi ceph-block PVCs per pod.
+The default user password references externally supplied Secret `clickhouse-auth`
+key `password`; no credentials are committed.
+
+Both manifests validate against the official chart 0.0.8 CRD OpenAPI schemas;
+all 132 repository Kustomize builds pass. This is static schema/build validation:
+the larger topology, Ceph storage and Secret-based default user password have not
+been live-tested. The previous live verification remains scoped to its original
+single-replica run. No new playground was created for this extraction.

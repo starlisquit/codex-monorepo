@@ -18,7 +18,8 @@ a focused cluster. No monitoring stack is required by this operator template.
 
 The operator watches all namespaces with cluster-wide RBAC by default. Override
 chart values using optional `clickhouse-operator-cluster-values` ConfigMap in
-`databases` (key `values.yaml`). No database cluster is created automatically.
+`databases` (key `values.yaml`). No database cluster is created automatically. Select [`../cluster`](../cluster)
+separately to create a ClickHouse cluster and its Keeper cluster.
 Use `clickhouse.com/v1alpha1` `ClickHouseCluster` / `KeeperCluster` resources;
 these differ from Altinity's ClickHouseInstallation API. CRDs are retained on
 uninstall, so deleting the HelmRelease does not delete database resources.

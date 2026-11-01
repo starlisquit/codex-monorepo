@@ -1,0 +1,41 @@
+apiVersion: clickhouse.com/v1alpha1
+kind: KeeperCluster
+metadata:
+  name: clickhouse
+  namespace: databases
+spec:
+  replicas: 3
+  dataVolumeClaimSpec:
+    storageClassName: ceph-block
+    resources:
+      requests:
+        storage: 20Gi
+  containerTemplate:
+    image:
+      repository: docker.io/clickhouse/clickhouse-keeper
+      hash: sha256:f6e6c8e64d44358179f5ab33f4f925cc365bd02d1907d60183e57bb0c27f4bf1
+---
+apiVersion: clickhouse.com/v1alpha1
+kind: ClickHouseCluster
+metadata:
+  name: clickhouse
+  namespace: databases
+spec:
+  replicas: 2
+  dataVolumeClaimSpec:
+    storageClassName: ceph-block
+    resources:
+      requests:
+        storage: 20Gi
+  keeperClusterRef:
+    name: clickhouse
+  containerTemplate:
+    image:
+      repository: docker.io/clickhouse/clickhouse-server
+      hash: sha256:739e099abd1157390960a59e4532d21781d8fde57e6e4151cb920ea02c30b1ce
+  shards: 1
+  settings:
+    defaultUserPassword:
+      secret:
+        name: clickhouse-auth
+        key: password
