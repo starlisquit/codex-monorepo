@@ -1,0 +1,512 @@
+{
+  "captured_at": "2026-11-01T17:00:01.274740+00:00",
+  "play_id": "6ae76eb246471e13268a2db6",
+  "run_path": "flux/clusters/20261101-195410-clickhouse-operator-8a2db6",
+  "tested_revision": "9c3c0b38cdc83aa5d7dc6189f56a127fc0cd4ece",
+  "kustomizations_flux-system": [
+    {
+      "name": "cert-manager",
+      "generation": 1,
+      "status": {
+        "conditions": [
+          {
+            "lastTransitionTime": "2026-11-01T16:59:21Z",
+            "message": "Applied revision: main@sha1:9c3c0b38cdc83aa5d7dc6189f56a127fc0cd4ece",
+            "observedGeneration": 1,
+            "reason": "ReconciliationSucceeded",
+            "status": "True",
+            "type": "Ready"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:59:21Z",
+            "message": "Health check passed in 8.620333ms",
+            "observedGeneration": 1,
+            "reason": "Succeeded",
+            "status": "True",
+            "type": "Healthy"
+          }
+        ],
+        "lastAppliedRevision": "main@sha1:9c3c0b38cdc83aa5d7dc6189f56a127fc0cd4ece",
+        "lastAttemptedRevision": "main@sha1:9c3c0b38cdc83aa5d7dc6189f56a127fc0cd4ece",
+        "observedGeneration": 1
+      }
+    },
+    {
+      "name": "clickhouse-operator",
+      "generation": 1,
+      "status": {
+        "conditions": [
+          {
+            "lastTransitionTime": "2026-11-01T16:59:23Z",
+            "message": "Applied revision: main@sha1:9c3c0b38cdc83aa5d7dc6189f56a127fc0cd4ece",
+            "observedGeneration": 1,
+            "reason": "ReconciliationSucceeded",
+            "status": "True",
+            "type": "Ready"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:59:23Z",
+            "message": "Health check passed in 5.241941ms",
+            "observedGeneration": 1,
+            "reason": "Succeeded",
+            "status": "True",
+            "type": "Healthy"
+          }
+        ],
+        "lastAppliedRevision": "main@sha1:9c3c0b38cdc83aa5d7dc6189f56a127fc0cd4ece",
+        "lastAttemptedRevision": "main@sha1:9c3c0b38cdc83aa5d7dc6189f56a127fc0cd4ece",
+        "observedGeneration": 1
+      }
+    },
+    {
+      "name": "clickhouse-workload",
+      "generation": 2,
+      "status": {
+        "conditions": [
+          {
+            "lastTransitionTime": "2026-11-01T16:59:30Z",
+            "message": "Applied revision: main@sha1:9c3c0b38cdc83aa5d7dc6189f56a127fc0cd4ece",
+            "observedGeneration": 2,
+            "reason": "ReconciliationSucceeded",
+            "status": "True",
+            "type": "Ready"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:59:30Z",
+            "message": "Health check passed in 5.017829439s",
+            "observedGeneration": 2,
+            "reason": "Succeeded",
+            "status": "True",
+            "type": "Healthy"
+          }
+        ],
+        "lastAppliedRevision": "main@sha1:9c3c0b38cdc83aa5d7dc6189f56a127fc0cd4ece",
+        "lastAttemptedRevision": "main@sha1:9c3c0b38cdc83aa5d7dc6189f56a127fc0cd4ece",
+        "observedGeneration": 2
+      }
+    },
+    {
+      "name": "flux-system",
+      "generation": 1,
+      "status": {
+        "conditions": [
+          {
+            "lastTransitionTime": "2026-11-01T16:59:09Z",
+            "message": "Applied revision: main@sha1:9c3c0b38cdc83aa5d7dc6189f56a127fc0cd4ece",
+            "observedGeneration": 1,
+            "reason": "ReconciliationSucceeded",
+            "status": "True",
+            "type": "Ready"
+          }
+        ],
+        "lastAppliedRevision": "main@sha1:9c3c0b38cdc83aa5d7dc6189f56a127fc0cd4ece",
+        "lastAttemptedRevision": "main@sha1:9c3c0b38cdc83aa5d7dc6189f56a127fc0cd4ece",
+        "observedGeneration": 1
+      }
+    },
+    {
+      "name": "foundation",
+      "generation": 1,
+      "status": {
+        "conditions": [
+          {
+            "lastTransitionTime": "2026-11-01T16:59:19Z",
+            "message": "Applied revision: main@sha1:9c3c0b38cdc83aa5d7dc6189f56a127fc0cd4ece",
+            "observedGeneration": 1,
+            "reason": "ReconciliationSucceeded",
+            "status": "True",
+            "type": "Ready"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:59:19Z",
+            "message": "Health check passed in 7.223602ms",
+            "observedGeneration": 1,
+            "reason": "Succeeded",
+            "status": "True",
+            "type": "Healthy"
+          }
+        ],
+        "lastAppliedRevision": "main@sha1:9c3c0b38cdc83aa5d7dc6189f56a127fc0cd4ece",
+        "lastAttemptedRevision": "main@sha1:9c3c0b38cdc83aa5d7dc6189f56a127fc0cd4ece",
+        "observedGeneration": 1
+      }
+    }
+  ],
+  "helmreleases_databases": [
+    {
+      "name": "clickhouse-operator",
+      "generation": 1,
+      "status": {
+        "conditions": [
+          {
+            "lastTransitionTime": "2026-11-01T16:56:59Z",
+            "message": "Helm install succeeded for release databases/clickhouse-operator.v1 with chart clickhouse-operator-helm@0.0.8+61d97bb43a16",
+            "observedGeneration": 1,
+            "reason": "InstallSucceeded",
+            "status": "True",
+            "type": "Ready"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:56:59Z",
+            "message": "Helm install succeeded for release databases/clickhouse-operator.v1 with chart clickhouse-operator-helm@0.0.8+61d97bb43a16",
+            "observedGeneration": 1,
+            "reason": "InstallSucceeded",
+            "status": "True",
+            "type": "Released"
+          }
+        ],
+        "lastAttemptedRevision": "0.0.8+61d97bb43a16",
+        "observedGeneration": 1
+      }
+    }
+  ],
+  "helmreleases_certificates": [
+    {
+      "name": "cert-manager",
+      "generation": 1,
+      "status": {
+        "conditions": [
+          {
+            "lastTransitionTime": "2026-11-01T16:56:04Z",
+            "message": "Helm install succeeded for release certificates/cert-manager.v1 with chart cert-manager@v1.21.3",
+            "observedGeneration": 1,
+            "reason": "InstallSucceeded",
+            "status": "True",
+            "type": "Ready"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:56:04Z",
+            "message": "Helm install succeeded for release certificates/cert-manager.v1 with chart cert-manager@v1.21.3",
+            "observedGeneration": 1,
+            "reason": "InstallSucceeded",
+            "status": "True",
+            "type": "Released"
+          }
+        ],
+        "lastAttemptedRevision": "v1.21.3",
+        "observedGeneration": 1
+      }
+    }
+  ],
+  "clickhouseclusters_databases": [
+    {
+      "name": "verification",
+      "generation": 2,
+      "status": {
+        "conditions": [
+          {
+            "lastTransitionTime": "2026-11-01T16:57:09Z",
+            "message": "",
+            "observedGeneration": 2,
+            "reason": "SpecValid",
+            "status": "True",
+            "type": "SpecValid"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:57:09Z",
+            "message": "",
+            "observedGeneration": 2,
+            "reason": "ReplicasRunning",
+            "status": "True",
+            "type": "ReplicaStartupSucceeded"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:58:44Z",
+            "message": "",
+            "observedGeneration": 2,
+            "reason": "ReplicasReady",
+            "status": "True",
+            "type": "Healthy"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:57:30Z",
+            "message": "",
+            "observedGeneration": 2,
+            "reason": "UpToDate",
+            "status": "True",
+            "type": "ClusterSizeAligned"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:58:40Z",
+            "message": "",
+            "observedGeneration": 2,
+            "reason": "UpToDate",
+            "status": "True",
+            "type": "ConfigurationInSync"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:57:30Z",
+            "message": "",
+            "observedGeneration": 2,
+            "reason": "VersionMatch",
+            "status": "True",
+            "type": "VersionInSync"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:58:44Z",
+            "message": "All shards are ready",
+            "observedGeneration": 2,
+            "reason": "AllShardsReady",
+            "status": "True",
+            "type": "Ready"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:58:40Z",
+            "message": "All replicas are in sync",
+            "observedGeneration": 2,
+            "reason": "ReplicasInSync",
+            "status": "True",
+            "type": "SchemaInSync"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:57:09Z",
+            "message": "Reconcile succeeded",
+            "observedGeneration": 2,
+            "reason": "ReconcileFinished",
+            "status": "True",
+            "type": "ReconcileSucceeded"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:57:30Z",
+            "message": "",
+            "observedGeneration": 2,
+            "reason": "UpToDate",
+            "status": "True",
+            "type": "VersionUpgraded"
+          }
+        ],
+        "observedGeneration": 2,
+        "readyReplicas": 1,
+        "version": "26.10.3.7"
+      }
+    }
+  ],
+  "keeperclusters_databases": [
+    {
+      "name": "verification",
+      "generation": 2,
+      "status": {
+        "conditions": [
+          {
+            "lastTransitionTime": "2026-11-01T16:57:09Z",
+            "message": "",
+            "observedGeneration": 2,
+            "reason": "SpecValid",
+            "status": "True",
+            "type": "SpecValid"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:57:09Z",
+            "message": "",
+            "observedGeneration": 2,
+            "reason": "ReplicasRunning",
+            "status": "True",
+            "type": "ReplicaStartupSucceeded"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:57:35Z",
+            "message": "",
+            "observedGeneration": 2,
+            "reason": "ReplicasReady",
+            "status": "True",
+            "type": "Healthy"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:57:09Z",
+            "message": "",
+            "observedGeneration": 2,
+            "reason": "UpToDate",
+            "status": "True",
+            "type": "ClusterSizeAligned"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:57:09Z",
+            "message": "",
+            "observedGeneration": 2,
+            "reason": "UpToDate",
+            "status": "True",
+            "type": "ConfigurationInSync"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:57:35Z",
+            "message": "",
+            "observedGeneration": 2,
+            "reason": "VersionMatch",
+            "status": "True",
+            "type": "VersionInSync"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:57:35Z",
+            "message": "Standalone Keeper is ready",
+            "observedGeneration": 2,
+            "reason": "StandaloneReady",
+            "status": "True",
+            "type": "Ready"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:57:35Z",
+            "message": "",
+            "observedGeneration": 2,
+            "reason": "ReadyToScale",
+            "status": "True",
+            "type": "ScaleAllowed"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:57:09Z",
+            "message": "Reconcile succeeded",
+            "observedGeneration": 2,
+            "reason": "ReconcileFinished",
+            "status": "True",
+            "type": "ReconcileSucceeded"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:57:35Z",
+            "message": "",
+            "observedGeneration": 2,
+            "reason": "UpToDate",
+            "status": "True",
+            "type": "VersionUpgraded"
+          }
+        ],
+        "observedGeneration": 2,
+        "readyReplicas": 1,
+        "version": "26.10.3.7"
+      }
+    }
+  ],
+  "certificates_databases": [
+    {
+      "name": "clickhouse-operator-metrics-certs",
+      "generation": 1,
+      "status": {
+        "conditions": [
+          {
+            "lastTransitionTime": "2026-11-01T16:56:44Z",
+            "message": "Certificate is up to date and has not expired",
+            "observedGeneration": 1,
+            "reason": "Ready",
+            "status": "True",
+            "type": "Ready"
+          }
+        ]
+      }
+    },
+    {
+      "name": "clickhouse-operator-serving-cert",
+      "generation": 1,
+      "status": {
+        "conditions": [
+          {
+            "lastTransitionTime": "2026-11-01T16:56:44Z",
+            "message": "Certificate is up to date and has not expired",
+            "observedGeneration": 1,
+            "reason": "Ready",
+            "status": "True",
+            "type": "Ready"
+          }
+        ]
+      }
+    }
+  ],
+  "ocirepositories_flux-system": [
+    {
+      "name": "clickhouse-operator",
+      "generation": 1,
+      "status": {
+        "conditions": [
+          {
+            "lastTransitionTime": "2026-11-01T16:55:30Z",
+            "message": "stored artifact for digest '0.0.8@sha256:61d97bb43a16859f485af1099251fc591b527a4c01013e6de355be11a80fbc9c'",
+            "observedGeneration": 1,
+            "reason": "Succeeded",
+            "status": "True",
+            "type": "Ready"
+          },
+          {
+            "lastTransitionTime": "2026-11-01T16:55:30Z",
+            "message": "stored artifact for digest '0.0.8@sha256:61d97bb43a16859f485af1099251fc591b527a4c01013e6de355be11a80fbc9c'",
+            "observedGeneration": 1,
+            "reason": "Succeeded",
+            "status": "True",
+            "type": "ArtifactInStorage"
+          }
+        ],
+        "observedGeneration": 1
+      }
+    }
+  ],
+  "pods": [
+    {
+      "name": "clickhouse-operator-controller-manager-6964b677b7-qxnkr",
+      "uid": "106734e4-07db-4d0d-9e34-412468a03e8b",
+      "images": [
+        {
+          "image": "ghcr.io/clickhouse/clickhouse-operator:v0.0.8",
+          "imageID": "ghcr.io/clickhouse/clickhouse-operator@sha256:80ff894a42fbc34fc40016776a5ba340b126b2ff408011a0af375d18c0dc8e44",
+          "ready": true,
+          "restarts": 0
+        }
+      ]
+    },
+    {
+      "name": "verification-clickhouse-0-0-0",
+      "uid": "d1bb7560-ba3b-4c79-8c89-f20f1448b004",
+      "images": [
+        {
+          "image": "docker.io/clickhouse/clickhouse-server:latest",
+          "imageID": "docker.io/clickhouse/clickhouse-server@sha256:739e099abd1157390960a59e4532d21781d8fde57e6e4151cb920ea02c30b1ce",
+          "ready": true,
+          "restarts": 0
+        }
+      ]
+    },
+    {
+      "name": "verification-clickhouse-version-probe-51467107-dhwl6",
+      "uid": "6e399a28-4c24-4820-b10c-ee022b147a02",
+      "images": [
+        {
+          "image": "docker.io/clickhouse/clickhouse-server:latest",
+          "imageID": "docker.io/clickhouse/clickhouse-server@sha256:739e099abd1157390960a59e4532d21781d8fde57e6e4151cb920ea02c30b1ce",
+          "ready": false,
+          "restarts": 0
+        }
+      ]
+    },
+    {
+      "name": "verification-keeper-0-0",
+      "uid": "f170985b-c9a0-48a4-a5e0-4f10a3294880",
+      "images": [
+        {
+          "image": "docker.io/clickhouse/clickhouse-keeper:latest",
+          "imageID": "docker.io/clickhouse/clickhouse-keeper@sha256:f6e6c8e64d44358179f5ab33f4f925cc365bd02d1907d60183e57bb0c27f4bf1",
+          "ready": true,
+          "restarts": 0
+        }
+      ]
+    }
+  ],
+  "volumes": [
+    {
+      "name": "clickhouse-storage-volume-verification-clickhouse-0-0-0",
+      "uid": "ee74c0a5-2e8d-4570-867a-35ecae773ef0",
+      "phase": "Bound",
+      "volume": "pvc-ee74c0a5-2e8d-4570-867a-35ecae773ef0",
+      "storageClass": "local-path"
+    },
+    {
+      "name": "clickhouse-storage-volume-verification-keeper-0-0",
+      "uid": "d447f9fb-4bf4-4538-9a46-7c4c311a6aed",
+      "phase": "Bound",
+      "volume": "pvc-d447f9fb-4bf4-4538-9a46-7c4c311a6aed",
+      "storageClass": "local-path"
+    }
+  ],
+  "sql_after_pod_replacement": "1\\tclickhouse-operator-verified",
+  "keeper_backed_replication": {
+    "is_readonly": 0,
+    "is_session_expired": 0,
+    "total_replicas": 1,
+    "active_replicas": 1
+  },
+  "pod_uid_before_replacement": "bb6ce44d-9a0d-412b-994d-0bfac71eb617"
+}

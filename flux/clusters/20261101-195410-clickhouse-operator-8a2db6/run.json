@@ -4,5 +4,7 @@
   "timezone": "Europe/Istanbul",
   "purpose": "clickhouse-operator",
   "flux_path": "./flux/clusters/20261101-195410-clickhouse-operator-8a2db6",
-  "status": "preparing"
+  "status": "verified",
+  "tested_revision": "9c3c0b38cdc83aa5d7dc6189f56a127fc0cd4ece",
+  "findings": "flux/docs/findings/clickhouse-operator-2026-11-01.md"
 }
