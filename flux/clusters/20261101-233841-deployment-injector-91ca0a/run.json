@@ -4,5 +4,7 @@
   "timezone": "Europe/Istanbul",
   "purpose": "deployment-injector",
   "flux_path": "./flux/clusters/20261101-233841-deployment-injector-91ca0a",
-  "status": "preparing"
+  "status": "verified",
+  "tested_revision": "4bfce4a958eb154128833151e3279acc54d76e2c",
+  "findings": "flux/docs/findings/deployment-injector-runtime-2026-11-01.md"
 }

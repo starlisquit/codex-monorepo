@@ -1,0 +1,166 @@
+{
+  "mode": "injector",
+  "started_at": "2026-11-01T20:43:11.287205+00:00",
+  "checks": {
+    "initial_application_delivery": {
+      "pod_uids": {
+        "api": "fb208661-b376-42a6-9528-460d088fe38b",
+        "worker": "777d0aac-b305-4b08-a7a9-003ffccf6a60"
+      },
+      "sha256": {
+        "api": "82d72e298cc43b5d1eefd486658c9f6272fbc82447b6d4a492dd35f1862e582a",
+        "worker": "d149a8eba76d5702f9e224b8c2dcc0a5a47ebcfdf957d72ab86dd27a8ab8ebfc"
+      },
+      "uid": 10001
+    },
+    "https_backend_verified": {
+      "endpoint": "https://openbao-active.secrets.svc:8200",
+      "public_ca": true,
+      "skip_verify": false
+    },
+    "auth_and_policy_isolation": {
+      "cross_application_http": 403,
+      "wrong_service_account_http": 403,
+      "wrong_audience_http": 403,
+      "wrong_namespace_http": 403,
+      "self_lookup_and_renew": true
+    },
+    "injected_agents_file_permissions_and_token_isolation": true,
+    "file_refresh_without_pod_restart": {
+      "new_sha256": "28d226bce1801ff53b971872b400411906fe4dbebb9174eac8d6ff8c502a63c1",
+      "unchanged_pod_uid": "fb208661-b376-42a6-9528-460d088fe38b"
+    },
+    "forbidden_path_blocks_application_start": {
+      "pod_uid": "2776676c-8b0c-449b-a025-9643c79051bc",
+      "application_started": false
+    },
+    "agent_reauthentication_without_pod_restart": {
+      "lab_role_ttl": "30s",
+      "lab_role_max_ttl": "2m",
+      "success_log_entries_at_least": 2
+    },
+    "other_application_unchanged": true,
+    "final_applications_ready": true
+  },
+  "completed_at": "2026-11-01T20:46:56.144717+00:00",
+  "result": "passed",
+  "captured_at": "2026-11-01T20:47:21.428728+00:00",
+  "nodes": [
+    {
+      "name": "cplane-01",
+      "version": "v1.37.1+k3s1"
+    },
+    {
+      "name": "node-01",
+      "version": "v1.37.1+k3s1"
+    },
+    {
+      "name": "node-02",
+      "version": "v1.37.1+k3s1"
+    }
+  ],
+  "helm_releases": [
+    {
+      "name": "cert-manager",
+      "namespace": "certificates",
+      "chart": "cert-manager",
+      "version": "v1.21.3",
+      "ready": true
+    },
+    {
+      "name": "trust-manager",
+      "namespace": "certificates",
+      "chart": "trust-manager",
+      "version": "v0.26.0",
+      "ready": true
+    },
+    {
+      "name": "openbao",
+      "namespace": "secrets",
+      "chart": "openbao",
+      "version": "0.30.6",
+      "ready": true
+    }
+  ],
+  "flux_path": "./flux/clusters/20261101-233841-deployment-injector-91ca0a",
+  "flux_stages": [
+    {
+      "name": "api",
+      "revision": "main@sha1:4bfce4a958eb154128833151e3279acc54d76e2c",
+      "ready": true
+    },
+    {
+      "name": "cert-manager",
+      "revision": "main@sha1:4bfce4a958eb154128833151e3279acc54d76e2c",
+      "ready": true
+    },
+    {
+      "name": "flux-system",
+      "revision": "main@sha1:4bfce4a958eb154128833151e3279acc54d76e2c",
+      "ready": true
+    },
+    {
+      "name": "foundation",
+      "revision": "main@sha1:4bfce4a958eb154128833151e3279acc54d76e2c",
+      "ready": true
+    },
+    {
+      "name": "openbao",
+      "revision": "main@sha1:4bfce4a958eb154128833151e3279acc54d76e2c",
+      "ready": true
+    },
+    {
+      "name": "pki-issuer",
+      "revision": "main@sha1:4bfce4a958eb154128833151e3279acc54d76e2c",
+      "ready": true
+    },
+    {
+      "name": "pki-trust",
+      "revision": "main@sha1:4bfce4a958eb154128833151e3279acc54d76e2c",
+      "ready": true
+    },
+    {
+      "name": "trust-manager",
+      "revision": "main@sha1:4bfce4a958eb154128833151e3279acc54d76e2c",
+      "ready": true
+    },
+    {
+      "name": "worker",
+      "revision": "main@sha1:4bfce4a958eb154128833151e3279acc54d76e2c",
+      "ready": true
+    }
+  ],
+  "root_ca_sha256": "ec47cc76c912f2d7e59d9cbc5b981e0e9c346c85a2d24b51ba0dde3531bf44cc",
+  "application_pods": [
+    {
+      "name": "api-application-567f8f47df-7zl6q",
+      "uid": "fb208661-b376-42a6-9528-460d088fe38b",
+      "containers": [
+        {
+          "name": "application",
+          "image": "python:3.13.9-slim"
+        },
+        {
+          "name": "vault-agent",
+          "image": "quay.io/openbao/openbao:2.7.2"
+        }
+      ],
+      "service_account": "api-application-openbao-injector"
+    },
+    {
+      "name": "worker-application-5974b8c4f-hwbrw",
+      "uid": "777d0aac-b305-4b08-a7a9-003ffccf6a60",
+      "containers": [
+        {
+          "name": "application",
+          "image": "python:3.13.9-slim"
+        },
+        {
+          "name": "vault-agent",
+          "image": "quay.io/openbao/openbao:2.7.2"
+        }
+      ],
+      "service_account": "worker-application-openbao-injector"
+    }
+  ]
+}

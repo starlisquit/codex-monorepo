@@ -109,3 +109,11 @@ exports; the default renders JSON using `toJSON` to preserve escaping.
 This composes with `external-secrets` for distinct file and environment secrets.
 The workload's service account remains independent of ESO's login account. No
 PKI, CNPG or other controller-managed Secret is claimed.
+
+## Runtime verification
+
+Verified on a fresh K3s cluster with two applications: correct file delivery,
+0400/UID10001 ownership, agent-only login-token mounts, TLS-verified OpenBao
+access, cross-application and wrong-identity/namespace/audience rejection,
+file refresh without Pod replacement, denied-path init blocking and automatic
+reauthentication with a short lab TTL. See [findings](../../../../../docs/findings/deployment-injector-runtime-2026-11-01.md).
