@@ -4,6 +4,8 @@
   "timezone": "Europe/Istanbul",
   "purpose": "primitives-runtime",
   "flux_path": "./flux/clusters/20261101-202715-primitives-runtime-8b5943",
-  "status": "cancelled",
-  "reason": "User requested native Gateway API validation using the existing Cilium integration, without Envoy Gateway. Retiring this run before switching to kubeadm."
+  "status": "destroyed",
+  "reason": "User requested native Gateway API validation using the existing Cilium integration, without Envoy Gateway. Retiring this run before switching to kubeadm.",
+  "destroyed_at": "2026-11-01T17:34:44Z",
+  "findings_published_revision": "1df460d54a321d45bb6d3bff1148b9a122db6213"
 }

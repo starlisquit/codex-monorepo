@@ -1,0 +1,8 @@
+{
+  "play_id": "6ae7785f7f32053bde260dc8",
+  "created_at": "2026-11-01T17:35:27.965000+00:00",
+  "timezone": "Europe/Istanbul",
+  "purpose": "primitives-cilium",
+  "flux_path": "./flux/clusters/20261101-203527-primitives-cilium-260dc8",
+  "status": "preparing"
+}

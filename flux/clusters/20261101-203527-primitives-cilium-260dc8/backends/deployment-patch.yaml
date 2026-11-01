@@ -1,0 +1,77 @@
+spec:
+  template:
+    spec:
+      securityContext:
+        fsGroup: 10001
+      initContainers:
+      - name: dependencies
+        image: python:3.13.9-slim
+        command:
+        - sh
+        - -ec
+        - pip install --no-cache-dir --disable-pip-version-check --target /packages
+          grpcio==1.76.0 grpcio-health-checking==1.76.0
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            memory: 256Mi
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+        volumeMounts:
+        - name: packages
+          mountPath: /packages
+        - name: tmp
+          mountPath: /tmp
+      containers:
+      - name: application
+        image: python:3.13.9-slim
+        command:
+        - python
+        - /scripts/server.py
+        args: []
+        env:
+        - name: PYTHONPATH
+          value: /packages
+        - name: PYTHONDONTWRITEBYTECODE
+          value: '1'
+        resources:
+          requests:
+            cpu: 100m
+            memory: 64Mi
+          limits:
+            memory: 256Mi
+        volumeMounts:
+        - name: scripts
+          mountPath: /scripts
+          readOnly: true
+        - name: packages
+          mountPath: /packages
+          readOnly: true
+        - name: tls
+          mountPath: /tls
+          readOnly: true
+        - name: tmp
+          mountPath: /tmp
+      volumes:
+      - name: scripts
+        configMap:
+          name: protocol-fixture
+      - name: packages
+        emptyDir: {}
+      - name: tmp
+        emptyDir: {}
+      - name: tls
+        secret:
+          secretName: protocol-fixture-tls
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application

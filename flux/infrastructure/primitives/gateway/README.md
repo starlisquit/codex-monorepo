@@ -18,9 +18,9 @@ the matching listener to the Gateway. No backend Service or workload is created.
 | --- | --- | --- | --- | --- |
 | `httproute` | v1 | HTTP 80 (`http`) | 80 | Standard CRDs |
 | `grpcroute` | v1 | HTTP 50051 (`grpc`) | 50051 | Standard CRDs; controller gRPC support |
-| `tlsroute` | v1alpha3 | TLS 443 passthrough (`tls`) | 8443 | Experimental CRDs; TLSRoute support |
-| `tcproute` | v1alpha2 | TCP 5432 (`tcp`) | 5432 | Experimental CRDs; TCPRoute support |
-| `udproute` | v1alpha2 | UDP 5353 (`udp`) | 5353 | Experimental CRDs; UDPRoute support |
+| `tlsroute` | v1 | TLS 443 passthrough (`tls`) | 8443 | L4 CRDs; TLSRoute support |
+| `tcproute` | v1 | TCP 5432 (`tcp`) | 5432 | L4 CRDs; TCPRoute support |
+| `udproute` | v1 | UDP 5353 (`udp`) | 5353 | L4 CRDs; UDPRoute support |
 
 HTTP and TLS examples use hostname `app.example.com`; patch it and configure DNS.
 The gRPC example matches all gRPC requests on its dedicated listener. Its backend
@@ -53,8 +53,10 @@ names; patch backendRefs if the backend was renamed in a separate build.
 
 Select namespace and `infrastructure/networking/gateway-api-crds` separately.
 For the L4 routes, additionally select
-`infrastructure/networking/gateway-api-crds/opt-in/experimental-routes`.
-That opt-in adds only TLSRoute/TCPRoute/UDPRoute CRDs; it does not redeclare the
+`infrastructure/networking/gateway-api-crds/opt-in/l4-routes`.
+The L4 routes use stable v1 APIs from Gateway API v1.6.3. This replaces the
+older alpha API templates. That opt-in adds only TLSRoute/TCPRoute/UDPRoute
+CRDs; it does not redeclare the
 standard CRDs. Wait for CRDs to be Established before applying route objects.
 The Gateway and controller must be ready before route acceptance is expected.
 This base creates no ReferenceGrant, DNS entry or credential; references stay
@@ -63,7 +65,7 @@ explicit multi-namespace policy is needed.
 
 ## Verification
 
-Build/composition and upstream v1.4.0 CRD schema checks cover all five route
+Build/composition and upstream v1.6.3 CRD schema checks cover all five route
 types, their listener attachments and prefixed parent/backend references.
 No controller/data-plane verification has been performed for these primitives.
 In a consuming cluster, check Gateway `Accepted`/`Programmed` and listener status,

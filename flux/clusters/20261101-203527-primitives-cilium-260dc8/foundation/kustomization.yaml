@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../../infrastructure/namespaces/demo
+- ../../../infrastructure/sources/cilium
+- ../../../infrastructure/networking/gateway-api-crds
+- ../../../infrastructure/networking/gateway-api-crds/opt-in/l4-routes
