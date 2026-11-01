@@ -11,12 +11,15 @@ alone does not enable it. Namespace: `ui`. Store: `redisinsight-openbao`.
 Keep the encryption key stable and backed up independently. Changing it can make existing saved credentials unreadable; this is not an automatically rotatable password.
 
 Read the [shared setup, ownership and rotation contract](../../../../../docs/operations/application-external-secrets.md) first.
-With an independently authenticated, TLS-verified OpenBao administrator session,
-apply the narrowly scoped backend configuration from this directory:
+Apply this opt-in first to create its public bootstrap descriptor. With an
+independently authenticated, TLS-verified OpenBao administrator session, provision
+its backend from that **rendered** ConfigMap (replace the default namespace below
+with the configured NS_UI):
+
 
 ```sh
-bao policy write eso-ui-redisinsight policy.hcl
-bao write auth/kubernetes/role/eso-ui-redisinsight @role.json
+kubectl -n ui get configmap redisinsight-openbao-bootstrap -o jsonpath='{.data.policy\.hcl}' | bao policy write eso-ui-redisinsight -
+kubectl -n ui get configmap redisinsight-openbao-bootstrap -o jsonpath='{.data.role\.json}' | bao write auth/kubernetes/role/eso-ui-redisinsight -
 ```
 
 The policy also permits lookup, renewal and revocation of the authenticated
@@ -34,3 +37,6 @@ operator-generated passwords are managed by this opt-in.
 
 Live OpenBao/ESO delivery and actual application credential use passed on a fresh
 K3s run. See [runtime findings](../../../../../docs/findings/infra-eso-ui-2026-11-01.md).
+
+Namespace placement, service DNS and backend role bindings follow the shared
+[namespace mapping](../../../../../docs/operations/namespace-configuration.md). Do not apply raw role.json to OpenBao; it contains namespace placeholders.

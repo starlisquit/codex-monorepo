@@ -13,7 +13,9 @@ kube-system and Flux bootstrap flux-system namespaces remain bootstrap-owned.
 A small installation can provision just AI's namespace:
 
 ```sh
-kubectl apply -k flux/infrastructure/namespaces/ai
+KUSTOMIZE_BIN=kustomize FLUX_BIN=flux \
+  python3 flux/docs/runbooks/scripts/namespace_support.py \
+  flux/infrastructure/namespaces/ai | kubectl apply -f -
 ```
 
 Or select the namespace base alongside its source and workload template in a
@@ -24,3 +26,7 @@ For existing installations, review ownership and pruning before deselecting a
 namespace: deleting a namespace deletes its contents. This repository refactor
 performs no live migration or deletion. Reconcile intended namespace ownership
 before permitting an old owner to prune its inventory.
+
+Namespace names use the [cluster namespace mapping](../../docs/operations/namespace-configuration.md),
+with the current names as defaults. A mapping entry alone does not select this
+base. Use the generated per-run override file for custom placement.

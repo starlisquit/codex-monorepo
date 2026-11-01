@@ -11,12 +11,15 @@ alone does not enable it. Namespace: `velero`. Store: `velero-openbao`.
 Store an AWS shared-credentials file in property `cloud`. Select and configure the S3 provider override separately, including bucket, endpoint, region and AWS plugin. This opt-in alone does not enable backups or create a bucket.
 
 Read the [shared setup, ownership and rotation contract](../../../../../docs/operations/application-external-secrets.md) first.
-With an independently authenticated, TLS-verified OpenBao administrator session,
-apply the narrowly scoped backend configuration from this directory:
+Apply this opt-in first to create its public bootstrap descriptor. With an
+independently authenticated, TLS-verified OpenBao administrator session, provision
+its backend from that **rendered** ConfigMap (replace the default namespace below
+with the configured NS_VELERO):
+
 
 ```sh
-bao policy write eso-velero-velero policy.hcl
-bao write auth/kubernetes/role/eso-velero-velero @role.json
+kubectl -n velero get configmap velero-openbao-bootstrap -o jsonpath='{.data.policy\.hcl}' | bao policy write eso-velero-velero -
+kubectl -n velero get configmap velero-openbao-bootstrap -o jsonpath='{.data.role\.json}' | bao write auth/kubernetes/role/eso-velero-velero -
 ```
 
 The policy also permits lookup, renewal and revocation of the authenticated
@@ -34,3 +37,6 @@ operator-generated passwords are managed by this opt-in.
 
 Live OpenBao/ESO delivery and actual application credential use passed on fresh
 K3s. See [runtime findings](../../../../../docs/findings/infra-eso-data-2026-11-01.md).
+
+Namespace placement, service DNS and backend role bindings follow the shared
+[namespace mapping](../../../../../docs/operations/namespace-configuration.md). Do not apply raw role.json to OpenBao; it contains namespace placeholders.

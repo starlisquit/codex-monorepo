@@ -1,0 +1,270 @@
+{
+  "mode": "namespace-custom",
+  "started_at": "2026-11-01T22:22:04.109233+00:00",
+  "checks": {
+    "rendered_openbao_role_and_scoped_auth": {
+      "namespace": "custom-ai",
+      "role_namespace_matches": true,
+      "cross_path_http": 403
+    },
+    "litellm-auth_exact_delivery": {
+      "namespace": "custom-ai",
+      "sha256": {
+        "master-key": "71620c2cd8f697c05c45cc4690a51a0daa10a093bacc0cf1b0cd6555a91b1c39",
+        "salt-key": "5bd15aa06c8462deddd0efd6ae972d15c8d1fb8ec03693d480df1cc3597beb16"
+      }
+    },
+    "litellm-provider-credentials_exact_delivery": {
+      "namespace": "custom-ai",
+      "sha256": {
+        "OPENAI_API_KEY": "c8843b6cff454407300ddff64ee4394c3e6c7da4b5357c4aa87c92ce38b86c2b"
+      }
+    },
+    "namespace_qualified_database_tls": {
+      "version": "TLSv1.3",
+      "serial": "7EF58247C9C9E7FA83F5AB60078DD28D75AD0DC5",
+      "hostname": "litellm-db-rw.custom-ai.svc.cluster.local"
+    },
+    "database_client_trust_and_operator_namespace": {
+      "database_namespace": "custom-ai",
+      "operator_namespace": "custom-databases",
+      "ssl_verified": true
+    },
+    "real_database_backed_application_and_provider_route": {
+      "reply": "proxy-route-verified",
+      "namespace": "custom-ai"
+    },
+    "injected_agent_uses_configured_openbao_namespace": {
+      "application_namespace": "custom-demo",
+      "openbao_namespace": "custom-secrets",
+      "pod_uid": "b2fea96e-638d-4693-b296-bca7c2956e3a",
+      "token_not_mounted_in_app": true
+    },
+    "strict_controller_missing_namespace_rejected": {
+      "reason": "BuildFailed",
+      "object_not_applied": true
+    },
+    "native_interpolation_preserved_by_controller": true,
+    "only_selected_namespaces_exist": {
+      "selected": {
+        "NS_AI": "custom-ai",
+        "NS_SECRETS": "custom-secrets",
+        "NS_CERTIFICATES": "custom-certificates",
+        "NS_OBSERVABILITY": "custom-observability",
+        "NS_DATABASES": "custom-databases",
+        "NS_DEMO": "custom-demo"
+      },
+      "unused_namespace_bases_not_created": true,
+      "legacy_defaults_absent": true
+    }
+  },
+  "result": "passed",
+  "completed_at": "2026-11-01T22:24:32.547329+00:00",
+  "namespace_mapping": {
+    "NS_AI": "custom-ai",
+    "NS_APPLICATIONS": "applications",
+    "NS_AUTOSCALING": "autoscaling",
+    "NS_BROKER": "broker",
+    "NS_CERTIFICATES": "custom-certificates",
+    "NS_CI": "ci",
+    "NS_DATABASES": "custom-databases",
+    "NS_DEMO": "custom-demo",
+    "NS_KYVERNO": "kyverno",
+    "NS_OBSERVABILITY": "custom-observability",
+    "NS_PROXY": "proxy",
+    "NS_QUALITY": "quality",
+    "NS_ROOK_CEPH": "rook-ceph",
+    "NS_SECRETS": "custom-secrets",
+    "NS_TETRAGON": "tetragon",
+    "NS_TRIVY_SYSTEM": "trivy-system",
+    "NS_UI": "ui",
+    "NS_VELERO": "velero"
+  },
+  "captured_at": "2026-11-01T22:27:22.966448+00:00",
+  "flux_path": "./flux/clusters/20261102-011155-namespace-custom-2df984",
+  "flux_stages": [
+    {
+      "name": "agent",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "cert-manager",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "cnpg-operator",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "credentials",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "database",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "database-certificates",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "external-secrets",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "flux-system",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "foundation",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "litellm",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "model-fixture",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "monitoring-crds",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "openbao",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "pki-issuer",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "pki-trust",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "trust-manager",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    }
+  ],
+  "releases": [
+    {
+      "name": "litellm",
+      "namespace": "custom-ai",
+      "ready": true,
+      "chart": "litellm-helm",
+      "version": "1.106.6+b681a4cb1eaf"
+    },
+    {
+      "name": "cert-manager",
+      "namespace": "custom-certificates",
+      "ready": true,
+      "chart": "cert-manager",
+      "version": "v1.21.3"
+    },
+    {
+      "name": "trust-manager",
+      "namespace": "custom-certificates",
+      "ready": true,
+      "chart": "trust-manager",
+      "version": "v0.26.0"
+    },
+    {
+      "name": "cloudnative-pg-operator",
+      "namespace": "custom-databases",
+      "ready": true,
+      "chart": "cloudnative-pg",
+      "version": "0.29.1"
+    },
+    {
+      "name": "prometheus-operator-crds",
+      "namespace": "custom-observability",
+      "ready": true,
+      "chart": "prometheus-operator-crds",
+      "version": "32.0.2"
+    },
+    {
+      "name": "external-secrets",
+      "namespace": "custom-secrets",
+      "ready": true,
+      "chart": "external-secrets",
+      "version": "2.14.0"
+    },
+    {
+      "name": "openbao",
+      "namespace": "custom-secrets",
+      "ready": true,
+      "chart": "openbao",
+      "version": "0.30.6"
+    }
+  ],
+  "namespaces": [
+    "custom-ai",
+    "custom-certificates",
+    "custom-databases",
+    "custom-demo",
+    "custom-observability",
+    "custom-secrets",
+    "default",
+    "flux-system",
+    "kube-node-lease",
+    "kube-public",
+    "kube-system"
+  ],
+  "nodes": [
+    {
+      "name": "cplane-01",
+      "version": "v1.37.1+k3s1"
+    },
+    {
+      "name": "node-01",
+      "version": "v1.37.1+k3s1"
+    },
+    {
+      "name": "node-02",
+      "version": "v1.37.1+k3s1"
+    }
+  ],
+  "public_root_sha256": "bfb305cc8938e120748098d915c78835f643d1416ccc5e5189fb0546c51762be",
+  "database_certificate": {
+    "namespace": "custom-ai",
+    "dns_names": [
+      "litellm-db-rw",
+      "litellm-db-rw.custom-ai",
+      "litellm-db-rw.custom-ai.svc",
+      "litellm-db-rw.custom-ai.svc.cluster.local",
+      "litellm-db-r",
+      "litellm-db-r.custom-ai",
+      "litellm-db-r.custom-ai.svc",
+      "litellm-db-r.custom-ai.svc.cluster.local",
+      "litellm-db-ro",
+      "litellm-db-ro.custom-ai",
+      "litellm-db-ro.custom-ai.svc",
+      "litellm-db-ro.custom-ai.svc.cluster.local"
+    ]
+  },
+  "database_cluster": {
+    "namespace": "custom-ai",
+    "instances": 2
+  },
+  "rendered_role_namespace": [
+    "custom-ai"
+  ]
+}

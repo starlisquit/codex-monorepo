@@ -10,6 +10,14 @@ Start with the [documentation index](docs/README.md) and follow the
 [bootstrap runbooks](docs/runbooks/README.md). The docs record verified findings and
 unfinished work separately, including the paused API slowness investigation.
 
+## Namespace customization
+
+Consumers edit one cluster-owned `flux-system/namespace-overrides.yaml` file.
+Namespace placement, dependent service DNS, certificate SANs and rendered OpenBao
+role descriptors follow the same mapping. Only selected namespace/source bases
+are installed. See [the consumer guide](docs/operations/namespace-configuration.md).
+Raw Kustomize output now needs the native Flux post-build substitution step.
+
 ## Layout
 
 - `infrastructure/backup/velero/`: Velero with an excluded S3 configuration example; no backup protection until storage and credentials are configured.

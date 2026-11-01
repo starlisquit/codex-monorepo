@@ -29,7 +29,9 @@ application defaults and manually provisioned Secrets remain supported.
 3. Install External Secrets. Ensure `ConfigMap/platform-ca` is distributed into
    each consuming namespace by the existing trust Bundle. Stores verify OpenBao
    TLS using only that public CA; they never mount OpenBao's private TLS key.
-4. Provision each opt-in's `policy.hcl` and `role.json` through an authenticated,
+4. Apply the selected credential opt-ins to create their rendered, non-secret
+   `<store>-bootstrap` ConfigMaps, service accounts, stores and ExternalSecrets.
+   Provision the descriptor's policy/role through an authenticated,
    TLS-verified OpenBao administration session, then securely populate its listed
    KV keys. The policy grants read access to exact application paths and lookup/renew/revoke
    operations on the caller's own token. ESO needs self-lookup to validate the
@@ -137,3 +139,9 @@ for environment-based credentials, or its [OpenBao injector Component](../../inf
 for agent-rendered files. Both include scoped backend examples and preserve
 application identity isolation when composed with name prefixes. They require
 explicit backend provisioning and application-specific KV path configuration.
+
+## Namespace configuration
+
+The namespace-only Flux mapping also renders backend role bindings into each
+opt-in's public bootstrap ConfigMap. Provision OpenBao from that rendered data,
+not raw role.json files. See [the namespace consumer guide](namespace-configuration.md).

@@ -40,7 +40,7 @@ def render(text, values=None):
             raise ValueError('Only declared namespace variables may be substituted; escape literal ${' + expression + '} with $$')
     env = {k: v for k, v in os.environ.items() if not k.startswith('NS_')}
     env.update(values)
-    return subprocess.check_output([os.environ.get('FLUX_BIN', 'flux'), 'envsubst', '--strict'], input=text, text=True, env=env)
+    return subprocess.check_output([os.environ.get('FLUX_BIN', 'flux'), 'envsubst', '--strict'], input=text, text=True, env=env, stderr=subprocess.PIPE)
 
 def build(path, values=None):
     raw = subprocess.check_output([os.environ.get('KUSTOMIZE_BIN', 'kustomize'), 'build', str(path)], text=True)

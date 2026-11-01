@@ -12,12 +12,15 @@ alone does not enable it. Namespace: `ai`. Store: `litellm-openbao`.
 Use a strong `sk-` prefixed master key. Keep `salt-key` stable for persisted encrypted credentials; it is required by this opt-in even in database-free mode. Adapt the provider mapping when using another provider.
 
 Read the [shared setup, ownership and rotation contract](../../../../../docs/operations/application-external-secrets.md) first.
-With an independently authenticated, TLS-verified OpenBao administrator session,
-apply the narrowly scoped backend configuration from this directory:
+Apply this opt-in first to create its public bootstrap descriptor. With an
+independently authenticated, TLS-verified OpenBao administrator session, provision
+its backend from that **rendered** ConfigMap (replace the default namespace below
+with the configured NS_AI):
+
 
 ```sh
-bao policy write eso-ai-litellm policy.hcl
-bao write auth/kubernetes/role/eso-ai-litellm @role.json
+kubectl -n ai get configmap litellm-openbao-bootstrap -o jsonpath='{.data.policy\.hcl}' | bao policy write eso-ai-litellm -
+kubectl -n ai get configmap litellm-openbao-bootstrap -o jsonpath='{.data.role\.json}' | bao write auth/kubernetes/role/eso-ai-litellm -
 ```
 
 The policy also permits lookup, renewal and revocation of the authenticated
@@ -35,3 +38,6 @@ operator-generated passwords are managed by this opt-in.
 
 Actual application credential consumption passed on fresh K3s. See
 [runtime findings](../../../../../docs/findings/infra-eso-apps-2026-11-01.md).
+
+Namespace placement, service DNS and backend role bindings follow the shared
+[namespace mapping](../../../../../docs/operations/namespace-configuration.md). Do not apply raw role.json to OpenBao; it contains namespace placeholders.

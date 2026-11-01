@@ -1,0 +1,270 @@
+{
+  "mode": "namespace-defaults",
+  "started_at": "2026-11-01T22:22:04.834993+00:00",
+  "checks": {
+    "rendered_openbao_role_and_scoped_auth": {
+      "namespace": "ai",
+      "role_namespace_matches": true,
+      "cross_path_http": 403
+    },
+    "litellm-auth_exact_delivery": {
+      "namespace": "ai",
+      "sha256": {
+        "master-key": "f6f04c48744871e7914fb90387018b2064a73c5723ddd5624e5772df5022f9f5",
+        "salt-key": "c0cbec2a0391296e901e1617ad9a5708ab1359472feec50083cf0841b248adab"
+      }
+    },
+    "litellm-provider-credentials_exact_delivery": {
+      "namespace": "ai",
+      "sha256": {
+        "OPENAI_API_KEY": "53b0c92171f5e5f1dc32742f9561f63282f478a9f0d352e5fc63a27e29fbfafb"
+      }
+    },
+    "namespace_qualified_database_tls": {
+      "version": "TLSv1.3",
+      "serial": "333B22635902E9BBB930588CE3EC1B8011592B0A",
+      "hostname": "litellm-db-rw.ai.svc.cluster.local"
+    },
+    "database_client_trust_and_operator_namespace": {
+      "database_namespace": "ai",
+      "operator_namespace": "databases",
+      "ssl_verified": true
+    },
+    "real_database_backed_application_and_provider_route": {
+      "reply": "proxy-route-verified",
+      "namespace": "ai"
+    },
+    "injected_agent_uses_configured_openbao_namespace": {
+      "application_namespace": "demo",
+      "openbao_namespace": "secrets",
+      "pod_uid": "7e5a4e15-2043-4cde-b570-7bafab48b7a8",
+      "token_not_mounted_in_app": true
+    },
+    "strict_controller_missing_namespace_rejected": {
+      "reason": "BuildFailed",
+      "object_not_applied": true
+    },
+    "native_interpolation_preserved_by_controller": true,
+    "only_selected_namespaces_exist": {
+      "selected": {
+        "NS_AI": "ai",
+        "NS_SECRETS": "secrets",
+        "NS_CERTIFICATES": "certificates",
+        "NS_OBSERVABILITY": "observability",
+        "NS_DATABASES": "databases",
+        "NS_DEMO": "demo"
+      },
+      "unused_namespace_bases_not_created": true,
+      "legacy_defaults_absent": false
+    }
+  },
+  "result": "passed",
+  "completed_at": "2026-11-01T22:26:06.263636+00:00",
+  "namespace_mapping": {
+    "NS_AI": "ai",
+    "NS_APPLICATIONS": "applications",
+    "NS_AUTOSCALING": "autoscaling",
+    "NS_BROKER": "broker",
+    "NS_CERTIFICATES": "certificates",
+    "NS_CI": "ci",
+    "NS_DATABASES": "databases",
+    "NS_DEMO": "demo",
+    "NS_KYVERNO": "kyverno",
+    "NS_OBSERVABILITY": "observability",
+    "NS_PROXY": "proxy",
+    "NS_QUALITY": "quality",
+    "NS_ROOK_CEPH": "rook-ceph",
+    "NS_SECRETS": "secrets",
+    "NS_TETRAGON": "tetragon",
+    "NS_TRIVY_SYSTEM": "trivy-system",
+    "NS_UI": "ui",
+    "NS_VELERO": "velero"
+  },
+  "captured_at": "2026-11-01T22:26:45.977435+00:00",
+  "flux_path": "./flux/clusters/20261102-011156-namespace-defaults-2df998",
+  "flux_stages": [
+    {
+      "name": "agent",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "cert-manager",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "cnpg-operator",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "credentials",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "database",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "database-certificates",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "external-secrets",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "flux-system",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "foundation",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "litellm",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "model-fixture",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "monitoring-crds",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "openbao",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "pki-issuer",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "pki-trust",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    },
+    {
+      "name": "trust-manager",
+      "revision": "feat/namespace-configuration@sha1:8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+      "ready": true
+    }
+  ],
+  "releases": [
+    {
+      "name": "litellm",
+      "namespace": "ai",
+      "ready": true,
+      "chart": "litellm-helm",
+      "version": "1.106.6+b681a4cb1eaf"
+    },
+    {
+      "name": "cert-manager",
+      "namespace": "certificates",
+      "ready": true,
+      "chart": "cert-manager",
+      "version": "v1.21.3"
+    },
+    {
+      "name": "trust-manager",
+      "namespace": "certificates",
+      "ready": true,
+      "chart": "trust-manager",
+      "version": "v0.26.0"
+    },
+    {
+      "name": "cloudnative-pg-operator",
+      "namespace": "databases",
+      "ready": true,
+      "chart": "cloudnative-pg",
+      "version": "0.29.1"
+    },
+    {
+      "name": "prometheus-operator-crds",
+      "namespace": "observability",
+      "ready": true,
+      "chart": "prometheus-operator-crds",
+      "version": "32.0.2"
+    },
+    {
+      "name": "external-secrets",
+      "namespace": "secrets",
+      "ready": true,
+      "chart": "external-secrets",
+      "version": "2.14.0"
+    },
+    {
+      "name": "openbao",
+      "namespace": "secrets",
+      "ready": true,
+      "chart": "openbao",
+      "version": "0.30.6"
+    }
+  ],
+  "namespaces": [
+    "ai",
+    "certificates",
+    "databases",
+    "default",
+    "demo",
+    "flux-system",
+    "kube-node-lease",
+    "kube-public",
+    "kube-system",
+    "observability",
+    "secrets"
+  ],
+  "nodes": [
+    {
+      "name": "cplane-01",
+      "version": "v1.37.1+k3s1"
+    },
+    {
+      "name": "node-01",
+      "version": "v1.37.1+k3s1"
+    },
+    {
+      "name": "node-02",
+      "version": "v1.37.1+k3s1"
+    }
+  ],
+  "public_root_sha256": "3a4204ea978ba6672c365a5b3f6ac0b8bd3ada1d4d901c7c1e60abffe1c1d965",
+  "database_certificate": {
+    "namespace": "ai",
+    "dns_names": [
+      "litellm-db-rw",
+      "litellm-db-rw.ai",
+      "litellm-db-rw.ai.svc",
+      "litellm-db-rw.ai.svc.cluster.local",
+      "litellm-db-r",
+      "litellm-db-r.ai",
+      "litellm-db-r.ai.svc",
+      "litellm-db-r.ai.svc.cluster.local",
+      "litellm-db-ro",
+      "litellm-db-ro.ai",
+      "litellm-db-ro.ai.svc",
+      "litellm-db-ro.ai.svc.cluster.local"
+    ]
+  },
+  "database_cluster": {
+    "namespace": "ai",
+    "instances": 2
+  },
+  "rendered_role_namespace": [
+    "ai"
+  ]
+}

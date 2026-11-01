@@ -32,3 +32,5 @@ play. Render validation, controller readiness, and end-to-end application
 verification are different levels of evidence.
 
 - [Recurring log errors and their relevance](findings/log-error-review.md)
+
+- [Configure namespaces once per cluster](operations/namespace-configuration.md)

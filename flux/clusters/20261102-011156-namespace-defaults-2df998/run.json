@@ -4,5 +4,7 @@
   "timezone": "Europe/Istanbul",
   "purpose": "namespace-defaults",
   "flux_path": "./flux/clusters/20261102-011156-namespace-defaults-2df998",
-  "status": "preparing"
+  "status": "verified",
+  "tested_revision": "8e0f29bdbf31ed869890e7a5535a9c3f2a1a8c74",
+  "findings": "flux/docs/findings/namespace-configuration-2026-11-02.md"
 }
