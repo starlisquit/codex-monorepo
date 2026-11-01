@@ -1,0 +1,26 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: trust-manager
+  namespace: certificates
+spec:
+  suspend: true
+  interval: 30m
+  chart:
+    spec:
+      chart: trust-manager
+      version: '*'
+      sourceRef:
+        kind: HelmRepository
+        name: jetstack
+        namespace: flux-system
+  valuesFrom:
+  - kind: ConfigMap
+    name: trust-manager-values
+    valuesKey: values.yaml
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3

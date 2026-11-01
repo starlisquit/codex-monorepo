@@ -1,0 +1,3 @@
+# Template: review against the pinned chart before enabling.
+grafana:
+  enabled: true

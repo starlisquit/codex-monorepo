@@ -1,0 +1,26 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: networking
+  namespace: observability
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: platform
+  datasources:
+  - inputName: DS_PROMETHEUS
+    datasourceName: VictoriaMetrics
+  json: "{\n  \"uid\": \"platform-networking\",\n  \"title\": \"Platform / networking\"\
+    ,\n  \"tags\": [\n    \"platform\",\n    \"networking\"\n  ],\n  \"schemaVersion\"\
+    : 39,\n  \"version\": 1,\n  \"refresh\": \"30s\",\n  \"time\": {\n    \"from\"\
+    : \"now-1h\",\n    \"to\": \"now\"\n  },\n  \"panels\": [\n    {\n      \"id\"\
+    : 1,\n      \"title\": \"networking overview\",\n      \"type\": \"timeseries\"\
+    ,\n      \"gridPos\": {\n        \"h\": 8,\n        \"w\": 24,\n        \"x\"\
+    : 0,\n        \"y\": 0\n      },\n      \"datasource\": {\n        \"type\": \"\
+    prometheus\",\n        \"uid\": \"${DS_PROMETHEUS}\"\n      },\n      \"targets\"\
+    : [\n        {\n          \"refId\": \"A\",\n          \"expr\": \"sum by (instance)\
+    \ (rate(node_network_receive_bytes_total{device!=\\\"lo\\\"}[5m]))\"\n       \
+    \ }\n      ]\n    }\n  ],\n  \"__inputs\": [\n    {\n      \"name\": \"DS_PROMETHEUS\"\
+    ,\n      \"label\": \"Prometheus\",\n      \"type\": \"datasource\",\n      \"\
+    pluginId\": \"prometheus\",\n      \"pluginName\": \"Prometheus\"\n    }\n  ]\n\
+    }"

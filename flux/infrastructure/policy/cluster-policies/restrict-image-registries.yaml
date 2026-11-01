@@ -1,0 +1,23 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-image-registries
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+  - name: restrict-image-registries
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          namespaces:
+          - applications
+    validate:
+      message: Workload does not satisfy restrict-image-registries
+      pattern:
+        spec:
+          containers:
+          - name: '*'
+            image: ghcr.io/* | docker.io/* | quay.io/* | registry.k8s.io/*

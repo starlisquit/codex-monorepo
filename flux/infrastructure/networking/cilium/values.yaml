@@ -1,0 +1,9 @@
+# Review kubeProxyReplacement, API server address, and IPAM for your cluster.
+hubble:
+  enabled: true
+  relay:
+    enabled: true
+  ui:
+    enabled: true
+gatewayAPI:
+  enabled: true

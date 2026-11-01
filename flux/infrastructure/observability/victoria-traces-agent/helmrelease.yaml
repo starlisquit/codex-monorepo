@@ -1,0 +1,26 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: victoria-traces-agent
+  namespace: observability
+spec:
+  suspend: true
+  interval: 30m
+  chart:
+    spec:
+      chart: victoria-traces-agent
+      version: '*'
+      sourceRef:
+        kind: HelmRepository
+        name: victoria-metrics
+        namespace: flux-system
+  valuesFrom:
+  - kind: ConfigMap
+    name: victoria-traces-agent-values
+    valuesKey: values.yaml
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3

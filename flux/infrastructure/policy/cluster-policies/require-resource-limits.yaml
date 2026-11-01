@@ -1,0 +1,28 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-resource-limits
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+  - name: require-resource-limits
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          namespaces:
+          - applications
+    validate:
+      message: Workload does not satisfy require-resource-limits
+      pattern:
+        spec:
+          containers:
+          - name: '*'
+            resources:
+              requests:
+                cpu: ?*
+                memory: ?*
+              limits:
+                memory: ?*

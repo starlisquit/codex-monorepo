@@ -1,0 +1,14 @@
+# Template: review against the pinned chart before enabling.
+config:
+  cluster:
+    enabled: true
+    replicas: 3
+  jetstream:
+    enabled: true
+    fileStore:
+      pvc:
+        enabled: true
+        size: 10Gi
+        storageClassName: ceph-block
+promExporter:
+  enabled: true

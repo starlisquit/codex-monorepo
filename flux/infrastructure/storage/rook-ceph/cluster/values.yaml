@@ -1,0 +1,7 @@
+# Supply explicit nodes and unused devices before deployment.
+operatorNamespace: rook-ceph
+cephClusterSpec:
+  storage:
+    useAllNodes: false
+    useAllDevices: false
+    nodes: []
