@@ -26,10 +26,25 @@ metadata, so they are intentionally outside this container-log browser. An SDK
 record and an application stdout copy are different ingestions and can both exist.
 Logs written only to arbitrary files inside a container are not collected.
 
-The level selector matches `level`, `severity_text` or `severity` case-insensitively.
-`All` includes missing levels; choosing a specific level excludes unclassified
-records. Plain text is not guessed to be INFO, and stderr is not automatically
-ERROR. Expand log details to see original structured fields. Namespace access in
+All panels share namespace, Pod, container, level and message filters. Summary
+cards count matching records, errors/fatals, warnings and unknown levels over the
+selected time range. A time series splits volume by normalized level; tables rank
+the top 20 service/level groups and exact recurring messages. These aggregations
+cover the full query range, independent of the log viewer's 1000-record cap.
+
+The level selector uses the first nonempty value from `level`, `severity_text`,
+then `severity`. Case is normalized; WARNING becomes warn, ERR becomes error,
+and CRITICAL/PANIC become fatal. Missing or unrecognized values become `unknown`,
+which can be selected alone or alongside other levels. All includes every level.
+Original fields remain intact; `log_level` is a query-time derived field.
+Plain text is not guessed to be INFO, and stderr is not automatically ERROR.
+Service grouping uses `service.name`, then the Pod's app.kubernetes.io/name or app
+label, then container name, and retains namespace to separate equal names. It
+identifies application groups, not discovered Kubernetes Service objects. Recurring
+messages are exact text matches; variable IDs and embedded timestamps remain
+separate. Use shorter time ranges for high-volume namespaces.
+
+Expand log details to see original structured fields. Namespace access in
 this dashboard is filtering, not authorization: users of this datasource can
 query all collected namespaces. Avoid logging secrets in applications.
 

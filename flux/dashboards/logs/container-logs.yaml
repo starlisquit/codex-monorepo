@@ -11,14 +11,14 @@ spec:
     {
       "uid": "platform-container-logs",
       "title": "Platform / Container logs",
-      "description": "Container stdout/stderr collected by node-local vlagent. All levels includes records without level. SDK-push records without Kubernetes metadata are available separately in Explore.",
+      "description": "Container log browser and volume statistics. All panels follow namespace, Pod, container, level and message filters. Unknown means missing or unrecognized severity. Stats cover the selected time range, while the log viewer is capped at 1000 records.",
       "tags": [
         "platform",
         "logs",
         "kubernetes"
       ],
       "schemaVersion": 39,
-      "version": 1,
+      "version": 2,
       "refresh": "30s",
       "time": {
         "from": "now-15m",
@@ -38,7 +38,7 @@ spec:
               "refId": "variable-namespace",
               "type": "fieldValue",
               "field": "kubernetes.pod_namespace",
-              "query": "*",
+              "query": "kubernetes.pod_namespace:*",
               "limit": 1000
             },
             "refresh": 2,
@@ -106,9 +106,9 @@ spec:
           },
           {
             "name": "level",
-            "label": "Level (when provided)",
+            "label": "Level",
             "type": "custom",
-            "query": "trace,debug,info,warn,warning,error,fatal,critical",
+            "query": "trace,debug,info,warn,error,fatal,unknown",
             "multi": true,
             "includeAll": true,
             "allValue": ".*",
@@ -133,14 +133,15 @@ spec:
       },
       "panels": [
         {
-          "id": 1,
-          "title": "Container stdout / stderr",
-          "type": "logs",
+          "id": 2,
+          "title": "Matching log records",
+          "description": "Count over the selected time range after all dashboard filters. Unknown includes missing or unrecognized severity.",
+          "type": "stat",
           "gridPos": {
             "x": 0,
             "y": 0,
-            "w": 24,
-            "h": 22
+            "w": 6,
+            "h": 4
           },
           "datasource": {
             "type": "victoriametrics-logs-datasource",
@@ -149,7 +150,359 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "kubernetes.pod_namespace:* AND kubernetes.pod_namespace:~\"^${namespace:regex}$\" AND kubernetes.pod_name:~\"^${pod:regex}$\" AND kubernetes.container_name:~\"^${container:regex}$\" AND (level:~\"(?i)^${level:regex}$\" OR severity_text:~\"(?i)^${level:regex}$\" OR severity:~\"(?i)^${level:regex}$\") AND _msg:~\"${search:raw}\"",
+              "expr": "kubernetes.pod_namespace:* AND kubernetes.pod_namespace:~\"^${namespace:regex}$\" AND kubernetes.pod_name:~\"^${pod:regex}$\" AND kubernetes.container_name:~\"^${container:regex}$\" AND _msg:~\"${search:raw}\" | format \"<level>\" as log_level | format if (log_level:=\"\") \"<severity_text>\" as log_level | format if (log_level:=\"\") \"<severity>\" as log_level | format if (log_level:~\"(?i)^(trace)$\") \"trace\" as log_level | format if (log_level:~\"(?i)^(debug)$\") \"debug\" as log_level | format if (log_level:~\"(?i)^(info|information|informational)$\") \"info\" as log_level | format if (log_level:~\"(?i)^(warn|warning)$\") \"warn\" as log_level | format if (log_level:~\"(?i)^(error|err)$\") \"error\" as log_level | format if (log_level:~\"(?i)^(fatal|critical|crit|panic)$\") \"fatal\" as log_level | format if (NOT log_level:in(\"trace\",\"debug\",\"info\",\"warn\",\"error\",\"fatal\")) \"unknown\" as log_level | filter log_level:~\"^${level:regex}$\" | stats count() as logs",
+              "queryType": "stats",
+              "editorMode": "code",
+              "maxLines": 1000
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "colorMode": "value",
+            "graphMode": "none"
+          }
+        },
+        {
+          "id": 3,
+          "title": "Error + fatal records",
+          "description": "Count over the selected time range after all dashboard filters. Unknown includes missing or unrecognized severity.",
+          "type": "stat",
+          "gridPos": {
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "VictoriaLogs"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "kubernetes.pod_namespace:* AND kubernetes.pod_namespace:~\"^${namespace:regex}$\" AND kubernetes.pod_name:~\"^${pod:regex}$\" AND kubernetes.container_name:~\"^${container:regex}$\" AND _msg:~\"${search:raw}\" | format \"<level>\" as log_level | format if (log_level:=\"\") \"<severity_text>\" as log_level | format if (log_level:=\"\") \"<severity>\" as log_level | format if (log_level:~\"(?i)^(trace)$\") \"trace\" as log_level | format if (log_level:~\"(?i)^(debug)$\") \"debug\" as log_level | format if (log_level:~\"(?i)^(info|information|informational)$\") \"info\" as log_level | format if (log_level:~\"(?i)^(warn|warning)$\") \"warn\" as log_level | format if (log_level:~\"(?i)^(error|err)$\") \"error\" as log_level | format if (log_level:~\"(?i)^(fatal|critical|crit|panic)$\") \"fatal\" as log_level | format if (NOT log_level:in(\"trace\",\"debug\",\"info\",\"warn\",\"error\",\"fatal\")) \"unknown\" as log_level | filter log_level:~\"^${level:regex}$\" | filter log_level:in(\"error\",\"fatal\") | stats count() as logs",
+              "queryType": "stats",
+              "editorMode": "code",
+              "maxLines": 1000
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "colorMode": "value",
+            "graphMode": "none"
+          }
+        },
+        {
+          "id": 4,
+          "title": "Warning records",
+          "description": "Count over the selected time range after all dashboard filters. Unknown includes missing or unrecognized severity.",
+          "type": "stat",
+          "gridPos": {
+            "x": 12,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "VictoriaLogs"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "kubernetes.pod_namespace:* AND kubernetes.pod_namespace:~\"^${namespace:regex}$\" AND kubernetes.pod_name:~\"^${pod:regex}$\" AND kubernetes.container_name:~\"^${container:regex}$\" AND _msg:~\"${search:raw}\" | format \"<level>\" as log_level | format if (log_level:=\"\") \"<severity_text>\" as log_level | format if (log_level:=\"\") \"<severity>\" as log_level | format if (log_level:~\"(?i)^(trace)$\") \"trace\" as log_level | format if (log_level:~\"(?i)^(debug)$\") \"debug\" as log_level | format if (log_level:~\"(?i)^(info|information|informational)$\") \"info\" as log_level | format if (log_level:~\"(?i)^(warn|warning)$\") \"warn\" as log_level | format if (log_level:~\"(?i)^(error|err)$\") \"error\" as log_level | format if (log_level:~\"(?i)^(fatal|critical|crit|panic)$\") \"fatal\" as log_level | format if (NOT log_level:in(\"trace\",\"debug\",\"info\",\"warn\",\"error\",\"fatal\")) \"unknown\" as log_level | filter log_level:~\"^${level:regex}$\" | filter log_level:in(\"warn\") | stats count() as logs",
+              "queryType": "stats",
+              "editorMode": "code",
+              "maxLines": 1000
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "colorMode": "value",
+            "graphMode": "none"
+          }
+        },
+        {
+          "id": 5,
+          "title": "Unknown-level records",
+          "description": "Count over the selected time range after all dashboard filters. Unknown includes missing or unrecognized severity.",
+          "type": "stat",
+          "gridPos": {
+            "x": 18,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "VictoriaLogs"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "kubernetes.pod_namespace:* AND kubernetes.pod_namespace:~\"^${namespace:regex}$\" AND kubernetes.pod_name:~\"^${pod:regex}$\" AND kubernetes.container_name:~\"^${container:regex}$\" AND _msg:~\"${search:raw}\" | format \"<level>\" as log_level | format if (log_level:=\"\") \"<severity_text>\" as log_level | format if (log_level:=\"\") \"<severity>\" as log_level | format if (log_level:~\"(?i)^(trace)$\") \"trace\" as log_level | format if (log_level:~\"(?i)^(debug)$\") \"debug\" as log_level | format if (log_level:~\"(?i)^(info|information|informational)$\") \"info\" as log_level | format if (log_level:~\"(?i)^(warn|warning)$\") \"warn\" as log_level | format if (log_level:~\"(?i)^(error|err)$\") \"error\" as log_level | format if (log_level:~\"(?i)^(fatal|critical|crit|panic)$\") \"fatal\" as log_level | format if (NOT log_level:in(\"trace\",\"debug\",\"info\",\"warn\",\"error\",\"fatal\")) \"unknown\" as log_level | filter log_level:~\"^${level:regex}$\" | filter log_level:in(\"unknown\") | stats count() as logs",
+              "queryType": "stats",
+              "editorMode": "code",
+              "maxLines": 1000
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "colorMode": "value",
+            "graphMode": "none"
+          }
+        },
+        {
+          "id": 6,
+          "title": "Log volume by level",
+          "description": "Records per time bucket, split by normalized severity.",
+          "type": "timeseries",
+          "gridPos": {
+            "x": 0,
+            "y": 4,
+            "w": 24,
+            "h": 8
+          },
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "VictoriaLogs"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "kubernetes.pod_namespace:* AND kubernetes.pod_namespace:~\"^${namespace:regex}$\" AND kubernetes.pod_name:~\"^${pod:regex}$\" AND kubernetes.container_name:~\"^${container:regex}$\" AND _msg:~\"${search:raw}\" | format \"<level>\" as log_level | format if (log_level:=\"\") \"<severity_text>\" as log_level | format if (log_level:=\"\") \"<severity>\" as log_level | format if (log_level:~\"(?i)^(trace)$\") \"trace\" as log_level | format if (log_level:~\"(?i)^(debug)$\") \"debug\" as log_level | format if (log_level:~\"(?i)^(info|information|informational)$\") \"info\" as log_level | format if (log_level:~\"(?i)^(warn|warning)$\") \"warn\" as log_level | format if (log_level:~\"(?i)^(error|err)$\") \"error\" as log_level | format if (log_level:~\"(?i)^(fatal|critical|crit|panic)$\") \"fatal\" as log_level | format if (NOT log_level:in(\"trace\",\"debug\",\"info\",\"warn\",\"error\",\"fatal\")) \"unknown\" as log_level | filter log_level:~\"^${level:regex}$\" | stats by (log_level) count() as logs",
+              "queryType": "statsRange",
+              "editorMode": "code",
+              "maxLines": 1000,
+              "legendFormat": "{{log_level}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            }
+          }
+        },
+        {
+          "id": 7,
+          "title": "Top services by selected level",
+          "description": "Top 20 namespace/service/level groups. Service falls back from service.name to application labels, then container name; it is not a Kubernetes Service inventory.",
+          "type": "table",
+          "gridPos": {
+            "x": 0,
+            "y": 12,
+            "w": 12,
+            "h": 9
+          },
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "VictoriaLogs"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "kubernetes.pod_namespace:* AND kubernetes.pod_namespace:~\"^${namespace:regex}$\" AND kubernetes.pod_name:~\"^${pod:regex}$\" AND kubernetes.container_name:~\"^${container:regex}$\" AND _msg:~\"${search:raw}\" | format \"<level>\" as log_level | format if (log_level:=\"\") \"<severity_text>\" as log_level | format if (log_level:=\"\") \"<severity>\" as log_level | format if (log_level:~\"(?i)^(trace)$\") \"trace\" as log_level | format if (log_level:~\"(?i)^(debug)$\") \"debug\" as log_level | format if (log_level:~\"(?i)^(info|information|informational)$\") \"info\" as log_level | format if (log_level:~\"(?i)^(warn|warning)$\") \"warn\" as log_level | format if (log_level:~\"(?i)^(error|err)$\") \"error\" as log_level | format if (log_level:~\"(?i)^(fatal|critical|crit|panic)$\") \"fatal\" as log_level | format if (NOT log_level:in(\"trace\",\"debug\",\"info\",\"warn\",\"error\",\"fatal\")) \"unknown\" as log_level | filter log_level:~\"^${level:regex}$\" | format \"<service.name>\" as service | format if (service:=\"\") \"<kubernetes.pod_labels.app.kubernetes.io/name>\" as service | format if (service:=\"\") \"<kubernetes.pod_labels.app>\" as service | format if (service:=\"\") \"<kubernetes.container_name>\" as service | format \"<kubernetes.pod_namespace>\" as namespace | stats by (namespace, service, log_level) count() as logs | sort by (logs) desc | limit 20",
+              "queryType": "stats",
+              "editorMode": "code",
+              "maxLines": 1000
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true
+          },
+          "transformations": [
+            {
+              "id": "labelsToFields",
+              "options": {
+                "mode": "columns"
+              }
+            },
+            {
+              "id": "merge",
+              "options": {}
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "__name__": true
+                },
+                "renameByName": {
+                  "Value": "logs",
+                  "_msg": "message"
+                }
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "sort": [
+                  {
+                    "field": "logs",
+                    "desc": true
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "title": "Most recurring messages by selected level",
+          "description": "Top 20 exact-message/level groups. Variable IDs or timestamps in messages remain distinct; this does not cluster message patterns.",
+          "type": "table",
+          "gridPos": {
+            "x": 12,
+            "y": 12,
+            "w": 12,
+            "h": 9
+          },
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "VictoriaLogs"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "kubernetes.pod_namespace:* AND kubernetes.pod_namespace:~\"^${namespace:regex}$\" AND kubernetes.pod_name:~\"^${pod:regex}$\" AND kubernetes.container_name:~\"^${container:regex}$\" AND _msg:~\"${search:raw}\" | format \"<level>\" as log_level | format if (log_level:=\"\") \"<severity_text>\" as log_level | format if (log_level:=\"\") \"<severity>\" as log_level | format if (log_level:~\"(?i)^(trace)$\") \"trace\" as log_level | format if (log_level:~\"(?i)^(debug)$\") \"debug\" as log_level | format if (log_level:~\"(?i)^(info|information|informational)$\") \"info\" as log_level | format if (log_level:~\"(?i)^(warn|warning)$\") \"warn\" as log_level | format if (log_level:~\"(?i)^(error|err)$\") \"error\" as log_level | format if (log_level:~\"(?i)^(fatal|critical|crit|panic)$\") \"fatal\" as log_level | format if (NOT log_level:in(\"trace\",\"debug\",\"info\",\"warn\",\"error\",\"fatal\")) \"unknown\" as log_level | filter log_level:~\"^${level:regex}$\" | stats by (log_level, _msg) count() as logs | sort by (logs) desc | limit 20",
+              "queryType": "stats",
+              "editorMode": "code",
+              "maxLines": 1000
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true
+          },
+          "transformations": [
+            {
+              "id": "labelsToFields",
+              "options": {
+                "mode": "columns"
+              }
+            },
+            {
+              "id": "merge",
+              "options": {}
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "__name__": true
+                },
+                "renameByName": {
+                  "Value": "logs",
+                  "_msg": "message"
+                }
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "sort": [
+                  {
+                    "field": "logs",
+                    "desc": true
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": 1,
+          "title": "Container stdout / stderr",
+          "type": "logs",
+          "gridPos": {
+            "x": 0,
+            "y": 21,
+            "w": 24,
+            "h": 20
+          },
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "VictoriaLogs"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "kubernetes.pod_namespace:* AND kubernetes.pod_namespace:~\"^${namespace:regex}$\" AND kubernetes.pod_name:~\"^${pod:regex}$\" AND kubernetes.container_name:~\"^${container:regex}$\" AND _msg:~\"${search:raw}\" | format \"<level>\" as log_level | format if (log_level:=\"\") \"<severity_text>\" as log_level | format if (log_level:=\"\") \"<severity>\" as log_level | format if (log_level:~\"(?i)^(trace)$\") \"trace\" as log_level | format if (log_level:~\"(?i)^(debug)$\") \"debug\" as log_level | format if (log_level:~\"(?i)^(info|information|informational)$\") \"info\" as log_level | format if (log_level:~\"(?i)^(warn|warning)$\") \"warn\" as log_level | format if (log_level:~\"(?i)^(error|err)$\") \"error\" as log_level | format if (log_level:~\"(?i)^(fatal|critical|crit|panic)$\") \"fatal\" as log_level | format if (NOT log_level:in(\"trace\",\"debug\",\"info\",\"warn\",\"error\",\"fatal\")) \"unknown\" as log_level | filter log_level:~\"^${level:regex}$\"",
               "queryType": "instant",
               "editorMode": "code",
               "maxLines": 1000
