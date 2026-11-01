@@ -17,6 +17,9 @@ spec:
     kind: HelmRelease
     name: cilium
     namespace: kube-system
+  dependsOn:
+  - name: monitoring-crds
+  - name: gateway-api
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -32,8 +35,6 @@ spec:
     kind: GitRepository
     name: flux-system
   timeout: 15m
-  dependsOn:
-  - name: cilium
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -500,3 +501,18 @@ spec:
   timeout: 15m
   dependsOn:
   - name: observability
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: gateway-api
+  namespace: flux-system
+spec:
+  interval: 10m
+  path: ./flux/clusters/iximiuz-platform/gateway-api
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: foundation

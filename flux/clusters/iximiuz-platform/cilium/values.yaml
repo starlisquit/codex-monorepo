@@ -4,23 +4,5 @@ ipam:
   mode: kubernetes
 operator:
   replicas: 1
-  prometheus:
-    serviceMonitor:
-      enabled: false
 gatewayAPI:
-  enabled: false
-prometheus:
-  serviceMonitor:
-    enabled: false
-envoy:
-  prometheus:
-    serviceMonitor:
-      enabled: false
-hubble:
-  relay:
-    prometheus:
-      serviceMonitor:
-        enabled: false
-  metrics:
-    serviceMonitor:
-      enabled: false
+  enabled: true
