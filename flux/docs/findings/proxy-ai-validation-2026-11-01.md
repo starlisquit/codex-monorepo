@@ -76,5 +76,7 @@ load balancer integration were not validated by this database-free test.
 
 ## Teardown
 
-Publish these findings and updates to both remotes before destroying the focused
-playground. Append the confirmed outcome afterward; do not retain a stopped play.
+Findings were published as `533d455` and verified on both remotes before teardown.
+At 13:05:44 Europe/Istanbul / 10:05:44 UTC, the destroy API returned `ok: true`
+for play `6ae70b4c789ac234e334e7c2`; subsequent listing showed no running plays.
+The playground was destroyed, not retained in a stopped state.
