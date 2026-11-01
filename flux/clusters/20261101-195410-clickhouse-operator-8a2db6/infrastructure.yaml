@@ -1,0 +1,76 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: foundation
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 20s
+  path: ./flux/clusters/20261101-195410-clickhouse-operator-8a2db6/foundation
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  timeout: 5m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cert-manager
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 20s
+  path: ./flux/clusters/20261101-195410-clickhouse-operator-8a2db6/cert-manager
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 15m
+  dependsOn:
+  - name: foundation
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: cert-manager
+    namespace: certificates
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: clickhouse-operator
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 20s
+  path: ./flux/clusters/20261101-195410-clickhouse-operator-8a2db6/operator
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 15m
+  dependsOn:
+  - name: cert-manager
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: clickhouse-operator
+    namespace: databases
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: clickhouse-workload
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 20s
+  path: ./flux/clusters/20261101-195410-clickhouse-operator-8a2db6/workload
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 15m
+  dependsOn:
+  - name: clickhouse-operator

@@ -27,3 +27,4 @@ resources:
 - nginx
 - litellm
 - nats-nui
+- clickhouse-operator

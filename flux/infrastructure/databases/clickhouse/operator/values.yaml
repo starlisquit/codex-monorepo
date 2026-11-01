@@ -1,0 +1,10 @@
+# Official ClickHouse operator; manages clickhouse.com/v1alpha1 resources.
+crd:
+  enabled: true
+  keep: true
+certManager:
+  enabled: true
+webhook:
+  enabled: true
+prometheus:
+  enabled: false
