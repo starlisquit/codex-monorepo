@@ -1,5 +1,8 @@
 # Enable and verify Tetragon and Trivy Operator
 
+Use `run_dir` from the new per-playground run helper and create only the relevant
+workload wrappers there. Fixed example cluster folders have been removed.
+
 No playground is running. These templates are locally validated only. The platform
 selects both components for normal reconciliation, with readiness dependencies;
 there is no resource-based enablement step. Resource availability is assumed.
@@ -20,8 +23,8 @@ flux get kustomizations -A
 kubectl get crd servicemonitors.monitoring.coreos.com
 kubectl get pods -A
 kubectl top nodes
-kustomize build flux/clusters/iximiuz-platform/tetragon
-kustomize build flux/clusters/iximiuz-platform/trivy-operator
+kustomize build ${run_dir}/tetragon
+kustomize build ${run_dir}/trivy-operator
 ```
 
 A healthy `/readyz` snapshot alone did not rule out intermittent stalls in the last

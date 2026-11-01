@@ -1,0 +1,199 @@
+{
+  "play_id": "6ae765f67f32053bde237f3e",
+  "run_folder": "flux/clusters/20261101-191654-sonarqube-postgresql-237f3e",
+  "created_at_utc": "2026-11-01T16:16:54.892Z",
+  "initial": {
+    "status": {
+      "id": "1261F26A-AaGX8fqDYsHbpCpj4F7k",
+      "version": "26.9.0.129388",
+      "status": "UP"
+    },
+    "analysis_id": "cfae026c-9f94-475f-92ad-8755014b3957",
+    "compute_task_id": "23462bf1-c8f7-48e0-9f2a-5885a4a68200",
+    "compute_task_status": "SUCCESS",
+    "measures": {
+      "ncloc": "3",
+      "files": "1"
+    },
+    "database_public_tables": 164,
+    "database_role_superuser": false,
+    "encrypted_sonarqube_connections": 20,
+    "database_instances_ready": 3
+  },
+  "jdbc": {
+    "jdbc_tls_connection": true,
+    "dedicated_application_role": true,
+    "wrong_ca_rejected": true,
+    "wrong_hostname_rejected": true
+  },
+  "browser_initial": {
+    "phase": "initial",
+    "login_with_changed_password": true,
+    "project_dashboard_visible": true,
+    "page_errors": [],
+    "expected_unconfigured_alm_binding": [
+      {
+        "path": "alm_settings/get_binding?project=sonar-cnpg-validation",
+        "status": 404
+      }
+    ],
+    "unexpected_api_errors": []
+  },
+  "recovery": {
+    "checks": {
+      "same_analysis_id": true,
+      "same_project_measures": true,
+      "administrator_password_preserved": true,
+      "application_pod_replaced": true,
+      "old_primary_pod_replaced": true,
+      "replica_promoted": true,
+      "all_database_instances_ready": true
+    },
+    "before": {
+      "app_uid": "361dd9fc-0725-4c4e-b6fa-28b680fcebf7",
+      "primary_pod": "sonarqube-postgresql-1",
+      "primary_uid": "c339bdb6-e505-49e8-9328-a973495ea90b"
+    },
+    "after": {
+      "app_uid": "70b4eadc-16a2-4e4f-814e-d9a500f79df9",
+      "original_primary_new_uid": "0f0a8fa1-626b-49c5-8672-62723b910531",
+      "primary_pod": "sonarqube-postgresql-2"
+    }
+  },
+  "browser_recovery": {
+    "phase": "recovery",
+    "login_with_changed_password": true,
+    "project_dashboard_visible": true,
+    "page_errors": [],
+    "expected_unconfigured_alm_binding": [
+      {
+        "path": "alm_settings/get_binding?project=sonar-cnpg-validation",
+        "status": 404
+      }
+    ],
+    "unexpected_api_errors": []
+  },
+  "flux_root": {
+    "path": "./flux/clusters/20261101-191654-sonarqube-postgresql-237f3e",
+    "lastAppliedRevision": "main@sha1:502553c2ac358ee1c952ed5fa284237456e19f32",
+    "conditions": [
+      {
+        "lastTransitionTime": "2026-11-01T16:38:57Z",
+        "message": "Applied revision: main@sha1:502553c2ac358ee1c952ed5fa284237456e19f32",
+        "observedGeneration": 1,
+        "reason": "ReconciliationSucceeded",
+        "status": "True",
+        "type": "Ready"
+      }
+    ]
+  },
+  "flux_kustomizations": [
+    {
+      "name": "cnpg-operator",
+      "path": "./flux/clusters/20261101-191654-sonarqube-postgresql-237f3e/cnpg-operator",
+      "lastAppliedRevision": "main@sha1:502553c2ac358ee1c952ed5fa284237456e19f32",
+      "ready": true
+    },
+    {
+      "name": "flux-system",
+      "path": "./flux/clusters/20261101-191654-sonarqube-postgresql-237f3e",
+      "lastAppliedRevision": "main@sha1:502553c2ac358ee1c952ed5fa284237456e19f32",
+      "ready": true
+    },
+    {
+      "name": "foundation",
+      "path": "./flux/clusters/20261101-191654-sonarqube-postgresql-237f3e/foundation",
+      "lastAppliedRevision": "main@sha1:502553c2ac358ee1c952ed5fa284237456e19f32",
+      "ready": true
+    },
+    {
+      "name": "sonarqube",
+      "path": "./flux/clusters/20261101-191654-sonarqube-postgresql-237f3e/sonarqube",
+      "lastAppliedRevision": "main@sha1:502553c2ac358ee1c952ed5fa284237456e19f32",
+      "ready": true
+    },
+    {
+      "name": "sonarqube-postgresql",
+      "path": "./flux/clusters/20261101-191654-sonarqube-postgresql-237f3e/postgresql",
+      "lastAppliedRevision": "main@sha1:502553c2ac358ee1c952ed5fa284237456e19f32",
+      "ready": true
+    }
+  ],
+  "releases": [
+    {
+      "name": "cloudnative-pg-operator",
+      "namespace": "databases",
+      "ready": true
+    },
+    {
+      "name": "sonarqube",
+      "namespace": "quality",
+      "ready": true
+    }
+  ],
+  "integration_values_sha256": "15edd669283ff13404f31faae6db9fd2f2c54c269b1406ddd3c18a37dd56bb33",
+  "pods": [
+    {
+      "name": "sonarqube-cnpg-analysis-4v8w6",
+      "uid": "3ddc4d87-2c0d-49c0-90f0-0253639144e9",
+      "containers": [
+        {
+          "imageID": "docker.io/sonarsource/sonar-scanner-cli@sha256:47956b669bf486bdad919e1cbd0533223515aa0b6d1d31763e5a3754942df6d7",
+          "ready": false,
+          "restartCount": 0
+        }
+      ]
+    },
+    {
+      "name": "sonarqube-postgresql-1",
+      "uid": "0f0a8fa1-626b-49c5-8672-62723b910531",
+      "containers": [
+        {
+          "imageID": "ghcr.io/cloudnative-pg/postgresql@sha256:348997438269fddc0e2825e00594367ad61751adb08a7698a0a14f793b0dc2ce",
+          "ready": true,
+          "restartCount": 0
+        }
+      ]
+    },
+    {
+      "name": "sonarqube-postgresql-2",
+      "uid": "2e1dcd87-3733-41ef-8ef3-bd0782dba0fb",
+      "containers": [
+        {
+          "imageID": "ghcr.io/cloudnative-pg/postgresql@sha256:348997438269fddc0e2825e00594367ad61751adb08a7698a0a14f793b0dc2ce",
+          "ready": true,
+          "restartCount": 0
+        }
+      ]
+    },
+    {
+      "name": "sonarqube-postgresql-3",
+      "uid": "386d4c3a-1ccc-45f9-adaf-f9effac807a2",
+      "containers": [
+        {
+          "imageID": "ghcr.io/cloudnative-pg/postgresql@sha256:348997438269fddc0e2825e00594367ad61751adb08a7698a0a14f793b0dc2ce",
+          "ready": true,
+          "restartCount": 0
+        }
+      ]
+    },
+    {
+      "name": "sonarqube-sonarqube-0",
+      "uid": "70b4eadc-16a2-4e4f-814e-d9a500f79df9",
+      "containers": [
+        {
+          "imageID": "docker.io/library/sonarqube@sha256:c0f1160bccfa435db4168c2d7df69af3c3ea7bfeb87395613014048fb33a68c1",
+          "ready": true,
+          "restartCount": 0
+        }
+      ]
+    }
+  ],
+  "lab_overrides": {
+    "database_storage_class": "local-path",
+    "database_storage_size": "1Gi",
+    "sonarqube_pvc_size": "1Gi",
+    "sonarqube_node": "node-02",
+    "operator_podmonitor_enabled": false
+  }
+}

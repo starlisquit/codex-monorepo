@@ -4,5 +4,7 @@
   "timezone": "Europe/Istanbul",
   "purpose": "sonarqube-postgresql",
   "flux_path": "./flux/clusters/20261101-191654-sonarqube-postgresql-237f3e",
-  "status": "preparing"
+  "status": "verified",
+  "tested_revision": "main@sha1:502553c2ac358ee1c952ed5fa284237456e19f32",
+  "findings": "../../docs/findings/sonarqube-postgresql-2026-11-01.md"
 }

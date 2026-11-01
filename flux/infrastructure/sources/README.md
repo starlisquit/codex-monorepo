@@ -8,8 +8,7 @@ Helm repository. Sources retain their original names, versions, URLs and
 flux-system namespace.
 
 The root Kustomization is an optional all-sources convenience bundle, not a
-prerequisite. Full-platform foundation selects only its 20 referenced sources;
-the minimal lab selects Cilium's source alone. When several releases share a
+prerequisite. Each run foundation selects only the sources it needs. When several releases share a
 source, select it once under their common foundation rather than duplicating
 its identity in multiple consumers.
 

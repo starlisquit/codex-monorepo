@@ -1,5 +1,9 @@
 # 2. Install Cilium and bootstrap Flux
 
+Use the fresh `run_dir` returned by new-validation-run.py. Cilium seeding applies
+only to a run that explicitly selects Cilium and has prepared its values; normal
+K3s application validation can bootstrap Flux directly without changing its CNI.
+
 Use `dev-machine` with its existing kubeconfig. Clone the repository there if
 needed and enter its root. Make sure the desired manifests are already on the
 branch Flux will fetch; applying unpushed local files cannot make them Git-managed.
@@ -11,7 +15,7 @@ git clone https://github.com/starlisquit/codex-monorepo.git
 cd codex-monorepo
 kubectl config current-context
 kubectl -n kube-system get daemonset kube-proxy --ignore-not-found
-flux/runbooks/scripts/bootstrap-cilium.sh flux/clusters/iximiuz-platform 172.16.0.2 6443
+flux/runbooks/scripts/bootstrap-cilium.sh "$run_dir" 172.16.0.2 6443
 ```
 
 The kube-proxy query should return no resource. The helper installs Helm release
@@ -65,7 +69,7 @@ remain. Verify DNS, ClusterIP, and NodePort traffic after cleanup.
 
 ```sh
 flux version --client
-flux/runbooks/scripts/bootstrap-flux.sh flux/clusters/iximiuz-platform
+flux/runbooks/scripts/bootstrap-flux.sh "$run_dir"
 flux get sources git -A
 flux get kustomizations -A
 ```

@@ -10,19 +10,19 @@ This template explicitly selects Community Build `26.9.0.129388`; the chart's
 Server application version is a different product/version. Developer/Enterprise
 editions require their own configuration and license.
 
-The component targets namespace `quality`. It is opt-in and not selected by the
-full-platform overlay. Before selection, provision PostgreSQL with database and
-dedicated login `sonarqube`, then adjust `jdbcOverwrite.jdbcUrl`/`jdbcUsername` to
-match. The default hostname is `sonarqube-postgresql.quality.svc.cluster.local`.
-The template does not install a database or grant database privileges. Its external
-database avoids using SonarQube's embedded evaluation database.
+The component targets namespace `quality`. For a dedicated database, select the
+[PostgreSQL opt-in](opt-in/postgresql/README.md), wait for Cluster readiness, then
+select its integration. CNPG generates the credentials and the integration
+configures verified TLS automatically. The base remains usable with an existing
+external PostgreSQL database; adjust jdbcOverwrite for that installation.
 
-Supply two same-namespace Secrets outside Git:
+For the base external-database mode, supply two same-namespace Secrets outside Git:
 
 - `sonarqube-database`, key `password`: the dedicated database password.
 - `sonarqube-monitoring`, key `passcode`: a strong, independent monitoring passcode.
 
-For existing secure files:
+The CNPG opt-in needs only the monitoring Secret provisioned manually; its database
+password is generated. For base-mode credentials from existing secure files:
 
 ```sh
 kubectl create namespace quality --dry-run=client -o yaml | kubectl apply -f -

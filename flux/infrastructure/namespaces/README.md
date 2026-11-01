@@ -7,8 +7,7 @@ The Tetragon privileged and Trivy baseline Pod Security labels are retained in
 their respective namespace bases.
 
 The root Kustomization remains an optional convenience bundle containing all
-18 namespaces. It is not required and the full-platform foundation does not
-select it: that foundation selects only its 14 used namespaces. The Kubernetes
+18 namespaces. It is not required and run foundations select only their needed namespace bases. The Kubernetes
 kube-system and Flux bootstrap flux-system namespaces remain bootstrap-owned.
 
 A small installation can provision just AI's namespace:

@@ -1,5 +1,8 @@
 # Configure and verify Velero
 
+Use `run_dir` from the new per-playground run helper and create only the relevant
+workload wrappers there. Fixed example cluster folders have been removed.
+
 Prerequisites: a stable cluster, monitoring CRDs, an existing external backup
 bucket, narrowly scoped access to it, and a compatible Velero CLI. Read the
 [component limits](../../infrastructure/backup/velero/README.md). The last
@@ -11,7 +14,7 @@ From the repo root, after reviewing and filling in the excluded example:
 
 ```sh
 cp flux/infrastructure/backup/velero/opt-in/s3/values.example.yaml \
-  flux/clusters/iximiuz-platform/velero/values.yaml
+  ${run_dir}/velero/values.yaml
 ```
 
 Edit that file to use your real bucket, region and HTTPS endpoint before deploying.
@@ -27,7 +30,7 @@ kubectl -n velero create secret generic velero-cloud-credentials \
 The file uses the provider's expected credential format; don't echo it to logs.
 For a secret already provisioned by External Secrets or another manager, use its
 name in values and skip imperative creation. Add the cluster values file to a
-new ConfigMap in `flux/clusters/iximiuz-platform/velero/kustomization.yaml`:
+new ConfigMap in `${run_dir}/velero/kustomization.yaml`:
 
 ```yaml
 configMapGenerator:
@@ -51,7 +54,7 @@ reconciliation; no suspension flag needs changing. Commit/push configuration,
 excluding credentials, and reconcile:
 
 ```sh
-kustomize build flux/clusters/iximiuz-platform/velero
+kustomize build ${run_dir}/velero
 flux reconcile source git flux-system --timeout=2m
 flux reconcile kustomization flux-system --timeout=2m
 flux reconcile kustomization velero --timeout=15m

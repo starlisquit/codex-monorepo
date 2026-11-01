@@ -3,8 +3,8 @@
 This directory follows the requested infrastructure layout, with the
 CloudNativePG operator and an example PostgreSQL instance in separate directories.
 Shared components reconcile when included; cluster-specific overlays select,
-configure, and order them. The full lab overlay is `clusters/iximiuz-platform/`; its desired
-state does not imply that every workload has completed live verification.
+configure, and order them. Every playground run has its own folder under `clusters/`, with Flux pointed
+at that exact folder. Only the selected workloads are deployed.
 
 Start with the [documentation index](docs/README.md) and follow the
 [bootstrap runbooks](runbooks/README.md). The docs record verified findings and
@@ -18,7 +18,7 @@ unfinished work separately, including the paused API slowness investigation.
 - `runbooks/`: exact bootstrap/verification/recovery steps and checked-in helper scripts.
 - `policies/`: reusable admission and network policies; individual policies document their scope and Audit/Deny behavior.
 - `dashboards/`: reusable GrafanaDashboard CRs for the minimal demo, capacity, and scrape health.
-- `clusters/`: separate minimal and full-platform cluster overlays.
+- `clusters/`: one isolated Flux configuration per playground run.
 - `infrastructure/sources/`: shared Helm repositories and OCI chart sources.
 - `infrastructure/storage/rook-ceph/csi-drivers/`: CSI Driver CRs via the separate chart; the operator chart alone does not deploy the driver workloads.
 - Each chart directory contains a HelmRelease, `values.yaml`, and a Kustomize build.
@@ -41,7 +41,7 @@ unfinished work separately, including the paused API slowness investigation.
 - `policy/kyverno/`: Kyverno engine; reusable policies live in `flux/policies/`.
 - `ci/gitlab-runner/`: official GitLab Runner chart, one manager and five concurrent jobs by default.
 - `ci/renovate/`: official Renovate CronJob, explicit GitLab repository scope and initial dry-run mode.
-- `quality/sonarqube/`: official SonarSource chart with Community Build, external PostgreSQL and persistent data.
+- `quality/sonarqube/`: official SonarSource chart with Community Build, persistent data and an opt-in CNPG PostgreSQL cluster/TLS integration.
 - `proxy/nginx/`: official open-source NGINX Ingress Controller with an explicit ingress class and streaming-friendly proxy settings.
 - `broker/nui/`: official experimental NUI chart with pinned image and startup compatibility fixes; real browser workflows verified (see findings).
 - `ui/redisinsight/`: official Redis manifests; Redis publishes no official RedisInsight Helm chart.
@@ -49,8 +49,12 @@ unfinished work separately, including the paused API slowness investigation.
 
 The CI/quality templates require their documented credential Secrets and, for
 SonarQube, a database. They are opt-in components for consuming cluster overlays;
-adding them does not enable them in the full-platform cluster. Validate them in
+adding them does not automatically select them in a run. Validate them in
 focused playgrounds rather than deploying unrelated infrastructure.
+
+Create run folders with [the run workflow](clusters/README.md); the two former
+fixed cluster examples have been removed. Shared controller bootstrap manifests
+live under `bootstrap/flux-system`.
 
 ## Before enabling a release
 
@@ -59,7 +63,7 @@ focused playgrounds rather than deploying unrelated infrastructure.
    supported chart values before enabling any release.
 2. Select only the namespace and source bases needed by the chosen releases,
    such as `infrastructure/namespaces/ai` and `infrastructure/sources/litellm`.
-   Full-platform foundation selects its required subsets. The root namespace
+   Each run foundation selects its required subsets. The root namespace
    and source bundles remain optional conveniences, never prerequisites.
    Cilium uses the existing kube-system namespace; Flux bootstraps flux-system.
 3. Build the desired component with `kustomize build <component-directory>`.

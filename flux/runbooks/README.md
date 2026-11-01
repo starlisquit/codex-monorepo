@@ -1,9 +1,15 @@
 # Platform runbooks
 
-Run commands from the repository root unless a section explicitly names another
-machine. The manifests here target `starlisquit/codex-monorepo`, branch `main`,
-and the `iximiuz-platform` overlay. For another repository, namespace layout,
-API address, or cluster domain, edit the corresponding references before applying.
+Run commands from the repository root unless a section names another machine.
+For each playground, follow [the per-run workflow](../clusters/README.md): create
+a fresh cluster folder, select only required components, publish it, and point
+Flux at that exact folder. The two fixed example overlays have been removed.
+The current repository defaults to public GitHub/main; keep credentials outside Git.
+
+The detailed full-platform bootstrap/operations pages below are historical
+procedures for specific components, not a requirement to install a whole stack.
+Only use the steps relevant to the new run. K3s runs with working networking do
+not need the Cilium seed or kube-proxy migration procedure.
 
 ## Bootstrap sequence
 
@@ -31,6 +37,11 @@ API address, or cluster domain, edit the corresponding references before applyin
 - [OpenBao unseal and data recovery boundaries](recovery/openbao.md)
 
 ## Helper scripts
+
+`scripts/new-validation-run.py` creates a unique run folder from a real play ID.
+Both bootstrap scripts require an explicit run path; neither falls back to a
+deleted example. The validator discovers all run folders automatically.
+
 
 `scripts/bootstrap-cilium.sh` installs a minimal networking seed with Gateway API
 and ServiceMonitors deferred until their CRDs exist. `scripts/bootstrap-flux.sh`

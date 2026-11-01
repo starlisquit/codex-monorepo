@@ -79,7 +79,7 @@ modprobe rbd
 
 Verify the direct API address is `172.16.0.2:6443`. The overlay hard-codes that
 address and the node names. For a different network, update
-`clusters/iximiuz-platform/cilium/values.yaml`, the Ceph node selection, demo
+the new run's `cilium/values.yaml` (if Cilium is selected), the Ceph node selection, demo
 worker affinity, and relevant runbook commands before bootstrap.
 
 The control plane requests 4 vCPUs/6 GiB; workers 2 vCPUs/4608 MiB; dev machine
