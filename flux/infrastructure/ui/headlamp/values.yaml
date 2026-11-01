@@ -1,0 +1,13 @@
+# Users authenticate with their own Kubernetes credentials and RBAC permissions.
+# Do not grant the application service account cluster-admin by default.
+config:
+  inCluster: true
+  unsafeUseServiceAccountToken: false
+service:
+  type: ClusterIP
+ingress:
+  enabled: false
+httpRoute:
+  enabled: false
+clusterRoleBinding:
+  create: false

@@ -15,6 +15,7 @@ It is a starting scaffold, not a deployment-ready cluster configuration.
   a category and list them in that category's Kustomization.
 - `observability/datasources/`: additional GrafanaDatasource resources and an
   excluded example; the VM chart retains ownership of its default datasources.
+- `ui/headlamp/`: Kubernetes web UI with its own suspended HelmRelease.
 - `policy/cluster-policies/`: example Kyverno policies in Audit mode, scoped to `applications`.
 - `policy/network-policies/`: example policies scoped to `applications`.
 
@@ -24,7 +25,7 @@ It is a starting scaffold, not a deployment-ready cluster configuration.
    2026-11-01 (see the table below). Review Kubernetes compatibility and the
    supported chart values before enabling any release.
 2. Create the target namespaces: `observability`, `rook-ceph`, `databases`,
-   `kyverno`, `certificates`, `secrets`, `broker`, and `applications` as needed.
+   `kyverno`, `certificates`, `secrets`, `broker`, `ui`, and `applications` as needed.
    Cilium targets the existing `kube-system` namespace; sources use `flux-system`.
 3. Build the desired component with `kustomize build <component-directory>`.
    Kustomize generates a stable values ConfigMap; `valuesFrom` connects it to
@@ -162,3 +163,4 @@ These are chart versions, not application image versions.
 | rook-ceph-cluster | `1.21.1` |
 | rook-ceph | `1.21.1` |
 | grafana-operator | `5.25.0` |
+| headlamp | `0.46.0` |
