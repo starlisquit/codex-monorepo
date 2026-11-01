@@ -1,6 +1,6 @@
 # Focused verification and interrupted full-platform run — 2026-11-01
 
-## Full-platform run, 11:38–11:55 Europe/Istanbul (08:38–08:55 UTC)
+## Full-platform observations, from 11:38 Europe/Istanbul (08:38 UTC)
 
 Play `6ae6fa7756e9b785c3292646`, playground `codex-platform-243e14fd`, was
 destroyed immediately at the user's request when the validation strategy changed.

@@ -1,0 +1,15 @@
+# Use only on a disposable validation branch, with a runner bearing this tag.
+stages: [verify]
+runner-smoke:
+  stage: verify
+  parallel: 6
+  tags: [iximiuz-validation]
+  image: docker.io/library/alpine:3.22
+  variables:
+    GIT_STRATEGY: none
+  script:
+  - echo "runner validation slot ${CI_NODE_INDEX}/${CI_NODE_TOTAL}"
+  - date -u
+  - sleep 45
+  - echo runner-validation-ok
+  timeout: 5m

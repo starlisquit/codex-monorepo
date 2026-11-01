@@ -3,6 +3,9 @@
 Read these documents for design decisions, observed behavior, and limitations.
 Use [runbooks](../runbooks/README.md) when you need executable procedures.
 
+- [CI and quality chart verification](findings/ci-quality-validation-2026-11-01.md)
+- [Interrupted full-platform verification](findings/validation-2026-11-01.md)
+
 - [Next iximiuz Labs validation checklist](../runbooks/operations/next-lab-validation.md)
 - [Last run: teardown and unfinished PKI migration](findings/pki-last-run.md)
 - [Current template PKI coverage](architecture/pki-coverage.md)

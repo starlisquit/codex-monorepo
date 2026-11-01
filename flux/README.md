@@ -39,6 +39,14 @@ unfinished work separately, including the paused API slowness investigation.
   routed through native VM agents, with a Collector for SDK protocol compatibility.
 - `ui/headlamp/`: Kubernetes web UI with its own HelmRelease.
 - `policy/kyverno/`: Kyverno engine; reusable policies live in `flux/policies/`.
+- `ci/gitlab-runner/`: official GitLab Runner chart, one manager and five concurrent jobs by default.
+- `ci/renovate/`: official Renovate CronJob, explicit GitLab repository scope and initial dry-run mode.
+- `quality/sonarqube/`: official SonarSource chart with Community Build, external PostgreSQL and persistent data.
+
+The CI/quality templates require their documented credential Secrets and, for
+SonarQube, a database. They are opt-in components for consuming cluster overlays;
+adding them does not enable them in the full-platform cluster. Validate them in
+focused playgrounds rather than deploying unrelated infrastructure.
 
 ## Before enabling a release
 
@@ -191,3 +199,6 @@ These are chart versions, not application image versions.
 | flux-operator | `0.62.1` |
 | keda | `2.21.0` |
 | opentelemetry-demo | `0.42.6` |
+| gitlab-runner | `0.94.2` |
+| sonarqube | `2026.5.1003` |
+| renovate | `46.396.0` |
