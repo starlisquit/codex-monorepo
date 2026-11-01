@@ -11,7 +11,7 @@ was not established. This report is not a full acceptance sign-off.
 
 | Check / command | Status | Sanitized evidence and limits |
 | --- | --- | --- |
-| `flux/runbooks/scripts/validate.sh` | Passed | 91 Kustomize builds, 37 child dependency definitions, 25 release coverage checks at this revision |
+| `flux/docs/runbooks/scripts/validate.sh` | Passed | 91 Kustomize builds, 37 child dependency definitions, 25 release coverage checks at this revision |
 | Node preflight: `free -m`, `nproc`, `lsblk`, BTF, `modprobe wireguard/rbd`, LVM | Passed | Control plane 4 CPU/6004 MiB; workers 2 CPU/4492 MiB each; Linux 6.1.167; 20 GiB system disks and unused 25 GiB raw Ceph disks; Kubernetes v1.37.1 node reports |
 | Fresh Cilium seed | Passed after fix | Original seed failed on absent Certificate CRDs. Deferring Hubble, relay/UI and central CA bundle allowed networking before PKI; WireGuard retained |
 | Flux seed adoption | Passed | Cilium 1.20.4 release revision 2 Ready; no kube-proxy; three nodes Ready |

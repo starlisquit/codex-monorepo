@@ -55,7 +55,7 @@ not an intentional application crash. TRACE here is a log level, not a tracing s
 The fixture is excluded from Flux's normal reconciliation.
 
 ```sh
-kubectl apply -f flux/runbooks/examples/log-severity-job.yaml
+kubectl apply -f flux/docs/runbooks/examples/log-severity-job.yaml
 kubectl -n demo wait --for=jsonpath='{.status.ready}'=1 job/log-severity-simulator --timeout=3m
 kubectl -n demo logs job/log-severity-simulator --tail=6
 kubectl -n demo get pods -l job-name=log-severity-simulator

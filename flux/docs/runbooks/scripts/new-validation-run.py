@@ -23,7 +23,7 @@ for value in [args.name, args.play_id, *args.namespace, *args.source]:
 url = urlsplit(args.git_url)
 if url.scheme != 'https' or not url.netloc or url.username or url.password or url.query or url.fragment:
     parser.error('Use an HTTPS repository URL without credentials, query or fragment')
-flux_root = Path(__file__).resolve().parents[2]
+flux_root = Path(__file__).resolve().parents[3]
 for category, values in [('namespaces', args.namespace), ('sources', args.source)]:
     for value in values:
         if not (flux_root / 'infrastructure' / category / value / 'kustomization.yaml').is_file():

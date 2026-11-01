@@ -21,7 +21,7 @@ is not copied into a Kubernetes Secret for External Secrets.
 The initial policies, auth configuration and verification KV value were configured
 through the API; the SecretStore, service account, token-review RBAC and
 ExternalSecret are Git-managed. Both halves are required on recreation. The
-[OpenBao runbook](../../runbooks/bootstrap/04-openbao-and-external-secrets.md)
+[OpenBao runbook](../runbooks/bootstrap/04-openbao-and-external-secrets.md)
 explains that operational boundary.
 
 cert-manager owns the OpenBao TLS Secrets. Clients trust the CA certificate, not

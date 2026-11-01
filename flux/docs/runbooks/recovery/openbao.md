@@ -11,7 +11,7 @@ stat -c '%a %n' /home/laborant/.config/codex-platform/openbao-init.json
 for pod in openbao-0 openbao-1 openbao-2; do
   kubectl -n secrets exec "$pod" -- bao status -format=json
 done
-python3 flux/runbooks/scripts/initialize-openbao.py
+python3 flux/docs/runbooks/scripts/initialize-openbao.py
 kubectl -n secrets wait --for=jsonpath='{.status.readyReplicas}'=3 statefulset/openbao --timeout=5m
 kubectl -n secrets get secretstore,externalsecret
 ```

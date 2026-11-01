@@ -90,7 +90,7 @@ status rather than assuming a push already removed running Pods.
 
 See [resource findings](../../../docs/findings/resource-pressure.md),
 [Helm findings](../../../docs/findings/flux-and-helm.md), and the
-[verification runbook](../../../runbooks/operations/verify-platform.md).
+[verification runbook](../../../docs/runbooks/operations/verify-platform.md).
 
 References: [pinned demo chart](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-demo),
 [quote route and telemetry](https://github.com/open-telemetry/opentelemetry-demo/blob/3.1.0/src/quote/app/routes.php),

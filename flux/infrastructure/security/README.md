@@ -29,7 +29,7 @@ provide findings and runtime-health views through the existing dashboard selecti
 The `iximiuz-platform` overlay selects both components and reconciles them after
 foundation, monitoring CRDs and Cilium, with HelmRelease and CRD health checks.
 Other clusters choose components by including the desired directories. Use the
-[verification runbook](../../runbooks/operations/security-tools.md).
+[verification runbook](../../docs/runbooks/operations/security-tools.md).
 
 Tetragon uses upstream process-cache and event-export scope/rate defaults. Trivy
 scans all namespaces with upstream scan concurrency and normal-speed image scans.

@@ -35,7 +35,7 @@ remain excluded rather than becoming automatically deployed objects.
 
 Both Cilium cluster consumers, the secret-store and storage-check consumers,
 READMEs, runbooks and current documentation links have been updated. Standalone
-verification/test fixture inputs remain under `runbooks/examples`, rather than
+verification/test fixture inputs remain under `docs/runbooks/examples`, rather than
 being mixed into production templates. Primary deployable template directories
 and required PKI bundles remain ordinary templates, not nested optional extras.
 

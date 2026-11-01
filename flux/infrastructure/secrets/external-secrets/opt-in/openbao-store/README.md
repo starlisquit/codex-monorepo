@@ -34,7 +34,7 @@ mount or CA. Those are actual deployment-specific settings, not boilerplate.
 
 OpenBao initialization, unsealing, Kubernetes auth configuration and policy/role
 creation remain backend operations. Installing these Kubernetes resources does
-not perform them. The lab helper in `runbooks/scripts/configure-openbao.py`
+not perform them. The lab helper in `docs/runbooks/scripts/configure-openbao.py`
 creates a role scoped to `kv/data/lab/*`, bound to this service account,
 namespace and audience. Create appropriately scoped roles for production;
 no administrator token is embedded in the SecretStore.

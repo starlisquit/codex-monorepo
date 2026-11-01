@@ -33,7 +33,7 @@ Before deploying, from the repository root:
 
 ```sh
 git rev-parse HEAD
-flux/runbooks/scripts/validate.sh
+flux/docs/runbooks/scripts/validate.sh
 ```
 
 Use the Helm major version used by helm-controller when rendering changed charts.
@@ -86,7 +86,7 @@ single health request does not establish sustained health.
   encryption are outside the enabled setting; WireGuard uses Cilium keys, not
   our X.509 CA. SPIRE/workload mutual authentication is not enabled.
 
-See [Cilium validation and limits](../../infrastructure/networking/cilium/README.md).
+See [Cilium validation and limits](../../../infrastructure/networking/cilium/README.md).
 Full Cilium conformance and L7/gRPC routing/metrics tests remain additional work;
 only claim those if actually exercised with an appropriate proxy path/workload.
 
@@ -107,8 +107,8 @@ Follow [platform verification](verify-platform.md) and the component runbooks.
 
 ## 4. Central PKI — unfinished migration and new integrations
 
-Use [PKI procedures](pki.md), [coverage inventory](../../docs/architecture/pki-coverage.md)
-and [last-run failures](../../docs/findings/pki-last-run.md).
+Use [PKI procedures](pki.md), [coverage inventory](../../architecture/pki-coverage.md)
+and [last-run failures](../../findings/pki-last-run.md).
 
 - [ ] Fresh root, central ClusterIssuer, delegated issuers and leaf Certificates
   become Ready; actual certificate lifetimes match intent. Bundle `platform-ca`
@@ -163,11 +163,11 @@ traffic generators when finished; do not commit generated credentials.
 - [ ] Trivy completes scans of actual workload images and creates fresh reports;
   check image identity, scan DB freshness, failed Jobs and registry access. A Ready
   operator is not evidence of successful scans or absence of vulnerabilities.
-- [ ] Exercise both [security dashboards](../../dashboards/security/README.md)
+- [ ] Exercise both [security dashboards](../../../dashboards/security/README.md)
   with real reports/events. Validate filters and ranking/count semantics against
   report CRs and backend queries. Check export/drop/cache panels with available
   series; missing counters must not imply zero errors.
-- [ ] Re-run `flux/runbooks/scripts/test-network-policies.sh` after reviewing its
+- [ ] Re-run `flux/docs/runbooks/scripts/test-network-policies.sh` after reviewing its
   scope. The historical 15 assertions predated later egress changes. Explicitly
   test default-deny **ingress and egress**, selected allowlist destinations/ports,
   DNS, forbidden destinations/ports and selector boundaries. NetworkPolicy allows
@@ -182,7 +182,7 @@ traffic generators when finished; do not commit generated credentials.
 ## 7. PostgreSQL Grafana datasource — optional template acceptance
 
 This example is intentionally unselected until configured. Follow
-[its guide](../../dashboards/datasources/README.md).
+[its guide](../../../dashboards/datasources/README.md).
 
 - [ ] Provision a dedicated read-only role, same-namespace credential Secret and
   public CA ConfigMap; select the example in its Kustomization.

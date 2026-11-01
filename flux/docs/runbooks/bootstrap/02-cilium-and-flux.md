@@ -15,7 +15,7 @@ git clone https://github.com/starlisquit/codex-monorepo.git
 cd codex-monorepo
 kubectl config current-context
 kubectl -n kube-system get daemonset kube-proxy --ignore-not-found
-flux/runbooks/scripts/bootstrap-cilium.sh "$run_dir" 172.16.0.2 6443
+flux/docs/runbooks/scripts/bootstrap-cilium.sh "$run_dir" 172.16.0.2 6443
 ```
 
 The kube-proxy query should return no resource. The helper installs Helm release
@@ -39,7 +39,7 @@ Expect replacement True, ready agents, and Service support enabled.
 ## Existing kube-proxy cluster
 
 The seed helper intentionally stops if kube-proxy exists. First inspect Cilium
-and plan the transition using the [migration record](../../docs/findings/kube-proxy-migration.md).
+and plan the transition using the [migration record](../../findings/kube-proxy-migration.md).
 Do not delete kube-proxy before replacement is configured on all nodes. Once it
 is confirmed, back up and remove the old resources from `dev-machine`:
 
@@ -69,7 +69,7 @@ remain. Verify DNS, ClusterIP, and NodePort traffic after cleanup.
 
 ```sh
 flux version --client
-flux/runbooks/scripts/bootstrap-flux.sh "$run_dir"
+flux/docs/runbooks/scripts/bootstrap-flux.sh "$run_dir"
 flux get sources git -A
 flux get kustomizations -A
 ```

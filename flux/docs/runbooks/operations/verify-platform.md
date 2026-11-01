@@ -34,7 +34,7 @@ kubectl top pods -A
 Metrics Server is separate from VictoriaMetrics and KEDA. Allow initial samples
 to arrive. If `Metrics API not available` persists, inspect the APIService and
 `kubectl -n observability logs deployment/metrics-server --tail=100`. See the
-[component guide](../../infrastructure/observability/metrics-server/README.md)
+[component guide](../../../infrastructure/observability/metrics-server/README.md)
 for certificate, kubelet TLS, and deployment dependencies.
 
 ## Storage, database, and secrets
@@ -104,7 +104,7 @@ PY
 
 The recorded unresolved targets were controller-manager, scheduler, and etcd,
 with serving-certificate name/trust errors. Do not disable verification just to
-clear the target count. See [monitoring findings](../../docs/findings/observability.md).
+clear the target count. See [monitoring findings](../../findings/observability.md).
 
 ## Demo and all three signals
 
@@ -128,7 +128,7 @@ Use Grafana Explore to query recent application series in VictoriaMetrics,
 actual demo SDK log records in VictoriaLogs (DS), and recent service traces in
 VictoriaTraces. Check service names and recent timestamps. Backend health,
 Collector configuration, or scrape metrics alone do not prove all three signals.
-The [fresh rebuild](../../docs/findings/rebuild-verification.md) verified all three
+The [fresh rebuild](../../findings/rebuild-verification.md) verified all three
 signals from quote traffic. Repeat these checks for the current play.
 
 

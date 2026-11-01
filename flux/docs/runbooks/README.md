@@ -1,7 +1,7 @@
 # Platform runbooks
 
 Run commands from the repository root unless a section names another machine.
-For each playground, follow [the per-run workflow](../clusters/README.md): create
+For each playground, follow [the per-run workflow](../../clusters/README.md): create
 a fresh cluster folder, select only required components, publish it, and point
 Flux at that exact folder. The two fixed example overlays have been removed.
 The current repository defaults to public GitHub/main; keep credentials outside Git.
@@ -31,7 +31,7 @@ not need the Cilium seed or kube-proxy migration procedure.
 
 - [Container log collection and dashboard verification](operations/container-logging.md)
 
-- [Ingress NetworkPolicy templates and enforcement test](../policies/network/README.md)
+- [Ingress NetworkPolicy templates and enforcement test](../../policies/network/README.md)
 - [Reconcile and troubleshoot Flux](operations/reconciliation.md)
 - [Control-plane/API incident handling](recovery/control-plane.md)
 - [OpenBao unseal and data recovery boundaries](recovery/openbao.md)
@@ -62,7 +62,7 @@ Validation needs Python 3 with PyYAML and Kustomize:
 python3 -m venv /tmp/flux-validation-venv
 . /tmp/flux-validation-venv/bin/activate
 python3 -m pip install PyYAML
-flux/runbooks/scripts/validate.sh
+flux/docs/runbooks/scripts/validate.sh
 ```
 
 On Ubuntu, install `python3-venv` first if venv support is missing.

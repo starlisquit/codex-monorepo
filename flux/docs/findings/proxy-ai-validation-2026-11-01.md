@@ -1,5 +1,8 @@
 # NGINX and LiteLLM deployment verification — 2026-11-01
 
+Repository update: the NGINX template and its Helm source have been removed.
+The results below remain historical evidence; LiteLLM is still available.
+
 Focused K3s play `6ae70b4c789ac234e334e7c2` started at 12:50 Europe/Istanbul
 (09:50 UTC), after destruction of the security validation play. Only NGINX,
 LiteLLM and a disposable local OpenAI-compatible backend were installed. No
@@ -58,8 +61,8 @@ At one healthy snapshot, LiteLLM used about 554 MiB, NGINX 22 MiB, and the fixtu
 
 Use repository chart values plus the excluded lab examples:
 
-- `flux/runbooks/examples/proxy-ai-validation-values.yaml`
-- `flux/runbooks/examples/proxy-ai-validation-backend.yaml`
+- `flux/docs/runbooks/examples/proxy-ai-validation-values.yaml`
+- `flux/docs/runbooks/examples/proxy-ai-validation-backend.yaml`
 
 Provision lab-only master/provider Secrets and a temporary TLS Secret outside
 Git. Discover HTTP/HTTPS NodePorts from the NGINX Service. Requests used the real

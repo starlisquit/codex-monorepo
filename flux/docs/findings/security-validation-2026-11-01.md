@@ -59,7 +59,7 @@ shared Grafana template. Its ephemeral storage meant dashboards/datasources were
 reprovisioned after replacement; lab resync periods were set to 30 seconds. The
 final Grafana Pod had no restarts during the successful checks.
 
-Reproduction inputs: `flux/runbooks/examples/security-validation-monitoring.yaml`
+Reproduction inputs: `flux/docs/runbooks/examples/security-validation-monitoring.yaml`
 merged after shared VM stack values, and `security-validation-workloads.yaml`.
 Security charts used their repository values, including the fixes above. Metrics
 queries used the live dashboard JSON via `/api/dashboards/uid/...` and

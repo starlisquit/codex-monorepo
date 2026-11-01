@@ -2,7 +2,7 @@
 
 **Status:** desired configuration; the last live migration was stopped before
 end-to-end acceptance and the playground was destroyed. Read the
-[last-run findings](../../docs/findings/pki-last-run.md) before deployment.
+[last-run findings](../../findings/pki-last-run.md) before deployment.
 
 Kubernetes/kubeadm PKI stays independent. cert-manager issues application
 certificates from ClusterIssuer `platform-workload-ca`; trust-manager distributes
@@ -20,7 +20,7 @@ networking is still seeded before Flux by the existing bootstrap helper.
 On this existing lab, BEFORE applying `pki/issuer`, run:
 
 ```sh
-python3 flux/runbooks/scripts/adopt-openbao-ca.py
+python3 flux/docs/runbooks/scripts/adopt-openbao-ca.py
 kubectl apply -k flux/infrastructure/certificates/pki/issuer
 kubectl wait clusterissuer/platform-workload-ca --for=condition=Ready --timeout=3m
 ```
@@ -45,7 +45,7 @@ migration automatically.
 
 ## Consumers
 
-See the [complete template coverage and exceptions](../../docs/architecture/pki-coverage.md).
+See the [complete template coverage and exceptions](../../architecture/pki-coverage.md).
 
 - OpenBao server/injector, Metrics Server and trust-manager use the central issuer.
 - Hubble uses chart-native cert-manager certificates and the shared CA Bundle.

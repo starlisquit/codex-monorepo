@@ -9,7 +9,7 @@ version 0.1.6. Upstream labels Kubernetes support experimental.
 The application image is pinned by version and multi-architecture digest rather
 than using the chart's `latest` default.
 
-Build with `kubectl kustomize flux/infrastructure/broker/nui` and include the
+Build with `kubectl kustomize flux/infrastructure/ui/nui` and include the
 resulting resources in your chosen cluster's Flux Kustomization. Ensure the
 shared Helm sources and a default StorageClass are available. This template
 is not enabled in the full-platform overlay.

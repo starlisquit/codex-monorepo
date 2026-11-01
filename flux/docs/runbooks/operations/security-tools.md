@@ -46,7 +46,7 @@ kubectl -n tetragon rollout status deployment/tetragon-operator --timeout=5m
 kubectl -n tetragon get servicemonitors
 ```
 
-Verify a real process event using the [Tetragon guide](../../infrastructure/security/tetragon/README.md),
+Verify a real process event using the [Tetragon guide](../../../infrastructure/security/tetragon/README.md),
 its VictoriaLogs record, and successful monitoring targets as part of acceptance.
 No TracingPolicy is installed to kill or block processes.
 
@@ -80,6 +80,6 @@ Git settings after any temporary manual scaling so Flux does not undo it.
 
 Open **Security / Trivy findings** and **Security / Tetragon runtime** after the
 existing dashboard Kustomization reconciles. See the
-[dashboard guide](../../dashboards/security/README.md) for metric/filter semantics.
+[dashboard guide](../../../dashboards/security/README.md) for metric/filter semantics.
 Check actual scan completion and event generation before treating empty panels
 as clean results. These views do not enable extra enforcement or per-CVE labels.

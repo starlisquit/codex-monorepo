@@ -8,7 +8,7 @@ api_port=${3:-6443}
 for executable in kubectl helm; do command -v "$executable" >/dev/null; done
 kubectl cluster-info
 if kubectl -n kube-system get daemonset kube-proxy >/dev/null 2>&1; then
-  echo 'Existing kube-proxy detected. Follow flux/runbooks/bootstrap/02-cilium-and-flux.md before migrating.' >&2
+  echo 'Existing kube-proxy detected. Follow flux/docs/runbooks/bootstrap/02-cilium-and-flux.md before migrating.' >&2
   exit 1
 fi
 bootstrap_values=$(mktemp)

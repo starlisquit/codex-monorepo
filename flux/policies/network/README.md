@@ -77,7 +77,7 @@ its callers. Change manifests in Git for lasting changes; manual edits are rever
 From a clone on `dev-machine`, with cluster-admin access:
 
 ```sh
-flux/runbooks/scripts/test-network-policies.sh
+flux/docs/runbooks/scripts/test-network-policies.sh
 ```
 
 The script uses temporary namespaces, a small HTTP server and BusyBox clients,

@@ -3,7 +3,7 @@ set -euo pipefail
 repo_root=$(git rev-parse --show-toplevel)
 kustomize_bin=${KUSTOMIZE_BIN:-kustomize}
 command -v "$kustomize_bin" >/dev/null
-python3 "$repo_root/flux/runbooks/scripts/validate-platform.py"
+python3 "$repo_root/flux/docs/runbooks/scripts/validate-platform.py"
 count=0
 while IFS= read -r -d '' manifest; do
   # Components are built through their consuming Kustomizations, not standalone.

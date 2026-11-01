@@ -57,7 +57,7 @@ the verification runner never posts application write requests directly.
 
 ## Deployment fixes
 
-`flux/infrastructure/broker/nui/start.sh` is mounted from ConfigMap
+`flux/infrastructure/ui/nui/start.sh` is mounted from ConfigMap
 `nui-startup` and runs before the official image entrypoint:
 
 1. The compiled session loader calls JSON.parse on absent localStorage keys,
@@ -123,7 +123,7 @@ python verify-redis-nui-browser.py \
   --phase initial --output ui-initial.json
 ```
 
-The runner is at `flux/runbooks/scripts/verify-redis-nui-browser.py` and requires
+The runner is at `flux/docs/runbooks/scripts/verify-redis-nui-browser.py` and requires
 kubectl access to the documented disposable fixture namespace workloads.
 It intentionally writes test keys/messages and must not target production data.
 Delete only the UI Pods, wait for readiness, restart port-forwards to the

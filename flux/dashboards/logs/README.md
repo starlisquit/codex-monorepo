@@ -48,7 +48,7 @@ Expand log details to see original structured fields. Namespace access in
 this dashboard is filtering, not authorization: users of this datasource can
 query all collected namespaces. Avoid logging secrets in applications.
 
-Runbook: [verify container logging](../../runbooks/operations/container-logging.md).
+Runbook: [verify container logging](../../docs/runbooks/operations/container-logging.md).
 
 
 ## Live deployment findings — 2026-11-01

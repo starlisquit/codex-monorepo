@@ -1,7 +1,7 @@
 # 3. Follow platform and storage readiness
 
 Flux creates the dependency graph automatically. Read it in
-[architecture](../../docs/architecture/deployment-order.md). Do not manually
+[architecture](../../architecture/deployment-order.md). Do not manually
 unsuspend every shared HelmRelease or bypass storage gates to clear Pending Pods.
 
 From `dev-machine`:

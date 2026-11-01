@@ -37,7 +37,7 @@ and standard scrape metrics supplied by the existing stack. No application
 latency histogram, error counter, or Collector self-metrics is invented here.
 
 No automatic demo traffic runs. Send quote requests using the
-[verification runbook](../runbooks/operations/verify-platform.md), allow ingestion
+[verification runbook](../docs/runbooks/operations/verify-platform.md), allow ingestion
 time and choose a range containing traffic. Sparse counters can leave rate panels
 empty. The cumulative quote panel resets with the service and is not an accounting
 total. Logs and traces remain available in Explore; these dashboards don't add

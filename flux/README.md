@@ -7,7 +7,7 @@ configure, and order them. Every playground run has its own folder under `cluste
 at that exact folder. Only the selected workloads are deployed.
 
 Start with the [documentation index](docs/README.md) and follow the
-[bootstrap runbooks](runbooks/README.md). The docs record verified findings and
+[bootstrap runbooks](docs/runbooks/README.md). The docs record verified findings and
 unfinished work separately, including the paused API slowness investigation.
 
 ## Layout
@@ -15,7 +15,7 @@ unfinished work separately, including the paused API slowness investigation.
 - `infrastructure/backup/velero/`: Velero with an excluded S3 configuration example; no backup protection until storage and credentials are configured.
 - `infrastructure/security/`: Tetragon runtime telemetry and Trivy Operator reports with monitoring.
 - `docs/`: architecture, deployment findings, and operational responsibilities.
-- `runbooks/`: exact bootstrap/verification/recovery steps and checked-in helper scripts.
+- `docs/runbooks/`: exact bootstrap/verification/recovery steps and checked-in helper scripts.
 - `policies/`: reusable admission and network policies; individual policies document their scope and Audit/Deny behavior.
 - `dashboards/`: reusable GrafanaDashboard CRs for the minimal demo, capacity, and scrape health.
 - `clusters/`: one isolated Flux configuration per playground run.
@@ -34,7 +34,7 @@ unfinished work separately, including the paused API slowness investigation.
   excluded example; the VM chart retains ownership of its default datasources.
 - `observability/metrics-server/`: Kubernetes Metrics API for `kubectl top` and resource-based autoscaling, alongside VictoriaMetrics.
 - `observability/prometheus-operator-crds/`: monitoring CRDs only; see
-  [monitoring setup](MONITORING.md) for collection and dependency details.
+  [monitoring setup](docs/findings/observability.md) for collection and dependency details.
 - `ui/flux-ui/`: standalone Flux Web UI; Flux is bootstrapped separately, without
   the Flux Operator managing its lifecycle.
 - `autoscaling/keda/`: KEDA monitoring and an excluded VictoriaMetrics scaling example.
@@ -45,8 +45,7 @@ unfinished work separately, including the paused API slowness investigation.
 - `ci/gitlab-runner/`: official GitLab Runner chart, one manager and five concurrent jobs by default.
 - `ci/renovate/`: official Renovate CronJob, explicit GitLab repository scope and initial dry-run mode.
 - `quality/sonarqube/`: official SonarSource chart with Community Build, persistent data and an opt-in CNPG PostgreSQL cluster/TLS integration.
-- `proxy/nginx/`: official open-source NGINX Ingress Controller with an explicit ingress class and streaming-friendly proxy settings.
-- `broker/nui/`: official experimental NUI chart with pinned image and startup compatibility fixes; real browser workflows verified (see findings).
+- `ui/nui/`: official experimental NUI chart with pinned image and startup compatibility fixes; real browser workflows verified (see findings).
 - `ui/redisinsight/`: official Redis manifests; Redis publishes no official RedisInsight Helm chart.
 - `ai/litellm/`: official LiteLLM chart with a database-free default and an opt-in CNPG PostgreSQL Cluster plus TLS/migration integration.
 
@@ -115,7 +114,7 @@ Optional add-ons and excluded feature examples live under each owning
 resource's `opt-in/` directory. Select deployable additions explicitly through
 `resources` or `components`, depending on their Kustomize kind. Chart-values and
 placeholder examples stay excluded until configured. There is no top-level
-`components/` directory. Test fixtures remain under `runbooks/examples`.
+`components/` directory. Test fixtures remain under `docs/runbooks/examples`.
 
 A minimal LiteLLM wrapper can select exactly its namespace, OCI source and
 release (credential Secrets are still provisioned separately):
@@ -167,7 +166,7 @@ or change the examples. Other chart values default to `{}` until configured.
 In particular, configure persistence, resources, high availability, credentials,
 and exposure according to the selected chart version. OpenBao uses three HA Raft replicas with persistent storage; initialization,
 unseal, backups, and authentication still need configuration (see
-[monitoring and OpenBao notes](MONITORING.md)). External Secrets needs
+[OpenBao bootstrap runbook](docs/runbooks/bootstrap/04-openbao-and-external-secrets.md)). External Secrets needs
 a configured SecretStore or ClusterSecretStore.
 
 The single `victoria-metrics-k8s-stack` release enables its operator-managed
@@ -227,7 +226,7 @@ CSI drivers, trust-manager, demo, and Metrics Server) also render under Helm 3
 and Helm 4.0.0. Run:
 
 ```sh
-flux/runbooks/scripts/validate.sh
+flux/docs/runbooks/scripts/validate.sh
 ```
 
 Build success does not establish live readiness, sustainable capacity, backup
@@ -268,6 +267,5 @@ These are chart versions, not application image versions.
 | gitlab-runner | `0.94.2` |
 | sonarqube | `2026.5.1003` |
 | renovate | `46.396.0` |
-| nginx-ingress | `2.8.0` |
 | litellm-helm | `1.106.6` |
 | nui | `0.1.6` (app `0.10.0`) |

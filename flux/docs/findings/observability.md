@@ -40,7 +40,7 @@ The demo's Collector receives OTLP/gRPC and OTLP/HTTP, then forwards through:
 VLAgent is push-only here; it does not tail container stdout/stderr. There is no
 span-to-metrics pipeline. Native agents do not automatically instrument services.
 Backend readiness and `up` series do not prove demo SDK logs or traces arrived.
-Use the [verification runbook](../../runbooks/operations/verify-platform.md),
+Use the [verification runbook](../runbooks/operations/verify-platform.md),
 Collector queue/error counters, real backend queries, and Grafana Explore.
 
 Kubernetes can expose similarly named resources from multiple API groups. Use

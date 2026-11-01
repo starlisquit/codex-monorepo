@@ -5,7 +5,7 @@ import os
 import subprocess
 import yaml
 
-flux_root = Path(__file__).resolve().parents[2]
+flux_root = Path(__file__).resolve().parents[3]
 repo_root = flux_root.parent
 kustomize = os.environ.get('KUSTOMIZE_BIN', 'kustomize')
 for manifest in (flux_root / 'infrastructure').rglob('helmrelease.yaml'):

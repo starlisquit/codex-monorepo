@@ -19,7 +19,7 @@ one-time CNI bootstrap is necessary before ordinary Flux Pods can run:
    the client verifies it explicitly, without disabling certificate validation.
 4. `helm upgrade --install cilium cilium/cilium --version 1.20.4 -n kube-system
    -f <this-run>/cilium/bootstrap-values.yaml --wait --timeout 8m`.
-5. Run `runbooks/scripts/bootstrap-flux.sh` with this exact run folder. Flux then
+5. Run `docs/runbooks/scripts/bootstrap-flux.sh` with this exact run folder. Flux then
    owns reconciliation of the same Cilium release and selects only these tests.
 
 The bootstrap-values file is the effective shared values plus the focused run's

@@ -29,7 +29,7 @@ than requiring every available template to be selected in that overlay.
 
 | Check | Status | Evidence / limits |
 | --- | --- | --- |
-| Repository validation | Passed | `KUSTOMIZE_BIN=/workspace/scratch/flux-setup/kustomize flux/runbooks/scripts/validate.sh`: 94 builds; 37 selected child definitions / 25 selected releases; dependency/storage checks and clean whitespace |
+| Repository validation | Passed | `KUSTOMIZE_BIN=/workspace/scratch/flux-setup/kustomize flux/docs/runbooks/scripts/validate.sh`: 94 builds; 37 selected child definitions / 25 selected releases; dependency/storage checks and clean whitespace |
 | Official chart lint/render | Passed | All three charts linted and rendered with repository values under Helm 3.17.0 locally and Helm 4.3.1 in the lab. Helm lint takes a downloaded chart path; `--version` belongs to pull/template/install, not lint |
 | GitLab Runner installation | Passed | Helm release deployed, Deployment 1/1; effective TOML: concurrent=5, runner limit=5, executor=kubernetes, privileged=false |
 | Manager rollout configuration | Passed | One replica; Recreate strategy prevents a rolling-update surge from doubling the manager count. Additional installations/replicas do not share a global five-job ceiling |
@@ -45,7 +45,7 @@ than requiring every available template to be selected in that overlay.
 | Production database backup/restore and TLS ingress | Not run | Test database and internal HTTP were disposable fixtures; no recovery or public TLS claim |
 
 Runner evidence: [pipeline](https://gitlab.com/basarsubasi-gitops/kubernetes/flux/-/pipelines/3014117890).
-The reusable six-job fixture is `flux/runbooks/examples/gitlab-runner-smoke.gitlab-ci.yaml`.
+The reusable six-job fixture is `flux/docs/runbooks/examples/gitlab-runner-smoke.gitlab-ci.yaml`.
 The temporary runner and validation branch were removed after evidence collection
 (GitLab DELETE returned HTTP 204 for each). No runner authentication token is retained.
 

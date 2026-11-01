@@ -111,11 +111,11 @@ Helm deployment and subsequent Pod recovery were exercised. Redis Insight's
 Kustomize output was applied directly and reached readiness. This focused run
 does not claim end-to-end Flux controller reconciliation.
 
-Use `flux/infrastructure/broker/nui/values.yaml` for NUI. Supply Secret
+Use `flux/infrastructure/ui/nui/values.yaml` for NUI. Supply Secret
 `broker/nui-contexts` with key `platform.json` containing a NATS CLI context.
 For this lab only, its URL was `nats://nats.broker.svc.cluster.local:4222`.
 Install the pinned NATS chart with JetStream enabled and local-path storage.
-For Redis, use `flux/runbooks/examples/redisinsight-validation-backend.yaml`
+For Redis, use `flux/docs/runbooks/examples/redisinsight-validation-backend.yaml`
 and first create a random-password Secret `ui/redis-validation` with key
 `password`. Create `ui/redisinsight-encryption` with key `key` before applying
 `flux/infrastructure/ui/redisinsight`. Keep all generated credentials outside

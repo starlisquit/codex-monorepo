@@ -33,7 +33,7 @@ For an independently owned definition, copy and rename the complete manifest:
 ```sh
 git clone https://github.com/starlisquit/codex-monorepo.git
 cd codex-monorepo
-cp flux/runbooks/bootstrap/iximiuz-playground.yaml /tmp/my-codex-platform.yaml
+cp flux/docs/runbooks/bootstrap/iximiuz-playground.yaml /tmp/my-codex-platform.yaml
 yq -i '.name = "my-codex-platform"' /tmp/my-codex-platform.yaml
 labctl playground create my-codex-platform --base k8s-omni -f /tmp/my-codex-platform.yaml
 # Use the full name printed by create, including its generated suffix:
@@ -85,5 +85,5 @@ worker affinity, and relevant runbook commands before bootstrap.
 The control plane requests 4 vCPUs/6 GiB; workers 2 vCPUs/4608 MiB; dev machine
 1 vCPU/1 GiB. These defaults affect **future** VMs. The currently running play
 still has its original equal-size Kubernetes nodes. See
-[sizing findings](../../docs/architecture/playground-sizing.md) for resource caps
+[sizing findings](../../architecture/playground-sizing.md) for resource caps
 and the unresolved API slowness.

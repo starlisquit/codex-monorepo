@@ -5,7 +5,7 @@ workload wrappers there. Fixed example cluster folders have been removed.
 
 Prerequisites: a stable cluster, monitoring CRDs, an existing external backup
 bucket, narrowly scoped access to it, and a compatible Velero CLI. Read the
-[component limits](../../infrastructure/backup/velero/README.md). The last
+[component limits](../../../infrastructure/backup/velero/README.md). The last
 playground is destroyed; this is an unexercised procedure, not a recovery result.
 
 ## Prepare storage and credentials

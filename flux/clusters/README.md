@@ -8,7 +8,7 @@ completed run folders as reproducible records; never reuse one for a new play.
 After starting a playground, generate its folder from the repository root:
 
 ```sh
-run_dir=$(python3 flux/runbooks/scripts/new-validation-run.py \
+run_dir=$(python3 flux/docs/runbooks/scripts/new-validation-run.py \
   --name sonarqube-postgresql --play-id PLAY_ID \
   --namespace quality --namespace databases \
   --source cloudnative-pg --source sonarqube)
@@ -23,7 +23,7 @@ The generator refuses an existing folder instead of overwriting a prior run.
 Push the configuration to both remotes before bootstrapping it:
 
 ```sh
-flux/runbooks/scripts/bootstrap-flux.sh "$run_dir"
+flux/docs/runbooks/scripts/bootstrap-flux.sh "$run_dir"
 ```
 
 The helper requires kubectl/Flux and an explicit run path. Shared Flux 2.10.0

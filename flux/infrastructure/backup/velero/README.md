@@ -56,7 +56,7 @@ trust-manager ConfigMap is not automatically trusted by the provider plugin.
 Keep HTTPS verification enabled; do not copy the CA signing key into Velero or
 set insecureSkipTLSVerify just to clear a validation error.
 
-Follow the [enablement and restore-test runbook](../../../runbooks/operations/velero.md).
+Follow the [enablement and restore-test runbook](../../../docs/runbooks/operations/velero.md).
 
 ## Ceph/PVC data is a separate decision
 

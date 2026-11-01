@@ -24,7 +24,7 @@ recover the original material before running it. This file combines all recovery
 material for a lab; use an approved independent custody process for production.
 
 ```sh
-python3 flux/runbooks/scripts/initialize-openbao.py
+python3 flux/docs/runbooks/scripts/initialize-openbao.py
 stat -c '%a %n' /home/laborant/.config/codex-platform/openbao-init.json
 kubectl -n secrets wait --for=jsonpath='{.status.readyReplicas}'=3 statefulset/openbao --timeout=5m
 for pod in openbao-0 openbao-1 openbao-2; do
@@ -39,7 +39,7 @@ Never initialize Pods 1 and 2 as separate clusters.
 ## Configure the backend and Git-managed store
 
 ```sh
-python3 flux/runbooks/scripts/configure-openbao.py
+python3 flux/docs/runbooks/scripts/configure-openbao.py
 flux reconcile kustomization openbao --timeout=3m
 flux reconcile kustomization external-secrets --timeout=3m
 flux reconcile kustomization secret-store --timeout=5m

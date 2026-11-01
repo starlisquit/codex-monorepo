@@ -78,5 +78,5 @@ stale Service reachability after kubelet/API restarts. That is an observation,
 not a reason to restart the whole CNI for every timeout. Inspect `cilium-dbg status`,
 Service backends, endpoints, and the affected node before an intervention.
 
-Future playgrounds use the [larger control-plane allocation](../../docs/architecture/playground-sizing.md).
+Future playgrounds use the [larger control-plane allocation](../../architecture/playground-sizing.md).
 Changing a saved playground definition does not hot-resize existing VMs.

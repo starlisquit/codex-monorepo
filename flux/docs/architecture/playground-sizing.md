@@ -25,7 +25,7 @@ findings for measured capacity failures. Do not describe the running cluster as 
 | `dev-machine` | 1 | 1 GiB | 10 GiB | none |
 
 Total requested: 9 vCPUs, 16 GiB RAM, 145 GiB disks. The checked-in
-[playground manifest](../../runbooks/bootstrap/iximiuz-playground.yaml) and the
+[playground manifest](../runbooks/bootstrap/iximiuz-playground.yaml) and the
 saved `codex-platform-243e14fd` playground definition use these defaults for
 future starts. The running play was not resized or recreated by this change.
 

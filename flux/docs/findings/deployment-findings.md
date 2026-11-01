@@ -41,5 +41,5 @@ continued as part of this documentation update.
 8. Further API slowness and asymmetric resource pressure were observed. Future
    playground sizing now prioritizes the control plane; the running VMs are unchanged.
 
-The Git manifests express desired state. Consult [verification commands](../../runbooks/operations/verify-platform.md)
+The Git manifests express desired state. Consult [verification commands](../runbooks/operations/verify-platform.md)
 for current state and do not substitute this record for a live check.

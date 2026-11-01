@@ -24,7 +24,6 @@ resources:
 - gitlab
 - sonarqube
 - renovate
-- nginx
 - litellm
 - nats-nui
 - clickhouse-operator
