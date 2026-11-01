@@ -29,3 +29,6 @@ available in Grafana; configure them according to the operator's supported plugi
 configuration and the datasource's requirements.
 
 Validate with `kustomize build flux/infrastructure/observability/datasources`.
+
+New definitions can also use [flux/dashboards/datasources](../../../dashboards/datasources/README.md),
+which includes a PostgreSQL example. Keep each datasource owned by one location.

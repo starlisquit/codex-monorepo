@@ -3,6 +3,8 @@
 These are `grafana.integreatly.org/v1beta1` **GrafanaDashboard custom resources**.
 Grafana Operator owns reconciliation; no new CRD definitions are installed here.
 The existing chart-supplied dashboards and category starter dashboards remain.
+Define additional GrafanaDatasource resources in [datasources/](datasources/README.md);
+a Secret-backed, CA-verifying PostgreSQL template is included there.
 
 | Directory | Dashboard | Purpose |
 | --- | --- | --- |

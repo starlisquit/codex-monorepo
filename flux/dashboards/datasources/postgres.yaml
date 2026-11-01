@@ -1,0 +1,46 @@
+# Template: add to kustomization.yaml after provisioning the referenced Secret.
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: application-postgres
+  namespace: observability
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: platform
+  datasource:
+    name: Application PostgreSQL
+    uid: application-postgres
+    type: postgres
+    access: proxy
+    url: application-db-rw.databases.svc.cluster.local:5432
+    user: $username
+    isDefault: false
+    jsonData:
+      database: application
+      sslmode: verify-full
+      tlsConfigurationMethod: file-content
+      tlsAuthWithCACert: true
+      maxOpenConns: 5
+      maxIdleConns: 2
+      connMaxLifetime: 14400
+      timescaledb: false
+    secureJsonData:
+      password: $password
+      tlsCACert: $ca.crt
+  valuesFrom:
+  - targetPath: user
+    valueFrom:
+      secretKeyRef:
+        name: grafana-postgres-credentials
+        key: username
+  - targetPath: secureJsonData.password
+    valueFrom:
+      secretKeyRef:
+        name: grafana-postgres-credentials
+        key: password
+  - targetPath: secureJsonData.tlsCACert
+    valueFrom:
+      configMapKeyRef:
+        name: platform-ca
+        key: ca.crt
