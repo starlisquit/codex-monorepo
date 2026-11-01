@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 configMapGenerator:
 - name: litellm-postgresql-values
-  namespace: ai
+  namespace: ${LITELLM_NAMESPACE:=ai}
   files:
   - values.yaml
   options:

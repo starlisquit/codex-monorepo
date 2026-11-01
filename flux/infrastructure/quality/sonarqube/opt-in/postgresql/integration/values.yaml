@@ -1,13 +1,13 @@
 jdbcOverwrite:
   enabled: true
-  jdbcUrl: jdbc:postgresql://sonarqube-postgresql-rw.quality.svc.cluster.local:5432/sonarqube?sslmode=verify-full&sslrootcert=/opt/sonarqube/postgresql-ca/ca.crt
+  jdbcUrl: jdbc:postgresql://sonarqube-postgresql-rw.${QUALITY_NAMESPACE:=quality}.svc.cluster.local:5432/sonarqube?sslmode=verify-full&sslrootcert=/opt/sonarqube/postgresql-ca/ca.crt
   jdbcUsername: sonarqube
   jdbcSecretName: sonarqube-postgresql-app
   jdbcSecretPasswordKey: password
 extraVolumes:
 - name: postgresql-ca
-  secret:
-    secretName: sonarqube-postgresql-ca
+  configMap:
+    name: ${CA_BUNDLE_NAME}
     items:
     - key: ca.crt
       path: ca.crt

@@ -5,11 +5,11 @@ metadata:
 spec:
   sources:
   - secret:
-      name: platform-root-ca
+      name: ${CA_CERT_NAME}
       key: tls.crt
   target:
     secret:
       key: tls.crt
     namespaceSelector:
       matchLabels:
-        kubernetes.io/metadata.name: kyverno
+        kubernetes.io/metadata.name: ${KYVERNO_NAMESPACE:=kyverno}

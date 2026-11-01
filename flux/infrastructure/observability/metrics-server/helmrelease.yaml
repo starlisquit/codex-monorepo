@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: metrics-server
-  namespace: observability
+  namespace: ${OBSERVABILITY_NAMESPACE:=observability}
 spec:
   interval: 30m
   timeout: 5m
@@ -30,9 +30,9 @@ spec:
       retries: 3
   dependsOn:
   - name: prometheus-operator-crds
-    namespace: observability
+    namespace: ${OBSERVABILITY_NAMESPACE:=observability}
   - name: cert-manager
-    namespace: certificates
+    namespace: ${CERTIFICATES_NAMESPACE:=certificates}
   postRenderers:
   - kustomize:
       patches:
@@ -46,7 +46,7 @@ spec:
             path: /spec/endpoints/0/tlsConfig
             value:
               insecureSkipVerify: false
-              serverName: metrics-server.observability.svc
+              serverName: metrics-server.${OBSERVABILITY_NAMESPACE:=observability}.svc
               ca:
                 secret:
                   name: metrics-server

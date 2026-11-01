@@ -8,7 +8,7 @@ admissionController:
     enabled: true
     createSelfSignedIssuer: false
     issuerRef:
-      name: platform-workload-ca
+      name: ${CA_ISSUER_NAME}
       kind: ClusterIssuer
       group: cert-manager.io
     ca:
@@ -32,7 +32,7 @@ cleanupController:
     enabled: true
     createSelfSignedIssuer: false
     issuerRef:
-      name: platform-workload-ca
+      name: ${CA_ISSUER_NAME}
       kind: ClusterIssuer
       group: cert-manager.io
     ca:

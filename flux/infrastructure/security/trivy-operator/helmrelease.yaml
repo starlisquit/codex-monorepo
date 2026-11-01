@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: trivy-operator
-  namespace: trivy-system
+  namespace: ${TRIVY_SYSTEM_NAMESPACE:=trivy-system}
 spec:
   interval: 30m
   timeout: 15m
@@ -32,4 +32,4 @@ spec:
       retries: 3
   dependsOn:
   - name: prometheus-operator-crds
-    namespace: observability
+    namespace: ${OBSERVABILITY_NAMESPACE:=observability}

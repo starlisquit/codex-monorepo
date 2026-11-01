@@ -13,7 +13,7 @@ tls:
     existingIssuer:
       enabled: true
       kind: ClusterIssuer
-      name: platform-workload-ca
+      name: ${CA_ISSUER_NAME}
 metrics:
   enabled: true
 serviceMonitor:

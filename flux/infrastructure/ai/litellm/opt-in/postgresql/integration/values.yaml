@@ -1,10 +1,8 @@
-# DB-first integration: select after Cluster ai/litellm-db reports Ready.
 db:
   deployStandalone: false
   useExisting: true
-  endpoint: litellm-db-rw.ai.svc.cluster.local
+  endpoint: litellm-db-rw.${LITELLM_NAMESPACE:=ai}.svc.cluster.local
   database: litellm
-  # Prisma validates the server chain/hostname using the CNPG public CA.
   url: postgresql://$(DATABASE_USERNAME):$(DATABASE_PASSWORD)@$(DATABASE_HOST):5432/$(DATABASE_NAME)?sslmode=require&sslaccept=strict&sslcert=/etc/litellm-postgresql/ca.crt
   secret:
     name: litellm-db-app
@@ -12,8 +10,8 @@ db:
     passwordKey: password
 volumes:
 - name: postgresql-ca
-  secret:
-    secretName: litellm-db-ca
+  configMap:
+    name: ${CA_BUNDLE_NAME}
     items:
     - key: ca.crt
       path: ca.crt

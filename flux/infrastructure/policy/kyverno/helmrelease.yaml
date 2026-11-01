@@ -1,18 +1,18 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: kyverno
-  namespace: kyverno
+  name: ${KYVERNO_NAMESPACE:=kyverno}
+  namespace: ${KYVERNO_NAMESPACE:=kyverno}
 spec:
   interval: 30m
   timeout: 15m
   chart:
     spec:
-      chart: kyverno
+      chart: ${KYVERNO_NAMESPACE:=kyverno}
       version: 3.9.2
       sourceRef:
         kind: HelmRepository
-        name: kyverno
+        name: ${KYVERNO_NAMESPACE:=kyverno}
         namespace: flux-system
   valuesFrom:
   - kind: ConfigMap
@@ -30,7 +30,7 @@ spec:
       retries: 3
   dependsOn:
   - name: prometheus-operator-crds
-    namespace: observability
+    namespace: ${OBSERVABILITY_NAMESPACE:=observability}
   postRenderers:
   - kustomize:
       patches:
@@ -39,54 +39,84 @@ spec:
           version: v1
           kind: Certificate
           name: kyverno-admission-controller-ca
-        patch: "apiVersion: cert-manager.io/v1\nkind: Certificate\nmetadata:\n  name:\
-          \ kyverno-admission-controller-ca\n$patch: delete\n"
+        patch: |
+          apiVersion: cert-manager.io/v1
+          kind: Certificate
+          metadata:
+            name: kyverno-admission-controller-ca
+          $patch: delete
       - target:
           group: cert-manager.io
           version: v1
           kind: Issuer
           name: kyverno-ca-issuer
-        patch: "apiVersion: cert-manager.io/v1\nkind: Issuer\nmetadata:\n  name: kyverno-ca-issuer\n\
-          $patch: delete\n"
+        patch: |
+          apiVersion: cert-manager.io/v1
+          kind: Issuer
+          metadata:
+            name: kyverno-ca-issuer
+          $patch: delete
       - target:
           group: cert-manager.io
           version: v1
           kind: Certificate
           name: kyverno-admission-controller-tls
-        patch: "- op: replace\n  path: /spec/issuerRef\n  value:\n    name: platform-workload-ca\n\
-          \    kind: ClusterIssuer\n    group: cert-manager.io\n"
+        patch: |
+          - op: replace
+            path: /spec/issuerRef
+            value:
+              name: ${CA_ISSUER_NAME}
+              kind: ClusterIssuer
+              group: cert-manager.io
       - target:
           group: apps
           version: v1
           kind: Deployment
           name: kyverno-admission-controller
-        patch: "- op: replace\n  path: /spec/template/spec/containers/0/args/0\n \
-          \ value: --caSecretName=kyverno-platform-ca\n"
+        patch: |
+          - op: replace
+            path: /spec/template/spec/containers/0/args/0
+            value: --caSecretName=kyverno-platform-ca
       - target:
           group: cert-manager.io
           version: v1
           kind: Certificate
           name: kyverno-cleanup-controller-ca
-        patch: "apiVersion: cert-manager.io/v1\nkind: Certificate\nmetadata:\n  name:\
-          \ kyverno-cleanup-controller-ca\n$patch: delete\n"
+        patch: |
+          apiVersion: cert-manager.io/v1
+          kind: Certificate
+          metadata:
+            name: kyverno-cleanup-controller-ca
+          $patch: delete
       - target:
           group: cert-manager.io
           version: v1
           kind: Issuer
           name: kyverno-cleanup-ca-issuer
-        patch: "apiVersion: cert-manager.io/v1\nkind: Issuer\nmetadata:\n  name: kyverno-cleanup-ca-issuer\n\
-          $patch: delete\n"
+        patch: |
+          apiVersion: cert-manager.io/v1
+          kind: Issuer
+          metadata:
+            name: kyverno-cleanup-ca-issuer
+          $patch: delete
       - target:
           group: cert-manager.io
           version: v1
           kind: Certificate
           name: kyverno-cleanup-controller-tls
-        patch: "- op: replace\n  path: /spec/issuerRef\n  value:\n    name: platform-workload-ca\n\
-          \    kind: ClusterIssuer\n    group: cert-manager.io\n"
+        patch: |
+          - op: replace
+            path: /spec/issuerRef
+            value:
+              name: ${CA_ISSUER_NAME}
+              kind: ClusterIssuer
+              group: cert-manager.io
       - target:
           group: apps
           version: v1
           kind: Deployment
           name: kyverno-cleanup-controller
-        patch: "- op: replace\n  path: /spec/template/spec/containers/0/args/0\n \
-          \ value: --caSecretName=kyverno-platform-ca\n"
+        patch: |
+          - op: replace
+            path: /spec/template/spec/containers/0/args/0
+            value: --caSecretName=kyverno-platform-ca

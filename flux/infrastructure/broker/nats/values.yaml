@@ -24,10 +24,10 @@ promExporter:
     enabled: true
 tlsCA:
   enabled: true
-  configMapName: platform-ca
+  configMapName: ${CA_BUNDLE_NAME}
   key: ca.crt
 natsBox:
   contexts:
     default:
       merge:
-        url: tls://nats.broker.svc:4222
+        url: tls://nats.${BROKER_NAMESPACE:=broker}.svc:4222

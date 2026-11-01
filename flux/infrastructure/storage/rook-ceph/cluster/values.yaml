@@ -1,4 +1,4 @@
-operatorNamespace: rook-ceph
+operatorNamespace: ${ROOK_CEPH_NAMESPACE:=rook-ceph}
 cephClusterSpec:
   storage:
     useAllNodes: false

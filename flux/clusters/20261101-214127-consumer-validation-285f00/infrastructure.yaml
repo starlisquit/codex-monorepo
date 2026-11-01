@@ -1,0 +1,115 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: foundation
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 20s
+  path: ./flux/clusters/20261101-214127-consumer-validation-285f00/foundation
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  timeout: 5m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: validation-vm-operator
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 20s
+  path: ./flux/clusters/20261101-214127-consumer-validation-285f00/vm-operator
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 15m
+  dependsOn:
+  - name: platform-trust
+  - name: prometheus-operator-crds
+  postBuild:
+    substituteFrom:
+    - kind: ConfigMap
+      name: cluster-settings
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: validation-vm-operator
+    namespace: ${OBSERVABILITY_NAMESPACE:=observability}
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: validation-collector
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 20s
+  path: ./flux/clusters/20261101-214127-consumer-validation-285f00/metrics-collector
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 15m
+  dependsOn:
+  - name: validation-vm-operator
+  postBuild:
+    substituteFrom:
+    - kind: ConfigMap
+      name: cluster-settings
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: validation-api
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 20s
+  path: ./flux/clusters/20261101-214127-consumer-validation-285f00/api
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 15m
+  dependsOn:
+  - name: prometheus-operator-crds
+  postBuild:
+    substituteFrom:
+    - kind: ConfigMap
+      name: cluster-settings
+  healthChecks:
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: api-application
+    namespace: ${APPLICATIONS_NAMESPACE:=applications}
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: validation-worker
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 20s
+  path: ./flux/clusters/20261101-214127-consumer-validation-285f00/worker
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 15m
+  dependsOn:
+  - name: prometheus-operator-crds
+  postBuild:
+    substituteFrom:
+    - kind: ConfigMap
+      name: cluster-settings
+  healthChecks:
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: worker-application
+    namespace: ${APPLICATIONS_NAMESPACE:=applications}

@@ -6,10 +6,10 @@ metrics:
     enabled: true
   exporter:
     args:
-    - --redis.addr=rediss://valkey.databases.svc:6379
+    - --redis.addr=rediss://valkey.${DATABASES_NAMESPACE:=databases}.svc:6379
     - --tls-ca-cert-file=/etc/platform-ca/ca.crt
     extraVolumeMounts:
-    - name: platform-ca
+    - name: ${CA_BUNDLE_NAME}
       mountPath: /etc/platform-ca
       readOnly: true
 tls:
@@ -20,6 +20,6 @@ tls:
   caPublicKey: ca.crt
   requireClientCertificate: false
 extraVolumes:
-- name: platform-ca
+- name: ${CA_BUNDLE_NAME}
   configMap:
-    name: platform-ca
+    name: ${CA_BUNDLE_NAME}

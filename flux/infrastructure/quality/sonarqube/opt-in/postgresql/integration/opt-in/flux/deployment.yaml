@@ -1,0 +1,21 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: sonarqube-db-integration
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 20s
+  path: ./flux/infrastructure/quality/sonarqube/opt-in/postgresql/integration
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 15m
+  dependsOn:
+  - name: foundation
+  - name: sonarqube-db
+  postBuild:
+    substituteFrom:
+    - kind: ConfigMap
+      name: cluster-settings

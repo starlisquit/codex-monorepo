@@ -2,7 +2,7 @@ apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
   name: valkey
-  namespace: observability
+  namespace: ${OBSERVABILITY_NAMESPACE:=observability}
 spec:
   instanceSelector:
     matchLabels:
@@ -10,16 +10,51 @@ spec:
   datasources:
   - inputName: DS_PROMETHEUS
     datasourceName: VictoriaMetrics
-  json: "{\n  \"uid\": \"platform-valkey\",\n  \"title\": \"Platform / valkey\",\n\
-    \  \"tags\": [\n    \"platform\",\n    \"valkey\"\n  ],\n  \"schemaVersion\":\
-    \ 39,\n  \"version\": 1,\n  \"refresh\": \"30s\",\n  \"time\": {\n    \"from\"\
-    : \"now-1h\",\n    \"to\": \"now\"\n  },\n  \"panels\": [\n    {\n      \"id\"\
-    : 1,\n      \"title\": \"valkey overview\",\n      \"type\": \"timeseries\",\n\
-    \      \"gridPos\": {\n        \"h\": 8,\n        \"w\": 24,\n        \"x\": 0,\n\
-    \        \"y\": 0\n      },\n      \"datasource\": {\n        \"type\": \"prometheus\"\
-    ,\n        \"uid\": \"${DS_PROMETHEUS}\"\n      },\n      \"targets\": [\n   \
-    \     {\n          \"refId\": \"A\",\n          \"expr\": \"redis_connected_clients\"\
-    \n        }\n      ]\n    }\n  ],\n  \"__inputs\": [\n    {\n      \"name\": \"\
-    DS_PROMETHEUS\",\n      \"label\": \"Prometheus\",\n      \"type\": \"datasource\"\
-    ,\n      \"pluginId\": \"prometheus\",\n      \"pluginName\": \"Prometheus\"\n\
-    \    }\n  ]\n}"
+  json: |-
+    {
+      "uid": "platform-valkey",
+      "title": "Platform / valkey",
+      "tags": [
+        "platform",
+        "valkey"
+      ],
+      "schemaVersion": 39,
+      "version": 1,
+      "refresh": "30s",
+      "time": {
+        "from": "now-1h",
+        "to": "now"
+      },
+      "panels": [
+        {
+          "id": 1,
+          "title": "valkey overview",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$${DS_PROMETHEUS}"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "redis_connected_clients"
+            }
+          ]
+        }
+      ],
+      "__inputs": [
+        {
+          "name": "DS_PROMETHEUS",
+          "label": "Prometheus",
+          "type": "datasource",
+          "pluginId": "prometheus",
+          "pluginName": "Prometheus"
+        }
+      ]
+    }

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-settings
+  namespace: flux-system
+  labels:
+    reconcile.fluxcd.io/watch: Enabled
+data:
+  CLUSTER_NAME: central-network
+  CA_CERT_NAME: network-root-key
+  CA_ISSUER_NAME: network-workload-ca
+  CA_BUNDLE_NAME: network-ca
+  CA_COMMON_NAME: Network Validation Root
+  CERTIFICATES_NAMESPACE: network-pki
+  OBSERVABILITY_NAMESPACE: network-metrics
+  DATABASES_NAMESPACE: clickhouse-system

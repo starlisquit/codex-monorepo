@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cilium-cluster-values
+  namespace: kube-system
+  labels:
+    reconcile.fluxcd.io/watch: Enabled
+data:
+  values.yaml: "k8sServiceHost: 172.16.0.2\nk8sServicePort: 6443\nencryption:\n  enabled:\
+    \ false\noperator:\n  replicas: 1\ngatewayAPI:\n  enabled: false\nhubble:\n  ui:\n\
+    \    enabled: false\n  metrics:\n    enabled:\n    - dns\n    - flow\n    - httpV2\n\
+    \  relay:\n    tls:\n      server:\n        enabled: true\n        mtls: true\n\
+    \        extraDnsNames:\n        - hubble-relay.kube-system.svc\n        - localhost\n\
+    \        extraIpAddresses:\n        - 127.0.0.1\n"

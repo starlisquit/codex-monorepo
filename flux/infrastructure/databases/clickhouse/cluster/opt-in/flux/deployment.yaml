@@ -1,0 +1,39 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: clickhouse-cluster
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 20s
+  path: ./flux/infrastructure/databases/clickhouse/cluster
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 15m
+  dependsOn:
+  - name: foundation
+  - name: clickhouse-operator
+  postBuild:
+    substituteFrom:
+    - kind: ConfigMap
+      name: cluster-settings
+  healthChecks:
+  - apiVersion: clickhouse.com/v1alpha1
+    kind: KeeperCluster
+    name: clickhouse
+    namespace: ${DATABASES_NAMESPACE:=databases}
+  - apiVersion: clickhouse.com/v1alpha1
+    kind: ClickHouseCluster
+    name: clickhouse
+    namespace: ${DATABASES_NAMESPACE:=databases}
+  healthCheckExprs:
+  - apiVersion: clickhouse.com/v1alpha1
+    kind: KeeperCluster
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
+      && c.status == 'True')
+  - apiVersion: clickhouse.com/v1alpha1
+    kind: ClickHouseCluster
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
+      && c.status == 'True')

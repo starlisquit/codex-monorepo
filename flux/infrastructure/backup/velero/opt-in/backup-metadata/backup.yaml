@@ -2,11 +2,11 @@ apiVersion: velero.io/v1
 kind: Backup
 metadata:
   name: application-metadata-smoke
-  namespace: velero
+  namespace: ${VELERO_NAMESPACE:=velero}
 spec:
   includedNamespaces:
-  - demo
-  - applications
+  - ${DEMO_NAMESPACE:=demo}
+  - ${APPLICATIONS_NAMESPACE:=applications}
   storageLocation: default
   snapshotVolumes: false
   defaultVolumesToFsBackup: false

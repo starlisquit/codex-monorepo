@@ -1,0 +1,31 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: ceph-certificates
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 20s
+  path: ./flux/infrastructure/certificates/pki/ceph
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 15m
+  dependsOn:
+  - name: foundation
+  - name: platform-trust
+  postBuild:
+    substituteFrom:
+    - kind: ConfigMap
+      name: cluster-settings
+  healthChecks:
+  - apiVersion: cert-manager.io/v1
+    kind: Certificate
+    name: rook-ceph-dashboard
+    namespace: ${ROOK_CEPH_NAMESPACE:=rook-ceph}
+  healthCheckExprs:
+  - apiVersion: cert-manager.io/v1
+    kind: Certificate
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
+      && c.status == 'True')

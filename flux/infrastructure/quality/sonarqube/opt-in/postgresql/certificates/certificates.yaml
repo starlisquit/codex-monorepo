@@ -1,0 +1,56 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: sonarqube-postgresql-server-pki
+  namespace: ${QUALITY_NAMESPACE:=quality}
+spec:
+  secretName: sonarqube-postgresql-server-pki
+  commonName: sonarqube-postgresql-rw
+  duration: 2160h
+  renewBefore: 360h
+  privateKey:
+    rotationPolicy: Always
+  secretTemplate:
+    labels:
+      cnpg.io/reload: ''
+  usages:
+  - server auth
+  issuerRef:
+    name: ${CA_ISSUER_NAME}
+    kind: ClusterIssuer
+    group: cert-manager.io
+  dnsNames:
+  - sonarqube-postgresql-rw
+  - sonarqube-postgresql-rw.${QUALITY_NAMESPACE:=quality}
+  - sonarqube-postgresql-rw.${QUALITY_NAMESPACE:=quality}.svc
+  - sonarqube-postgresql-rw.${QUALITY_NAMESPACE:=quality}.svc.cluster.local
+  - sonarqube-postgresql-r
+  - sonarqube-postgresql-r.${QUALITY_NAMESPACE:=quality}
+  - sonarqube-postgresql-r.${QUALITY_NAMESPACE:=quality}.svc
+  - sonarqube-postgresql-r.${QUALITY_NAMESPACE:=quality}.svc.cluster.local
+  - sonarqube-postgresql-ro
+  - sonarqube-postgresql-ro.${QUALITY_NAMESPACE:=quality}
+  - sonarqube-postgresql-ro.${QUALITY_NAMESPACE:=quality}.svc
+  - sonarqube-postgresql-ro.${QUALITY_NAMESPACE:=quality}.svc.cluster.local
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: sonarqube-postgresql-replication-pki
+  namespace: ${QUALITY_NAMESPACE:=quality}
+spec:
+  secretName: sonarqube-postgresql-replication-pki
+  commonName: streaming_replica
+  duration: 2160h
+  renewBefore: 360h
+  privateKey:
+    rotationPolicy: Always
+  secretTemplate:
+    labels:
+      cnpg.io/reload: ''
+  usages:
+  - client auth
+  issuerRef:
+    name: ${CA_ISSUER_NAME}
+    kind: ClusterIssuer
+    group: cert-manager.io

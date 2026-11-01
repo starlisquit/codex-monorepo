@@ -2,13 +2,13 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: litellm-db
-  namespace: ai
+  namespace: ${LITELLM_NAMESPACE:=ai}
 spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:18.6-system-trixie
-  instances: 3
+  instances: ${LITELLM_DB_INSTANCES:=3}
   enableSuperuserAccess: false
   storage:
-    storageClass: ceph-block
+    storageClass: ${STORAGE_CLASS:=ceph-block}
     size: 20Gi
   bootstrap:
     initdb:
@@ -20,3 +20,8 @@ spec:
       memory: 256Mi
     limits:
       memory: 1Gi
+  certificates:
+    serverTLSSecret: litellm-db-server-pki
+    serverCASecret: litellm-db-server-pki
+    replicationTLSSecret: litellm-db-replication-pki
+    clientCASecret: litellm-db-replication-pki

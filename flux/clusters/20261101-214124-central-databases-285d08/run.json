@@ -1,0 +1,8 @@
+{
+  "play_id": "6ae787d47f32053bde285d08",
+  "created_at": "2026-11-01T18:41:24.288000+00:00",
+  "timezone": "Europe/Istanbul",
+  "purpose": "central-databases",
+  "flux_path": "./flux/clusters/20261101-214124-central-databases-285d08",
+  "status": "preparing"
+}

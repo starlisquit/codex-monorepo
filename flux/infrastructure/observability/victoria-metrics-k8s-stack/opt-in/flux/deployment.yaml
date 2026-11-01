@@ -1,0 +1,29 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: victoria-metrics-k8s-stack
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 20s
+  path: ./flux/infrastructure/observability/victoria-metrics-k8s-stack
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 15m
+  dependsOn:
+  - name: foundation
+  - name: prometheus-operator-crds
+  - name: grafana-operator
+  - name: rook-ceph-cluster
+  - name: platform-trust
+  postBuild:
+    substituteFrom:
+    - kind: ConfigMap
+      name: cluster-settings
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: victoria-metrics-k8s-stack
+    namespace: ${OBSERVABILITY_NAMESPACE:=observability}
