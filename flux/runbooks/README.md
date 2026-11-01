@@ -15,6 +15,8 @@ API address, or cluster domain, edit the corresponding references before applyin
 
 ## Operations and recovery
 
+- [Next iximiuz Labs validation handoff](operations/next-lab-validation.md)
+
 - [Configure Velero and test backup/restore](operations/velero.md)
 
 - [Enable and verify security tools](operations/security-tools.md)
