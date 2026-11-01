@@ -8,8 +8,8 @@ serves PromQL, and supports alerts and dashboards. KEDA's external-metrics adapt
 serves a different API; installing KEDA does not supply `metrics.k8s.io`.
 
 The official chart is pinned to `3.14.0` (application `0.9.0`), verified against
-the upstream chart index on 2026-11-01. The shared HelmRelease is suspended until
-a cluster overlay enables it. Requests are 100m CPU and 200Mi memory for one
+the upstream chart index on 2026-11-01. The shared HelmRelease reconciles when
+a cluster Kustomization includes it. Requests are 100m CPU and 200Mi memory for one
 replica. No persistent storage or dependency on the VictoriaMetrics stack is
 required.
 

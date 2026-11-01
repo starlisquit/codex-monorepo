@@ -2,28 +2,27 @@
 
 Deploys the Kubernetes operator, not a standalone Trivy CLI or central scan server.
 The operator creates scan Jobs and vulnerability/configuration report CRs for
-workloads in `demo` and `applications` only. Scan Jobs run in `trivy-system`, not
+workloads across all namespaces. Scan Jobs run in `trivy-system`, not
 inside target namespaces; they therefore do not conflict with the application's
 image allowlist. Review access to the operator namespace independently.
 
-Defaults limit concurrent scan Jobs to one, enable Trivy's slower/lower-resource
-mode, retry failed scans after five minutes, and expire reports after 24 hours.
-Finished Jobs/scan Secrets have 30-minute retention. Operator and scan affinity
-exclude labelled control-plane/master nodes. A scan requests 1 GiB ephemeral
-storage with a 2 GiB limit; very large images may need more memory/disk and fail.
-Scan failures are not clean vulnerability results.
+The operator uses upstream scan concurrency (ten Jobs for the pinned chart),
+normal-speed image scanning and current-revision scan selection. Reports expire
+after 24 hours; Jobs/scan Secrets have 30-minute retention. Operator/scan affinity
+excludes labelled control-plane/master nodes. Each scan requests 512 MiB RAM and
+2 GiB ephemeral storage with limits of 2 GiB RAM and 8 GiB ephemeral storage.
+These are normal workload budgets, not activation gates.
 
-Enabled: image vulnerability and workload configuration scanning, with unfixed
-vulnerabilities retained in findings. Disabled initially: node/infra collection,
-cluster compliance, RBAC assessment, exposed-secret scanning, SBOM generation,
-cluster SBOM cache, and per-CVE metric labels. These choices limit host access,
-API writes, database storage and metric cardinality. Summary finding metrics stay
-enabled. Namespace targeting does not imply the operator's cluster RBAC is minimal
-or namespace-isolated; inspect the rendered roles before use.
+Image vulnerability, configuration, RBAC assessment, exposed-secret scanning and
+SBOM generation use the upstream enabled defaults. Node/infra and cluster-compliance
+collection remain explicitly disabled because they require additional host access;
+this is a separate privilege decision. Cluster SBOM caching stays at the upstream
+default. Per-CVE/image metric labels remain off to avoid unnecessary cardinality,
+while summary findings are exposed. Inspect rendered RBAC before production use.
 
 Global Secret/service-account credential discovery is disabled. Private registry
-scans need an explicitly scoped supported credential configuration; this template
-assumes the public demo images. Jobs still need HTTPS egress to image registries,
+scans need an explicitly scoped supported credential configuration; the default configuration
+can scan public images without them. Jobs still need HTTPS egress to image registries,
 vulnerability databases (chart defaults use mirror.gcr.io) and any package metadata
 services Trivy contacts. HTTPS verification is retained. A blanket egress policy
 on `trivy-system` must account for these dependencies; allowing only the registry

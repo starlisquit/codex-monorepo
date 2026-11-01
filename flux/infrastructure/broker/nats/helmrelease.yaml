@@ -4,7 +4,6 @@ metadata:
   name: nats
   namespace: broker
 spec:
-  suspend: true
   interval: 30m
   chart:
     spec:

@@ -2,8 +2,8 @@
 
 This directory follows the requested infrastructure layout, with the
 CloudNativePG operator and an example PostgreSQL instance in separate directories.
-Shared components are templates; cluster-specific overlays select, enable, and
-order them. The full lab overlay is `clusters/iximiuz-platform/`; its desired
+Shared components reconcile when included; cluster-specific overlays select,
+configure, and order them. The full lab overlay is `clusters/iximiuz-platform/`; its desired
 state does not imply that every workload has completed live verification.
 
 Start with the [documentation index](docs/README.md) and follow the
@@ -12,11 +12,11 @@ unfinished work separately, including the paused API slowness investigation.
 
 ## Layout
 
-- `infrastructure/backup/velero/`: opt-in Velero with an excluded S3 configuration example; no backup protection until storage and credentials are configured.
-- `infrastructure/security/`: opt-in Tetragon runtime telemetry and Trivy Operator reports, with monitoring and bounded lab defaults.
+- `infrastructure/backup/velero/`: Velero with an excluded S3 configuration example; no backup protection until storage and credentials are configured.
+- `infrastructure/security/`: Tetragon runtime telemetry and Trivy Operator reports with monitoring.
 - `docs/`: architecture, deployment findings, and operational responsibilities.
 - `runbooks/`: exact bootstrap/verification/recovery steps and checked-in helper scripts.
-- `policies/`: reusable Kyverno ValidatingPolicy resources, initially Audit-only for application namespaces.
+- `policies/`: reusable admission and network policies; individual policies document their scope and Audit/Deny behavior.
 - `dashboards/`: reusable GrafanaDashboard CRs for the minimal demo, capacity, and scrape health.
 - `clusters/`: separate minimal and full-platform cluster overlays.
 - `infrastructure/sources/`: shared Helm repositories and OCI chart sources.
@@ -37,7 +37,7 @@ unfinished work separately, including the paused API slowness investigation.
 - `autoscaling/keda/`: KEDA monitoring and an excluded VictoriaMetrics scaling example.
 - `demo/opentelemetry-demo/`: two standalone official demo services (currency and quote), with no automatic traffic; telemetry is
   routed through native VM agents, with a Collector for SDK protocol compatibility.
-- `ui/headlamp/`: Kubernetes web UI with its own suspended HelmRelease.
+- `ui/headlamp/`: Kubernetes web UI with its own HelmRelease.
 - `policy/kyverno/`: Kyverno engine; reusable policies live in `flux/policies/`.
 
 ## Before enabling a release
@@ -56,9 +56,10 @@ unfinished work separately, including the paused API slowness investigation.
    directories. Use `sourceRef` for your bootstrapped GitRepository, and readiness
    checks for HelmReleases. There is deliberately no top-level deployment that
    enables every component.
-5. Remove `spec.suspend: true` from only the releases you intend to install.
-   Suspension applies to HelmReleases, not raw PostgreSQL or dashboard
-   resources: include those directories only when their prerequisites are ready.
+5. Select components through cluster Kustomizations. Shared HelmReleases reconcile
+   by default when included; use dependency and health gates for deployment order.
+   Omit unneeded components rather than shipping them suspended. Explicit suspension
+   remains an operator action for maintenance, not a resource-sizing workaround.
 
 Source references assume Flux permits cross-namespace references. If your Flux
 installation disables them, place the source resources alongside their releases

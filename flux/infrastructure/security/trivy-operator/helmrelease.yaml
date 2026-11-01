@@ -4,7 +4,6 @@ metadata:
   name: trivy-operator
   namespace: trivy-system
 spec:
-  suspend: true
   interval: 30m
   chart:
     spec:

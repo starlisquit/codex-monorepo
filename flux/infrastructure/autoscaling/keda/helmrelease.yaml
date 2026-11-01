@@ -4,7 +4,6 @@ metadata:
   name: keda
   namespace: autoscaling
 spec:
-  suspend: true
   interval: 30m
   valuesFrom:
   - kind: ConfigMap

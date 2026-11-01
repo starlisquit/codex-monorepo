@@ -823,7 +823,6 @@ metadata:
   name: tetragon
   namespace: flux-system
 spec:
-  suspend: true
   interval: 10m
   retryInterval: 1m
   path: ./flux/clusters/iximiuz-platform/tetragon
@@ -858,7 +857,6 @@ metadata:
   name: trivy-operator
   namespace: flux-system
 spec:
-  suspend: true
   interval: 10m
   retryInterval: 1m
   path: ./flux/clusters/iximiuz-platform/trivy-operator
@@ -889,7 +887,6 @@ metadata:
   name: velero
   namespace: flux-system
 spec:
-  suspend: true
   interval: 10m
   retryInterval: 1m
   path: ./flux/clusters/iximiuz-platform/velero

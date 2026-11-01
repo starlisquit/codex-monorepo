@@ -4,7 +4,6 @@ metadata:
   name: opentelemetry-demo
   namespace: demo
 spec:
-  suspend: true
   interval: 30m
   timeout: 15m
   chart:

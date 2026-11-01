@@ -1,8 +1,8 @@
 # Enable and verify Tetragon and Trivy Operator
 
-No playground is running. The security templates are locally validated only. Fix
-control-plane reliability and reserve the additional memory/CPU/disk capacity
-listed in [security sizing](../../infrastructure/security/README.md) before enabling them.
+No playground is running. These templates are locally validated only. The platform
+selects both components for normal reconciliation, with readiness dependencies;
+there is no resource-based enablement step. Resource availability is assumed.
 
 ## Preflight
 
@@ -28,13 +28,11 @@ A healthy `/readyz` snapshot alone did not rule out intermittent stalls in the l
 run. Check sustained controller stability. On a node, also inspect `df -h /`;
 Ceph capacity does not protect root disks from image-layer/scan-file exhaustion.
 
-## Enable through Git, one component at a time
+## Reconcile and verify
 
-In `flux/clusters/iximiuz-platform/infrastructure.yaml`, set **only** the chosen
-`tetragon` or `trivy-operator` Kustomization's `spec.suspend` to `false`. Commit and
-push, then reconcile the source/root and that component after dependencies become
-Ready. The cluster overlays already set the child HelmRelease suspend flag false;
-shared security releases stay suspended for other clusters.
+The platform already selects both components. Shared HelmReleases reconcile when
+included, and the parent Kustomizations are not suspended. No flags need changing.
+After committing configuration changes, reconcile and verify normal readiness:
 
 ```sh
 flux reconcile source git flux-system --timeout=2m
@@ -46,10 +44,10 @@ kubectl -n tetragon get servicemonitors
 ```
 
 Verify a real process event using the [Tetragon guide](../../infrastructure/security/tetragon/README.md),
-its VictoriaLogs record, and successful monitoring targets before proceeding.
+its VictoriaLogs record, and successful monitoring targets as part of acceptance.
 No TracingPolicy is installed to kill or block processes.
 
-After committing the Trivy Kustomization enablement separately:
+Verify Trivy as well:
 
 ```sh
 flux reconcile source git flux-system --timeout=2m

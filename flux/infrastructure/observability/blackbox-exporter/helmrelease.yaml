@@ -4,7 +4,6 @@ metadata:
   name: blackbox-exporter
   namespace: observability
 spec:
-  suspend: true
   interval: 30m
   chart:
     spec:

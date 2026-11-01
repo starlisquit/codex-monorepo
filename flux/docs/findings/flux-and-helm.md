@@ -44,7 +44,8 @@ release Secrets as a generic repair: they contain release state and credentials.
 
 Kustomize patches are now stored as readable YAML blocks. Cluster-specific
 replica, sizing, and placement choices remain in cluster overlays. Shared
-HelmReleases remain suspended until selected by an overlay.
+HelmReleases were initially suspended. The current convention is to reconcile
+when selected, without a default suspension gate.
 
 The documentation/template update rendered trust-manager, Rook operator, the
 Ceph CSI driver chart, and the demo under both the local Helm 3 renderer and

@@ -40,13 +40,3 @@ grafana:
     enabled: true
     storageClassName: ceph-block
     size: 1Gi
-
-# Small requests fit this lab's tight worker scheduling budget; monitor usage.
-vlagent:
-  spec:
-    resources:
-      requests:
-        cpu: 1m
-        memory: 64Mi
-      limits:
-        memory: 192Mi

@@ -45,6 +45,8 @@ migration automatically.
 
 ## Consumers
 
+See the [complete template coverage and exceptions](../../docs/architecture/pki-coverage.md).
+
 - OpenBao server/injector, Metrics Server and trust-manager use the central issuer.
 - Hubble uses chart-native cert-manager certificates and the shared CA Bundle.
 - Kyverno uses cert-manager-controlled intermediate CAs signed by the root, with

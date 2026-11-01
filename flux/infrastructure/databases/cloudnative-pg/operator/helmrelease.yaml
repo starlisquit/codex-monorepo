@@ -4,7 +4,6 @@ metadata:
   name: cloudnative-pg-operator
   namespace: databases
 spec:
-  suspend: true
   interval: 30m
   chart:
     spec:

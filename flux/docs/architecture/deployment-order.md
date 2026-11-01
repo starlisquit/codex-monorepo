@@ -1,7 +1,8 @@
 # Deployment order and ownership
 
-The shared `infrastructure/` directories are reusable, suspended templates.
-`clusters/iximiuz-platform/` enables them with cluster-specific values. The older
+The shared `infrastructure/` directories reconcile when selected by a cluster
+Kustomization. `clusters/iximiuz-platform/` selects them with cluster-specific
+values and normal readiness dependencies; default suspension is not an enablement mechanism. The older
 `clusters/iximiuz-labs/` overlay belongs to a separate, smaller play.
 
 Flux reads `main` over public HTTPS. The root `flux-system` Kustomization applies

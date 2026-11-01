@@ -4,7 +4,6 @@ metadata:
   name: victoria-metrics-k8s-stack
   namespace: observability
 spec:
-  suspend: true
   interval: 30m
   chart:
     spec:

@@ -4,7 +4,6 @@ metadata:
   name: metrics-server
   namespace: observability
 spec:
-  suspend: true
   interval: 30m
   chart:
     spec:

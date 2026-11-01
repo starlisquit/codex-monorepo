@@ -1,7 +1,8 @@
 # Metrics collection into VictoriaMetrics
 
 Metrics endpoints and their collection resources are enabled for the configured
-components. Shared HelmReleases remain suspended; cluster overlays enable them. The full
+components. Shared HelmReleases reconcile when selected; cluster overlays configure
+and order them. The full
 lab has demonstrated live ingestion for platform targets, with unresolved
 control-plane TLS targets and unfinished demo verification documented in
 [monitoring findings](docs/findings/observability.md). Follow the

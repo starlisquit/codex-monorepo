@@ -4,6 +4,7 @@ Read these documents for design decisions, observed behavior, and limitations.
 Use [runbooks](../runbooks/README.md) when you need executable procedures.
 
 - [Last run: teardown and unfinished PKI migration](findings/pki-last-run.md)
+- [Current template PKI coverage](architecture/pki-coverage.md)
 - [Architecture and deployment dependencies](architecture/deployment-order.md)
 - [Playground sizing and the control plane](architecture/playground-sizing.md)
 - [Fresh rebuild verification](findings/rebuild-verification.md)

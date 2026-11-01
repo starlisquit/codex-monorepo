@@ -1,17 +1,12 @@
-targetNamespaces: demo,applications
+targetNamespaces: ''
 operator:
-  scanJobsConcurrentLimit: 1
   scanJobTimeout: 10m
-  scanJobsRetryDelay: 5m
   scanJobTTL: 30m
   scanSecretTTL: 30m
   scannerReportTTL: 24h
-  sbomGenerationEnabled: false
   clusterSbomCacheEnabled: false
-  rbacAssessmentScannerEnabled: false
   infraAssessmentScannerEnabled: false
   clusterComplianceEnabled: false
-  exposedSecretScannerEnabled: false
   accessGlobalSecretsAndServiceAccount: false
   metricsFindingsEnabled: true
   metricsVulnIdEnabled: false
@@ -29,18 +24,18 @@ trivyOperator:
             operator: DoesNotExist
   scanJobAutomountServiceAccountToken: false
 trivy:
-  slow: true
+  slow: false
   timeout: 10m0s
   ignoreUnfixed: false
   resources:
     requests:
       cpu: 100m
-      memory: 256Mi
-      ephemeralStorage: 1Gi
-    limits:
-      cpu: 500m
-      memory: 1Gi
+      memory: 512Mi
       ephemeralStorage: 2Gi
+    limits:
+      cpu: '1'
+      memory: 2Gi
+      ephemeralStorage: 8Gi
 resources:
   requests:
     cpu: 25m

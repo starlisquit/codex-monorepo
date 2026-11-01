@@ -4,7 +4,6 @@ metadata:
   name: prometheus-operator-crds
   namespace: observability
 spec:
-  suspend: true
   interval: 30m
   chart:
     spec:

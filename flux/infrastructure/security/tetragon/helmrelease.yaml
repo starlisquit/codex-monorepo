@@ -4,7 +4,6 @@ metadata:
   name: tetragon
   namespace: tetragon
 spec:
-  suspend: true
   interval: 30m
   chart:
     spec:

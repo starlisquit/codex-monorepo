@@ -2,8 +2,8 @@
 
 This cluster overlay enables every infrastructure HelmRelease and the PostgreSQL
 instance, dashboards, and datasource configuration. The demo template deliberately
-selects only currency and quote, plus the Collector; it is not the full storefront. Shared templates remain
-suspended for other clusters; this overlay enables each selected release.
+selects only currency and quote, plus the Collector; it is not the full storefront. Shared templates reconcile when selected by a cluster Kustomization; this overlay
+selects the full component set.
 
 ## Playground
 
@@ -108,20 +108,17 @@ has temporary disks unless persisted through iximiuz Labs; replication is not
 an off-cluster backup.
 
 
-## Optional security components
+## Security components
 
-[Tetragon and Trivy Operator](../../infrastructure/security/README.md) have cluster overlays and
-readiness dependencies but their parent Flux Kustomizations start suspended.
-Enable them individually through Git after restoring capacity and sustained API
-health. They were not deployed into the destroyed playground. Report/scanner
-coverage and runtime event export are deliberately scoped to the demo/application
-namespaces initially; Tetragon agents still require resources on every node.
+[Tetragon and Trivy Operator](../../infrastructure/security/README.md) are selected
+and reconcile normally after their dependencies. Tetragon uses upstream export
+scope/cache defaults, and Trivy scans all namespaces at upstream concurrency.
+Resource availability is a deployment prerequisite, not a suspension gate.
 
+## Backup component
 
-## Optional backup component
-
-[Velero](../../infrastructure/backup/velero/README.md) has an opt-in overlay with
-its parent Flux Kustomization suspended. Configure an external backend and
-credentials before enabling it. The base intentionally creates no backup target,
-volume backup or schedule. Local Ceph replication does not protect against
-playground destruction; PVC and application-consistent recovery remain untested.
+[Velero](../../infrastructure/backup/velero/README.md) is selected and reconciles
+normally. Configure an external backend and credentials to make backups usable.
+The unconfigured base intentionally creates no backup target, volume backup or
+schedule; a running controller is not backup protection. Local Ceph replication
+does not protect against playground destruction.

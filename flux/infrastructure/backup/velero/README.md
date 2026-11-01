@@ -5,16 +5,15 @@ Pinned official Helm chart **12.2.2**, Velero **1.18.2**, from
 its published index SHA-256 and rendered with Helm 4. Base and S3 example renders
 were validated locally; there is no running playground or tested backup/restore.
 
-The shared HelmRelease is suspended. The full-platform overlay enables its child
-release but keeps the **parent Velero Flux Kustomization suspended** until storage
-and credentials are configured. It waits for foundation, monitoring CRDs and
-Cilium. Metrics use a ServiceMonitor for the existing VictoriaMetrics stack.
+The shared HelmRelease reconciles when included. The full-platform overlay selects
+Velero normally, without a suspension gate. It waits for foundation, monitoring
+CRDs and Cilium. Metrics use a ServiceMonitor for the VictoriaMetrics stack.
 
 ## Default state is not data protection
 
 The base creates a server deployment and CRDs, but no BackupStorageLocation,
 VolumeSnapshotLocation, node-agent DaemonSet, backup or schedule. It does not
-create credentials. **Configure the backend before enabling it**; a deployment
+create credentials. **Configure the backend to enable usable backups**; a deployment
 without a valid storage location cannot protect your cluster.
 
 Flux Helm CRD CreateReplace handles chart CRDs; the chart's separate CRD-upgrade

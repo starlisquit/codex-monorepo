@@ -28,6 +28,8 @@ def visit(name, stack):
     visited.add(name)
 
 for name in by_name:
+    if by_name[name]["spec"].get("suspend", False):
+        raise SystemExit(f"Selected component must reconcile by default: {name}")
     visit(name, [])
 
 for name in ("observability", "postgresql", "nats", "openbao", "valkey"):
@@ -42,6 +44,8 @@ for resource in resources:
 expected_releases = set()
 for manifest in (flux_root / "infrastructure").rglob("helmrelease.yaml"):
     release = yaml.safe_load(manifest.read_text())
+    if release["spec"].get("suspend", False):
+        raise SystemExit(f"Shared release must reconcile when selected: {manifest}")
     expected_releases.add((release["metadata"]["namespace"], release["metadata"]["name"]))
 checked_releases = {
     (check["namespace"], check["name"])

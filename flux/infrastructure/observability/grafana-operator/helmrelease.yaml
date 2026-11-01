@@ -4,7 +4,6 @@ metadata:
   name: grafana-operator
   namespace: observability
 spec:
-  suspend: true
   interval: 30m
   valuesFrom:
   - kind: ConfigMap

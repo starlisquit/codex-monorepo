@@ -56,9 +56,9 @@ spec:
     valuesKey: values.yaml
 ```
 
-Build the resulting overlay, then set only the Velero parent Kustomization's
-`spec.suspend: false` in `flux/clusters/iximiuz-platform/infrastructure.yaml`.
-Commit/push configuration, excluding credentials, and reconcile:
+Build the resulting overlay. The platform already selects Velero with normal
+reconciliation; no suspension flag needs changing. Commit/push configuration,
+excluding credentials, and reconcile:
 
 ```sh
 kustomize build flux/clusters/iximiuz-platform/velero

@@ -13,17 +13,15 @@ The gRPC control interface stays on the local Unix socket; no remote plaintext
 control listener or new certificate is configured. Prometheus scraping is HTTP,
 consistent with the current internal monitoring design.
 
-## Conservative export settings
+## Event export
 
-- Default process execution/exit observation; no extra runtime enforcement policy.
-- File export limited to `demo` and `applications`, with health-check noise excluded.
-- At most 120 exported events per minute per node; events above that budget can be
-  dropped. This is a bounded demonstration feed, not a complete forensic archive.
-- Smaller process and deleted-Pod caches reduce memory requests at a visibility cost.
-- Process/parent argument fields omitted from file-export events to reduce accidental
-  credential capture. This is not a universal secret-redaction guarantee.
-- Export files rotate at 5 MiB, retaining two backups per node. The stdout exporter
-  forwards events for the existing vlagent container-log collector.
+- Upstream process-cache sizes, default event kinds and export scope.
+- No template-specific export rate cap or demo/application namespace restriction.
+- Upstream noise filtering still excludes health checks and the configured default
+  host/system namespaces; review those defaults for your visibility requirements.
+- Process/parent argument fields are omitted from file-export events to reduce
+  accidental credential capture. This is not a universal secret-redaction guarantee.
+- Upstream rotating-file defaults and a stdout exporter integrate with vlagent.
 
 Export filters affect event output, not which workloads the kernel probes observe.
 They do not authorize access to the Unix socket or redact other outputs. Tetragon

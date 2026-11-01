@@ -4,7 +4,6 @@ metadata:
   name: rook-ceph-cluster
   namespace: rook-ceph
 spec:
-  suspend: true
   interval: 30m
   chart:
     spec:

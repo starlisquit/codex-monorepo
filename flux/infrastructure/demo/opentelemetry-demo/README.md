@@ -43,8 +43,8 @@ VLAgent receives SDK logs in push mode; it does not tail container stdout/stderr
 
 ## Enable and generate a small amount of traffic
 
-The HelmRelease stays suspended in the shared template. The full platform overlay
-enables it only after the observability stack and traces agent are ready, and
+The HelmRelease reconciles when included. The full platform overlay
+orders it after the observability stack and traces agent are ready, and
 requires all three workloads to run on workers.
 
 There is **no automatic load generator**. To exercise quote, forward its Service:

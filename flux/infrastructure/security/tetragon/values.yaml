@@ -5,19 +5,9 @@ tetragon:
       cpu: 50m
       memory: 256Mi
     limits:
-      memory: 512Mi
-  processCacheSize: 8192
-  deletedPodCacheSize: 256
-  exportRateLimit: 120
-  exportFileMaxSizeMB: 5
-  exportFileMaxBackups: 2
-  exportAllowList: '{"namespace": ["demo", "applications"], "event_set": ["PROCESS_EXEC",
-    "PROCESS_EXIT"]}
-
-    '
-  fieldFilters: '{"fields": "process.arguments,parent.arguments", "action": "EXCLUDE"}
-
-    '
+      memory: 1Gi
+  fieldFilters: |
+    {"fields": "process.arguments,parent.arguments", "action": "EXCLUDE"}
   grpc:
     address: unix:///var/run/tetragon/tetragon.sock
   prometheus:

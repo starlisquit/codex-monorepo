@@ -1,53 +1,45 @@
 # Runtime security and vulnerability scanning
 
-Reusable Flux HelmRelease templates, initially suspended. The cluster was destroyed;
-these resources have been rendered and validated locally, not exercised on live nodes.
+Reusable Flux HelmRelease templates. Selecting a component through a cluster
+Kustomization deploys it normally; no default suspension or resource-based
+activation gate is configured. Resource availability is assumed. The playground
+is destroyed, so these templates are locally validated, not live-tested.
 
 | Component | Pinned chart / application | Purpose |
 | --- | --- | --- |
 | [Tetragon](tetragon/README.md) | 1.8.0 / 1.8.0 | Node-level eBPF process telemetry and runtime investigation |
-| [Trivy Operator](trivy-operator/README.md) | 0.38.1 / 0.36.1 | Image vulnerability and workload configuration reports |
+| [Trivy Operator](trivy-operator/README.md) | 0.38.1 / 0.36.1 | Image vulnerability and configuration reports |
 
 Sources are the official Cilium and Aqua Helm repositories. Chart archives were
-verified against index SHA-256 digests before rendering with Helm 4. Helm pins
-chart versions in Git; review versions and images before promotion.
+verified against index SHA-256 digests before rendering with Helm 4.
 
-These complement existing controls: Kyverno/admission policies validate workload
-configuration, image allowlists restrict image references, Cilium policies control
-network connections, Tetragon observes running processes, and Trivy reports known
-vulnerabilities/misconfiguration. None automatically blocks vulnerable images or
-malicious runtime activity with this configuration. No new Tetragon enforcement
-TracingPolicy or report-driven admission integration is installed.
+These complement admission policies and Cilium network policies. Neither tool
+blocks vulnerable images or malicious runtime activity in this configuration:
+no Tetragon enforcement TracingPolicy or report-driven admission integration is
+installed. Review policies independently from observation/scanning.
 
-Both expose ServiceMonitors for the existing VictoriaMetrics stack. Tetragon events
-are exported through a stdout sidecar, so the configured vlagent DaemonSet can
-collect them into VictoriaLogs. Trivy reports are Kubernetes custom resources;
-its summary metrics can be queried in Grafana. Neither component supplies a new
-Grafana dashboard in this change.
+Both expose ServiceMonitors for the existing VictoriaMetrics stack. Tetragon
+exports events through a stdout sidecar, which vlagent can collect into
+VictoriaLogs. Trivy reports are Kubernetes custom resources and summary metrics
+can be queried in Grafana. No new Grafana dashboard is supplied here.
 
-## Deployment and sizing
+## Deployment
 
-The shared releases use `spec.suspend: true`. The `iximiuz-platform` overlays enable
-those releases, but their **parent Flux Kustomizations remain suspended** in
-`clusters/iximiuz-platform/infrastructure.yaml`. This is deliberate: the last play
-had API/controller instability, so security agents/scans must not silently add
-load to the next bootstrap. See the [enablement runbook](../../runbooks/operations/security-tools.md).
+The `iximiuz-platform` overlay selects both components and reconciles them after
+foundation, monitoring CRDs and Cilium, with HelmRelease and CRD health checks.
+Other clusters choose components by including the desired directories. Use the
+[verification runbook](../../runbooks/operations/security-tools.md).
 
-For three nodes, configured Tetragon requests total approximately 880 MiB RAM
-(three 256 MiB agents plus three 16 MiB exporters and a 64 MiB operator). Trivy
-adds a 128 MiB operator and one 256 MiB-request scan Job, approximately **1.23 GiB
-additional memory requests** while scanning. Actual peaks and kernel/BPF memory
-can differ; a scan container has a 1 GiB memory limit and 2 GiB ephemeral-storage
-limit. This is additional capacity, not reserved space already present in the lab.
+Tetragon uses upstream process-cache and event-export scope/rate defaults. Trivy
+scans all namespaces with upstream scan concurrency and normal-speed image scans.
+Regular resource requests/limits and worker placement remain explicit deployment
+settings; they do not suspend or silently disable a selected component. Operators
+and scans run away from labelled control-plane/master nodes, while Tetragon's
+node-local agents also run on control-plane nodes.
 
-Operators/scans are constrained away from nodes labelled control-plane/master.
-Tetragon agents still run on every node, including the control plane, because
-process monitoring is node-local. Reserve that node's additional headroom. Monitor
-API latency, disk space, scan OOMs, event drops and exporter backlog before widening
-coverage. Scanner temporary image layers and databases can pressure root disks.
-
-Do not broaden the application-only image allowlist or isolation policies globally
-to accommodate these agents. Tetragon uses host access and elevated capabilities
-by design; its dedicated namespace is labelled privileged for Pod Security
-Admission. Trivy runs in a separate baseline namespace. This separation does not
-by itself constitute a network/RBAC isolation boundary.
+Tetragon's dedicated namespace allows the host access and elevated capabilities
+required by the agent. Trivy runs in a separate baseline namespace; node/infra and
+cluster-compliance collection stay explicitly disabled because they require
+additional host-access decisions, not because resources are presumed unavailable.
+Review those privileges before enabling them. Global registry-credential discovery
+also remains disabled; configure private registry credentials deliberately.
