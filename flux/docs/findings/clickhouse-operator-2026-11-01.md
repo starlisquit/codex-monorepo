@@ -78,5 +78,7 @@ cert-manager issued it; it recovered without intervention.
 
 ## Teardown
 
-Findings and configuration will be published to both remotes before the
-playground is destroyed. Confirmed teardown is recorded below after destruction.
+Findings and configuration published to both remotes at identical commit
+`8a2630910541050b159f07be237cd24fa4ada874` before destruction.
+The destroy API returned `ok: true` at 20:00:48 Europe/Istanbul
+(17:00:48 UTC). The playground was destroyed, not stopped.
