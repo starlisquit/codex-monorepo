@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../../infrastructure/networking/cilium
+- source.yaml
+patches:
+- target:
+    group: helm.toolkit.fluxcd.io
+    version: v2
+    kind: HelmRelease
+    name: cilium
+  patch: "- op: replace\n  path: /spec/suspend\n  value: false\n- op: remove\n  path:\
+    \ /spec/dependsOn\n- op: add\n  path: /spec/values\n  value:\n    k8sServiceHost:\
+    \ 172.16.0.2\n    k8sServicePort: 6443\n    ipam:\n      mode: kubernetes\n  \
+    \  operator:\n      replicas: 1\n      prometheus:\n        serviceMonitor:\n\
+    \          enabled: false\n    gatewayAPI:\n      enabled: false\n    prometheus:\n\
+    \      serviceMonitor:\n        enabled: false\n    envoy:\n      prometheus:\n\
+    \        serviceMonitor:\n          enabled: false\n    hubble:\n      relay:\n\
+    \        prometheus:\n          serviceMonitor:\n            enabled: false\n\
+    \      metrics:\n        serviceMonitor:\n          enabled: false\n"
