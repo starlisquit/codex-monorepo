@@ -4,4 +4,3 @@ resources:
 - ../../../infrastructure/namespaces/demo
 - ../../../infrastructure/namespaces/proxy
 - source.yaml
-- ../../../infrastructure/networking/gateway-api-crds/opt-in/experimental-routes
