@@ -1,0 +1,243 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: foundation
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 20s
+  path: ./flux/clusters/20261101-233840-deployment-eso-2bc71a/foundation
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  timeout: 5m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cert-manager
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 15s
+  path: ./flux/clusters/20261101-233840-deployment-eso-2bc71a/cert-manager
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 10m
+  dependsOn:
+  - name: foundation
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: cert-manager
+    namespace: certificates
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: pki-issuer
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 15s
+  path: ./flux/clusters/20261101-233840-deployment-eso-2bc71a/pki-issuer
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 10m
+  dependsOn:
+  - name: cert-manager
+  healthChecks:
+  - apiVersion: cert-manager.io/v1
+    kind: Certificate
+    name: platform-root
+    namespace: certificates
+  - apiVersion: cert-manager.io/v1
+    kind: ClusterIssuer
+    name: platform-workload-ca
+  healthCheckExprs:
+  - apiVersion: cert-manager.io/v1
+    kind: Certificate
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
+      && c.status == 'True')
+  - apiVersion: cert-manager.io/v1
+    kind: ClusterIssuer
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
+      && c.status == 'True')
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: trust-manager
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 15s
+  path: ./flux/clusters/20261101-233840-deployment-eso-2bc71a/trust-manager
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 10m
+  dependsOn:
+  - name: pki-issuer
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: trust-manager
+    namespace: certificates
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: pki-trust
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 15s
+  path: ./flux/clusters/20261101-233840-deployment-eso-2bc71a/pki-trust
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 10m
+  dependsOn:
+  - name: trust-manager
+  healthChecks:
+  - apiVersion: trust.cert-manager.io/v1alpha1
+    kind: Bundle
+    name: platform-ca
+  healthCheckExprs:
+  - apiVersion: trust.cert-manager.io/v1alpha1
+    kind: Bundle
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Synced'
+      && c.status == 'True')
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: openbao
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 15s
+  path: ./flux/clusters/20261101-233840-deployment-eso-2bc71a/openbao
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 10m
+  dependsOn:
+  - name: pki-trust
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: openbao
+    namespace: secrets
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: external-secrets
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 15s
+  path: ./flux/clusters/20261101-233840-deployment-eso-2bc71a/external-secrets
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 10m
+  dependsOn:
+  - name: pki-trust
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: external-secrets
+    namespace: secrets
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: api
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 15s
+  path: ./flux/clusters/20261101-233840-deployment-eso-2bc71a/api
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 10m
+  dependsOn:
+  - name: openbao
+  - name: external-secrets
+  healthChecks:
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: api-application
+    namespace: demo
+  - apiVersion: external-secrets.io/v1
+    kind: SecretStore
+    name: api-application-openbao
+    namespace: demo
+  - apiVersion: external-secrets.io/v1
+    kind: ExternalSecret
+    name: api-application-env
+    namespace: demo
+  healthCheckExprs:
+  - apiVersion: external-secrets.io/v1
+    kind: SecretStore
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
+      && c.status == 'True')
+  - apiVersion: external-secrets.io/v1
+    kind: ExternalSecret
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
+      && c.status == 'True')
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: worker
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 15s
+  path: ./flux/clusters/20261101-233840-deployment-eso-2bc71a/worker
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 10m
+  dependsOn:
+  - name: openbao
+  - name: external-secrets
+  healthChecks:
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: worker-application
+    namespace: demo
+  - apiVersion: external-secrets.io/v1
+    kind: SecretStore
+    name: worker-application-openbao
+    namespace: demo
+  - apiVersion: external-secrets.io/v1
+    kind: ExternalSecret
+    name: worker-application-env
+    namespace: demo
+  healthCheckExprs:
+  - apiVersion: external-secrets.io/v1
+    kind: SecretStore
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
+      && c.status == 'True')
+  - apiVersion: external-secrets.io/v1
+    kind: ExternalSecret
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
+      && c.status == 'True')

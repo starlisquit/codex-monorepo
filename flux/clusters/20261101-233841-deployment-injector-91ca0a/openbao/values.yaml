@@ -1,0 +1,75 @@
+injector:
+  enabled: true
+  webhook:
+    failurePolicy: Fail
+server:
+  ha:
+    replicas: 1
+  dataStorage:
+    storageClass: local-path
+    size: 1Gi
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      memory: 512Mi
+serverTelemetry:
+  serviceMonitor:
+    enabled: false
+extraObjects:
+- apiVersion: cert-manager.io/v1
+  kind: Certificate
+  metadata:
+    name: openbao-injector
+    namespace: secrets
+  spec:
+    secretName: openbao-injector-tls
+    dnsNames:
+    - openbao-agent-injector-svc
+    - openbao-agent-injector-svc.secrets
+    - openbao-agent-injector-svc.secrets.svc
+    issuerRef:
+      name: platform-workload-ca
+      kind: ClusterIssuer
+      group: cert-manager.io
+- apiVersion: cert-manager.io/v1
+  kind: Certificate
+  metadata:
+    name: openbao-server
+    namespace: secrets
+  spec:
+    secretName: openbao-server-tls
+    dnsNames:
+    - localhost
+    - openbao
+    - openbao.secrets
+    - openbao.secrets.svc
+    - openbao.secrets.svc.cluster.local
+    - openbao-active
+    - openbao-active.secrets
+    - openbao-active.secrets.svc
+    - openbao-active.secrets.svc.cluster.local
+    - openbao-standby
+    - openbao-standby.secrets
+    - openbao-standby.secrets.svc
+    - openbao-standby.secrets.svc.cluster.local
+    - openbao-internal
+    - openbao-internal.secrets
+    - openbao-internal.secrets.svc
+    - openbao-internal.secrets.svc.cluster.local
+    - openbao-ui
+    - openbao-ui.secrets
+    - openbao-ui.secrets.svc
+    - openbao-ui.secrets.svc.cluster.local
+    - '*.openbao-internal'
+    - '*.openbao-internal.secrets'
+    - '*.openbao-internal.secrets.svc'
+    - '*.openbao-internal.secrets.svc.cluster.local'
+    ipAddresses:
+    - 127.0.0.1
+    - ::1
+    issuerRef:
+      name: platform-workload-ca
+      kind: ClusterIssuer
+      group: cert-manager.io

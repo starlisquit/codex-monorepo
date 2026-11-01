@@ -1,0 +1,8 @@
+{
+  "play_id": "6ae7a3507f32053bde2bc71a",
+  "created_at": "2026-11-01T20:38:40.491000+00:00",
+  "timezone": "Europe/Istanbul",
+  "purpose": "deployment-eso",
+  "flux_path": "./flux/clusters/20261101-233840-deployment-eso-2bc71a",
+  "status": "preparing"
+}

@@ -1,8 +1,0 @@
-apiVersion: cilium.io/v2
-kind: CiliumLoadBalancerIPPool
-metadata:
-  name: primitive-validation
-spec:
-  blocks:
-  - start: 172.16.0.200
-    stop: 172.16.0.207

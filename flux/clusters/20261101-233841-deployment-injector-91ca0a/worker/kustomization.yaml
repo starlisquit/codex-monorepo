@@ -1,0 +1,36 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: demo
+namePrefix: worker-
+resources:
+- ../../../infrastructure/primitives/deployment
+components:
+- ../../../infrastructure/primitives/deployment/opt-in/openbao-injector
+labels:
+- pairs:
+    app.kubernetes.io/name: worker
+  includeSelectors: true
+  includeTemplates: true
+patches:
+- target:
+    kind: Deployment
+    name: application
+  patch: "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: application\n\
+    spec:\n  replicas: 1\n  template:\n    metadata:\n      annotations:\n       \
+    \ vault.hashicorp.com/agent-inject-secret-config.json: kv/data/applications/worker/files\n\
+    \        vault.hashicorp.com/agent-inject-template-config.json: '{{- with secret\
+    \ \"kv/data/applications/worker/files\"\n          -}}\n\n          {{ .Data.data\
+    \ | toJSON }}\n\n          {{- end -}}\n\n          '\n        vault.hashicorp.com/template-static-secret-render-interval:\
+    \ 5s\n    spec:\n      containers:\n      - args: []\n        command:\n     \
+    \   - python\n        - /probe/server.py\n        env:\n        - name: DELIVERY_MODE\n\
+    \          value: injector\n        - name: PYTHONDONTWRITEBYTECODE\n        \
+    \  value: '1'\n        image: python:3.13.9-slim\n        name: application\n\
+    \        volumeMounts:\n        - mountPath: /probe\n          name: probe-code\n\
+    \          readOnly: true\n      volumes:\n      - configMap:\n          name:\
+    \ credential-probe-code\n        name: probe-code\n"
+configMapGenerator:
+- name: credential-probe-code
+  files:
+  - server.py
+generatorOptions:
+  disableNameSuffixHash: true

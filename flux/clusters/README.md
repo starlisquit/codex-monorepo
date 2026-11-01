@@ -1,6 +1,8 @@
 # One Flux configuration per playground run
 
-The former iximiuz-labs and iximiuz-platform examples have been removed. Each
+All prior validation run folders were removed at the user's request before the
+parallel Deployment credential validation runs. Their findings remain under
+`docs/findings`; configurations are available in Git history through `c584eb5`. Each
 new playground gets a fresh folder containing only that run's namespace/source
 selection, workloads, lab overrides, readiness gates and Flux sync path. Keep
 completed run folders as reproducible records; never reuse one for a new play.

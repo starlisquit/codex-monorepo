@@ -1,0 +1,37 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: demo
+namePrefix: api-
+resources:
+- ../../../infrastructure/primitives/deployment
+components:
+- ../../../infrastructure/primitives/deployment/opt-in/external-secrets
+labels:
+- pairs:
+    app.kubernetes.io/name: api
+  includeSelectors: true
+  includeTemplates: true
+patches:
+- target:
+    kind: Deployment
+    name: application
+  patch: "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: application\n\
+    spec:\n  replicas: 1\n  template:\n    spec:\n      containers:\n      - args:\
+    \ []\n        command:\n        - python\n        - /probe/server.py\n       \
+    \ env:\n        - name: DELIVERY_MODE\n          value: eso\n        - name: PYTHONDONTWRITEBYTECODE\n\
+    \          value: '1'\n        image: python:3.13.9-slim\n        name: application\n\
+    \        volumeMounts:\n        - mountPath: /probe\n          name: probe-code\n\
+    \          readOnly: true\n      volumes:\n      - configMap:\n          name:\
+    \ credential-probe-code\n        name: probe-code\n"
+- target:
+    kind: ExternalSecret
+    name: application-env
+  patch: "apiVersion: external-secrets.io/v1\nkind: ExternalSecret\nmetadata:\n  name:\
+    \ application-env\nspec:\n  data:\n  - remoteRef:\n      key: applications/api/environment\n\
+    \      property: APP_PASSWORD\n    secretKey: APP_PASSWORD\n"
+configMapGenerator:
+- name: credential-probe-code
+  files:
+  - server.py
+generatorOptions:
+  disableNameSuffixHash: true

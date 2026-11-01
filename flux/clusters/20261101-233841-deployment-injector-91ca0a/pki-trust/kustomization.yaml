@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../../infrastructure/certificates/pki/trust
+patches:
+- target:
+    kind: Bundle
+    name: kyverno-platform-ca
+  patch: "$patch: delete\napiVersion: trust.cert-manager.io/v1alpha1\nkind: Bundle\n\
+    metadata:\n  name: kyverno-platform-ca\n"
