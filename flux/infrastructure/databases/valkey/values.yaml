@@ -6,7 +6,7 @@ metrics:
     enabled: true
   exporter:
     args:
-    - --redis.addr=rediss://valkey.databases.svc:6379
+    - --redis.addr=rediss://valkey.${NS_DATABASES}.svc:6379
     - --tls-ca-cert-file=/etc/platform-ca/ca.crt
     extraVolumeMounts:
     - name: platform-ca

@@ -30,4 +30,4 @@ spec:
       retries: 3
   dependsOn:
   - name: prometheus-operator-crds
-    namespace: observability
+    namespace: ${NS_OBSERVABILITY}

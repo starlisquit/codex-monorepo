@@ -2,23 +2,23 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: nats-tls
-  namespace: broker
+  namespace: ${NS_BROKER}
 spec:
   secretName: nats-tls
-  commonName: nats.broker.svc
+  commonName: nats.${NS_BROKER}.svc
   dnsNames:
   - nats
-  - nats.broker
-  - nats.broker.svc
-  - nats.broker.svc.cluster.local
+  - nats.${NS_BROKER}
+  - nats.${NS_BROKER}.svc
+  - nats.${NS_BROKER}.svc.cluster.local
   - nats-headless
-  - nats-headless.broker
-  - nats-headless.broker.svc
-  - nats-headless.broker.svc.cluster.local
+  - nats-headless.${NS_BROKER}
+  - nats-headless.${NS_BROKER}.svc
+  - nats-headless.${NS_BROKER}.svc.cluster.local
   - '*.nats-headless'
-  - '*.nats-headless.broker'
-  - '*.nats-headless.broker.svc'
-  - '*.nats-headless.broker.svc.cluster.local'
+  - '*.nats-headless.${NS_BROKER}'
+  - '*.nats-headless.${NS_BROKER}.svc'
+  - '*.nats-headless.${NS_BROKER}.svc.cluster.local'
   duration: 2160h
   renewBefore: 360h
   privateKey:
@@ -35,15 +35,15 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: valkey-tls
-  namespace: databases
+  namespace: ${NS_DATABASES}
 spec:
   secretName: valkey-tls
-  commonName: valkey.databases.svc
+  commonName: valkey.${NS_DATABASES}.svc
   dnsNames:
   - valkey
-  - valkey.databases
-  - valkey.databases.svc
-  - valkey.databases.svc.cluster.local
+  - valkey.${NS_DATABASES}
+  - valkey.${NS_DATABASES}.svc
+  - valkey.${NS_DATABASES}.svc.cluster.local
   - localhost
   duration: 2160h
   renewBefore: 360h

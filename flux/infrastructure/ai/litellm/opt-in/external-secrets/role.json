@@ -3,7 +3,7 @@
     "litellm-external-secrets"
   ],
   "bound_service_account_namespaces": [
-    "ai"
+    "${NS_AI}"
   ],
   "audience": "openbao",
   "token_policies": [

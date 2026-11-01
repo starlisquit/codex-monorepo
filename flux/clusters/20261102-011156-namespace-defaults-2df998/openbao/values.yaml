@@ -1,0 +1,66 @@
+injector:
+  enabled: true
+  webhook:
+    failurePolicy: Fail
+server:
+  ha:
+    replicas: 1
+  dataStorage:
+    storageClass: local-path
+    size: 1Gi
+extraObjects:
+- apiVersion: cert-manager.io/v1
+  kind: Certificate
+  metadata:
+    name: openbao-injector
+    namespace: ${NS_SECRETS}
+  spec:
+    secretName: openbao-injector-tls
+    dnsNames:
+    - openbao-agent-injector-svc
+    - openbao-agent-injector-svc.${NS_SECRETS}
+    - openbao-agent-injector-svc.${NS_SECRETS}.svc
+    issuerRef:
+      name: platform-workload-ca
+      kind: ClusterIssuer
+      group: cert-manager.io
+- apiVersion: cert-manager.io/v1
+  kind: Certificate
+  metadata:
+    name: openbao-server
+    namespace: ${NS_SECRETS}
+  spec:
+    secretName: openbao-server-tls
+    dnsNames:
+    - localhost
+    - openbao
+    - openbao.${NS_SECRETS}
+    - openbao.${NS_SECRETS}.svc
+    - openbao.${NS_SECRETS}.svc.cluster.local
+    - openbao-active
+    - openbao-active.${NS_SECRETS}
+    - openbao-active.${NS_SECRETS}.svc
+    - openbao-active.${NS_SECRETS}.svc.cluster.local
+    - openbao-standby
+    - openbao-standby.${NS_SECRETS}
+    - openbao-standby.${NS_SECRETS}.svc
+    - openbao-standby.${NS_SECRETS}.svc.cluster.local
+    - openbao-internal
+    - openbao-internal.${NS_SECRETS}
+    - openbao-internal.${NS_SECRETS}.svc
+    - openbao-internal.${NS_SECRETS}.svc.cluster.local
+    - openbao-ui
+    - openbao-ui.${NS_SECRETS}
+    - openbao-ui.${NS_SECRETS}.svc
+    - openbao-ui.${NS_SECRETS}.svc.cluster.local
+    - '*.openbao-internal'
+    - '*.openbao-internal.${NS_SECRETS}'
+    - '*.openbao-internal.${NS_SECRETS}.svc'
+    - '*.openbao-internal.${NS_SECRETS}.svc.cluster.local'
+    ipAddresses:
+    - 127.0.0.1
+    - ::1
+    issuerRef:
+      name: platform-workload-ca
+      kind: ClusterIssuer
+      group: cert-manager.io

@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: workload-connection-allowlist
-  namespace: applications
+  namespace: ${NS_APPLICATIONS}
 spec:
   # Label a Pod, or a Deployment's spec.template.metadata.labels, to opt in.
   podSelector:
@@ -14,7 +14,7 @@ spec:
   - from:
     - namespaceSelector:
         matchLabels:
-          kubernetes.io/metadata.name: applications
+          kubernetes.io/metadata.name: ${NS_APPLICATIONS}
       podSelector:
         matchLabels:
           networking.platform/caller: approved
@@ -39,7 +39,7 @@ spec:
   - to:
     - namespaceSelector:
         matchLabels:
-          kubernetes.io/metadata.name: databases
+          kubernetes.io/metadata.name: ${NS_DATABASES}
       podSelector:
         matchLabels:
           cnpg.io/cluster: application-db
@@ -50,7 +50,7 @@ spec:
   - to:
     - namespaceSelector:
         matchLabels:
-          kubernetes.io/metadata.name: databases
+          kubernetes.io/metadata.name: ${NS_DATABASES}
       podSelector:
         matchLabels:
           app.kubernetes.io/name: valkey

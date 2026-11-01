@@ -2,7 +2,7 @@ apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
   name: security-tetragon-overview
-  namespace: observability
+  namespace: ${NS_OBSERVABILITY}
 spec:
   instanceSelector:
     matchLabels:
@@ -57,7 +57,7 @@ spec:
               "uid": "VictoriaMetrics"
             },
             "query": {
-              "query": "label_values(tetragon_events_total{node=~\"${node}\"}, namespace)",
+              "query": "label_values(tetragon_events_total{node=~\"$${node}\"}, namespace)",
               "refId": "namespace"
             },
             "refresh": 2,
@@ -80,7 +80,7 @@ spec:
               "uid": "VictoriaMetrics"
             },
             "query": {
-              "query": "label_values(tetragon_events_total{node=~\"${node}\",namespace=~\"${namespace}\"}, workload)",
+              "query": "label_values(tetragon_events_total{node=~\"$${node}\",namespace=~\"$${namespace}\"}, workload)",
               "refId": "workload"
             },
             "refresh": 2,
@@ -203,7 +203,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "sum(increase(tetragon_events_total{node=~\"${node}\",namespace=~\"${namespace}\",workload=~\"${workload}\"}[$__range]))",
+              "expr": "sum(increase(tetragon_events_total{node=~\"$${node}\",namespace=~\"$${namespace}\",workload=~\"$${workload}\"}[$__range]))",
               "legendFormat": "__auto",
               "range": false,
               "instant": true,
@@ -247,7 +247,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "sum(increase(tetragon_events_exported_total{node=~\"${node}\"}[$__range]))",
+              "expr": "sum(increase(tetragon_events_exported_total{node=~\"$${node}\"}[$__range]))",
               "legendFormat": "__auto",
               "range": false,
               "instant": true,
@@ -291,7 +291,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "sum by (event_type) (rate(tetragon_events_total{node=~\"${node}\",namespace=~\"${namespace}\",workload=~\"${workload}\"}[$__rate_interval]))",
+              "expr": "sum by (event_type) (rate(tetragon_events_total{node=~\"$${node}\",namespace=~\"$${namespace}\",workload=~\"$${workload}\"}[$__rate_interval]))",
               "legendFormat": "{{event_type}}",
               "range": true,
               "instant": false,
@@ -333,7 +333,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "topk(10, sum by (namespace, workload) (rate(tetragon_events_total{node=~\"${node}\",namespace=~\"${namespace}\",workload=~\"${workload}\"}[$__rate_interval])))",
+              "expr": "topk(10, sum by (namespace, workload) (rate(tetragon_events_total{node=~\"$${node}\",namespace=~\"$${namespace}\",workload=~\"$${workload}\"}[$__rate_interval])))",
               "legendFormat": "{{namespace}} / {{workload}}",
               "range": true,
               "instant": false,
@@ -375,7 +375,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "sum by (node) (rate(tetragon_events_exported_total{node=~\"${node}\"}[$__rate_interval]))",
+              "expr": "sum by (node) (rate(tetragon_events_exported_total{node=~\"$${node}\"}[$__rate_interval]))",
               "legendFormat": "{{node}}",
               "range": true,
               "instant": false,
@@ -417,7 +417,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "time() - max by (node) (tetragon_events_last_exported_timestamp{node=~\"${node}\"} > 0)",
+              "expr": "time() - max by (node) (tetragon_events_last_exported_timestamp{node=~\"$${node}\"} > 0)",
               "legendFormat": "{{node}}",
               "range": true,
               "instant": false,
@@ -459,7 +459,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "sum by (node) (rate(tetragon_bpf_missed_events_total{node=~\"${node}\"}[$__rate_interval]))",
+              "expr": "sum by (node) (rate(tetragon_bpf_missed_events_total{node=~\"$${node}\"}[$__rate_interval]))",
               "legendFormat": "{{node}} / bpf_missed_events_total",
               "range": true,
               "instant": false,
@@ -467,7 +467,7 @@ spec:
             },
             {
               "refId": "B",
-              "expr": "sum by (node) (rate(tetragon_observer_ringbuf_events_lost_total{node=~\"${node}\"}[$__rate_interval]))",
+              "expr": "sum by (node) (rate(tetragon_observer_ringbuf_events_lost_total{node=~\"$${node}\"}[$__rate_interval]))",
               "legendFormat": "{{node}} / observer_ringbuf_events_lost_total",
               "range": true,
               "instant": false,
@@ -475,7 +475,7 @@ spec:
             },
             {
               "refId": "C",
-              "expr": "sum by (node) (rate(tetragon_observer_ringbuf_queue_events_lost_total{node=~\"${node}\"}[$__rate_interval]))",
+              "expr": "sum by (node) (rate(tetragon_observer_ringbuf_queue_events_lost_total{node=~\"$${node}\"}[$__rate_interval]))",
               "legendFormat": "{{node}} / observer_ringbuf_queue_events_lost_total",
               "range": true,
               "instant": false,
@@ -483,7 +483,7 @@ spec:
             },
             {
               "refId": "D",
-              "expr": "sum by (node) (rate(tetragon_notify_overflowed_events_total{node=~\"${node}\"}[$__rate_interval]))",
+              "expr": "sum by (node) (rate(tetragon_notify_overflowed_events_total{node=~\"$${node}\"}[$__rate_interval]))",
               "legendFormat": "{{node}} / notify_overflowed_events_total",
               "range": true,
               "instant": false,
@@ -525,7 +525,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "sum by (node) (rate(tetragon_events_export_failed_total{node=~\"${node}\"}[$__rate_interval]))",
+              "expr": "sum by (node) (rate(tetragon_events_export_failed_total{node=~\"$${node}\"}[$__rate_interval]))",
               "legendFormat": "{{node}} / events_export_failed_total",
               "range": true,
               "instant": false,
@@ -533,7 +533,7 @@ spec:
             },
             {
               "refId": "B",
-              "expr": "sum by (node) (rate(tetragon_export_ratelimit_events_dropped_total{node=~\"${node}\"}[$__rate_interval]))",
+              "expr": "sum by (node) (rate(tetragon_export_ratelimit_events_dropped_total{node=~\"$${node}\"}[$__rate_interval]))",
               "legendFormat": "{{node}} / export_ratelimit_events_dropped_total",
               "range": true,
               "instant": false,
@@ -541,7 +541,7 @@ spec:
             },
             {
               "refId": "C",
-              "expr": "sum by (node) (rate(tetragon_field_filter_failed_total{node=~\"${node}\"}[$__rate_interval]))",
+              "expr": "sum by (node) (rate(tetragon_field_filter_failed_total{node=~\"$${node}\"}[$__rate_interval]))",
               "legendFormat": "{{node}} / field_filter_failed_total",
               "range": true,
               "instant": false,
@@ -583,7 +583,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "sum by (node, error) (rate(tetragon_errors_total{node=~\"${node}\"}[$__rate_interval]))",
+              "expr": "sum by (node, error) (rate(tetragon_errors_total{node=~\"$${node}\"}[$__rate_interval]))",
               "legendFormat": "{{node}} / {{error}}",
               "range": true,
               "instant": false,
@@ -625,7 +625,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "max by (node) (tetragon_process_cache_size{node=~\"${node}\"}) / max by (node) (tetragon_process_cache_capacity{node=~\"${node}\"})",
+              "expr": "max by (node) (tetragon_process_cache_size{node=~\"$${node}\"}) / max by (node) (tetragon_process_cache_capacity{node=~\"$${node}\"})",
               "legendFormat": "{{node}}",
               "range": true,
               "instant": false,
@@ -667,7 +667,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "sum by (node) (rate(tetragon_process_cache_misses_total{node=~\"${node}\"}[$__rate_interval]))",
+              "expr": "sum by (node) (rate(tetragon_process_cache_misses_total{node=~\"$${node}\"}[$__rate_interval]))",
               "legendFormat": "{{node}} / process_cache_misses_total",
               "range": true,
               "instant": false,
@@ -675,7 +675,7 @@ spec:
             },
             {
               "refId": "B",
-              "expr": "sum by (node) (rate(tetragon_process_cache_evictions_total{node=~\"${node}\"}[$__rate_interval]))",
+              "expr": "sum by (node) (rate(tetragon_process_cache_evictions_total{node=~\"$${node}\"}[$__rate_interval]))",
               "legendFormat": "{{node}} / process_cache_evictions_total",
               "range": true,
               "instant": false,
@@ -717,7 +717,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "sum by (node) (rate(tetragon_events_missing_process_info_total{node=~\"${node}\"}[$__rate_interval]))",
+              "expr": "sum by (node) (rate(tetragon_events_missing_process_info_total{node=~\"$${node}\"}[$__rate_interval]))",
               "legendFormat": "{{node}}",
               "range": true,
               "instant": false,
@@ -759,7 +759,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "kubernetes.pod_namespace:=\"tetragon\" AND kubernetes.container_name:=\"export-stdout\" AND kubernetes.pod_node_name:~\"^${node:regex}$\" | pack_json fields (node_name, process_*) as _msg",
+              "expr": "kubernetes.pod_namespace:=\"tetragon\" AND kubernetes.container_name:=\"export-stdout\" AND kubernetes.pod_node_name:~\"^$${node:regex}$\" | pack_json fields (node_name, process_*) as _msg",
               "queryType": "instant",
               "editorMode": "code",
               "maxLines": 500

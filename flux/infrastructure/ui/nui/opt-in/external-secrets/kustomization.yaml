@@ -1,7 +1,14 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: broker
+namespace: ${NS_BROKER}
 resources:
 - serviceaccount.yaml
 - secretstore.yaml
 - externalsecrets.yaml
+configMapGenerator:
+- name: nui-openbao-bootstrap
+  files:
+  - role.json
+  - policy.hcl
+generatorOptions:
+  disableNameSuffixHash: true

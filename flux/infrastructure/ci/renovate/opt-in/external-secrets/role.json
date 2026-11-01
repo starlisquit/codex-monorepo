@@ -3,7 +3,7 @@
     "renovate-external-secrets"
   ],
   "bound_service_account_namespaces": [
-    "ci"
+    "${NS_CI}"
   ],
   "audience": "openbao",
   "token_policies": [

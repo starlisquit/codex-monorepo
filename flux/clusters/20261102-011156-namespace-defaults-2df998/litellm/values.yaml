@@ -1,0 +1,11 @@
+nodeSelector:
+  kubernetes.io/hostname: node-01
+proxy_config:
+  model_list:
+  - model_name: validation-model
+    litellm_params:
+      model: openai/validation-model
+      api_base: http://mock-openai.${NS_AI}.svc:8080/v1
+      api_key: os.environ/OPENAI_API_KEY
+  general_settings:
+    master_key: os.environ/PROXY_MASTER_KEY

@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+patches:
+- target:
+    group: kustomize.toolkit.fluxcd.io
+    version: v1
+    kind: Kustomization
+  patch: "- op: add\n  path: /spec/postBuild\n  value:\n    substituteFrom:\n    -\
+    \ kind: ConfigMap\n      name: cluster-namespaces\n"

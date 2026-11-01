@@ -3,7 +3,7 @@
     "redisinsight-external-secrets"
   ],
   "bound_service_account_namespaces": [
-    "ui"
+    "${NS_UI}"
   ],
   "audience": "openbao",
   "token_policies": [

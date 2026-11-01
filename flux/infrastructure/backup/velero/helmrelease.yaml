@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: velero
-  namespace: velero
+  namespace: ${NS_VELERO}
 spec:
   interval: 30m
   timeout: 15m
@@ -32,4 +32,4 @@ spec:
       retries: 3
   dependsOn:
   - name: prometheus-operator-crds
-    namespace: observability
+    namespace: ${NS_OBSERVABILITY}

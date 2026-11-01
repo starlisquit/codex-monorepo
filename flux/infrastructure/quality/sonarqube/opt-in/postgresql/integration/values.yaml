@@ -1,6 +1,6 @@
 jdbcOverwrite:
   enabled: true
-  jdbcUrl: jdbc:postgresql://sonarqube-postgresql-rw.quality.svc.cluster.local:5432/sonarqube?sslmode=verify-full&sslrootcert=/opt/sonarqube/postgresql-ca/ca.crt
+  jdbcUrl: jdbc:postgresql://sonarqube-postgresql-rw.${NS_QUALITY}.svc.cluster.local:5432/sonarqube?sslmode=verify-full&sslrootcert=/opt/sonarqube/postgresql-ca/ca.crt
   jdbcUsername: sonarqube
   jdbcSecretName: sonarqube-postgresql-app
   jdbcSecretPasswordKey: password

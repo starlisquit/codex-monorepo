@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: gitlab-runner
-  namespace: ci
+  namespace: ${NS_CI}
 spec:
   interval: 30m
   timeout: 15m

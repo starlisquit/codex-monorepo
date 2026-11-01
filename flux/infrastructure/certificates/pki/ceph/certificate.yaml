@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: rook-ceph-dashboard
-  namespace: rook-ceph
+  namespace: ${NS_ROOK_CEPH}
 spec:
   secretName: rook-ceph-dashboard-tls
   duration: 2160h
@@ -13,9 +13,9 @@ spec:
     rotationPolicy: Always
   dnsNames:
   - rook-ceph-mgr-dashboard
-  - rook-ceph-mgr-dashboard.rook-ceph
-  - rook-ceph-mgr-dashboard.rook-ceph.svc
-  - rook-ceph-mgr-dashboard.rook-ceph.svc.cluster.local
+  - rook-ceph-mgr-dashboard.${NS_ROOK_CEPH}
+  - rook-ceph-mgr-dashboard.${NS_ROOK_CEPH}.svc
+  - rook-ceph-mgr-dashboard.${NS_ROOK_CEPH}.svc.cluster.local
   usages:
   - server auth
   issuerRef:

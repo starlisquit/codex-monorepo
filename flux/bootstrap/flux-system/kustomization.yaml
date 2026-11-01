@@ -2,3 +2,13 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
 - gotk-components.yaml
+patches:
+- target:
+    kind: Deployment
+    name: kustomize-controller
+  patch: "- op: add\n  path: /spec/template/spec/containers/0/args/-\n  value: --feature-gates=StrictPostBuildSubstitutions=true\n"
+- target:
+    group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+  patch: "apiVersion: apiextensions.k8s.io/v1\nkind: CustomResourceDefinition\nmetadata:\n\
+    \  name: unused\n  annotations:\n    kustomize.toolkit.fluxcd.io/substitute: disabled\n"

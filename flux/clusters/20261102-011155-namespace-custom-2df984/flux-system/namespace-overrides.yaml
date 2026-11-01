@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-namespaces
+  namespace: flux-system
+data:
+  NS_AI: custom-ai
+  NS_SECRETS: custom-secrets
+  NS_CERTIFICATES: custom-certificates
+  NS_OBSERVABILITY: custom-observability
+  NS_DATABASES: custom-databases
+  NS_DEMO: custom-demo

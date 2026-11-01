@@ -1,0 +1,8 @@
+{
+  "play_id": "6ae7b92b7f32053bde2df984",
+  "created_at": "2026-11-01T22:11:55.664000+00:00",
+  "timezone": "Europe/Istanbul",
+  "purpose": "namespace-custom",
+  "flux_path": "./flux/clusters/20261102-011155-namespace-custom-2df984",
+  "status": "preparing"
+}

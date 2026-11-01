@@ -30,4 +30,4 @@ natsBox:
   contexts:
     default:
       merge:
-        url: tls://nats.broker.svc:4222
+        url: tls://nats.${NS_BROKER}.svc:4222

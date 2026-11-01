@@ -1,7 +1,7 @@
 db:
   deployStandalone: false
   useExisting: true
-  endpoint: litellm-db-rw.ai.svc.cluster.local
+  endpoint: litellm-db-rw.${NS_AI}.svc.cluster.local
   database: litellm
   url: postgresql://$(DATABASE_USERNAME):$(DATABASE_PASSWORD)@$(DATABASE_HOST):5432/$(DATABASE_NAME)?sslmode=require&sslaccept=strict&sslcert=/etc/litellm-postgresql/ca.crt
   secret:

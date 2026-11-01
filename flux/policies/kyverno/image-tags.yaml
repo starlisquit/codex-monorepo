@@ -15,8 +15,8 @@ spec:
       - key: kubernetes.io/metadata.name
         operator: In
         values:
-        - demo
-        - applications
+        - ${NS_DEMO}
+        - ${NS_APPLICATIONS}
     resourceRules:
     - apiGroups:
       - ''

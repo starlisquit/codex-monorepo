@@ -5,7 +5,7 @@ monitoringPasscodeSecretName: sonarqube-monitoring
 monitoringPasscodeSecretKey: passcode
 jdbcOverwrite:
   enabled: true
-  jdbcUrl: jdbc:postgresql://sonarqube-postgresql.quality.svc.cluster.local:5432/sonarqube
+  jdbcUrl: jdbc:postgresql://sonarqube-postgresql.${NS_QUALITY}.svc.cluster.local:5432/sonarqube
   jdbcUsername: sonarqube
   jdbcSecretName: sonarqube-database
   jdbcSecretPasswordKey: password

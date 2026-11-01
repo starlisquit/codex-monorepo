@@ -3,7 +3,7 @@
     "velero-external-secrets"
   ],
   "bound_service_account_namespaces": [
-    "velero"
+    "${NS_VELERO}"
   ],
   "audience": "openbao",
   "token_policies": [

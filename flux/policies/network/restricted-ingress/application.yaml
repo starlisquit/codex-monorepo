@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: restricted-application-ingress
-  namespace: applications
+  namespace: ${NS_APPLICATIONS}
 spec:
   podSelector:
     matchLabels:
@@ -14,7 +14,7 @@ spec:
     # Both selectors belong to ONE peer: namespace AND caller label must match.
     - namespaceSelector:
         matchLabels:
-          kubernetes.io/metadata.name: applications
+          kubernetes.io/metadata.name: ${NS_APPLICATIONS}
       podSelector:
         matchLabels:
           networking.platform/caller: approved

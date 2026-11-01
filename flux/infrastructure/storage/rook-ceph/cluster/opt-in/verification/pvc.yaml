@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: ceph-storage-check
-  namespace: rook-ceph
+  namespace: ${NS_ROOK_CEPH}
 spec:
   accessModes:
   - ReadWriteOnce

@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-namespaces
+  namespace: flux-system
+  labels:
+    reconcile.fluxcd.io/watch: Enabled
+data:
+  NS_AI: ai
+  NS_APPLICATIONS: applications
+  NS_AUTOSCALING: autoscaling
+  NS_BROKER: broker
+  NS_CERTIFICATES: certificates
+  NS_CI: ci
+  NS_DATABASES: databases
+  NS_DEMO: demo
+  NS_KYVERNO: kyverno
+  NS_OBSERVABILITY: observability
+  NS_PROXY: proxy
+  NS_QUALITY: quality
+  NS_ROOK_CEPH: rook-ceph
+  NS_SECRETS: secrets
+  NS_TETRAGON: tetragon
+  NS_TRIVY_SYSTEM: trivy-system
+  NS_UI: ui
+  NS_VELERO: velero

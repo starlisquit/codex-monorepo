@@ -1,0 +1,365 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: foundation
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 20s
+  path: ./flux/clusters/20261102-011155-namespace-custom-2df984/foundation
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  timeout: 5m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: monitoring-crds
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 10s
+  path: ./flux/clusters/20261102-011155-namespace-custom-2df984/monitoring-crds
+  prune: true
+  timeout: 15m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: foundation
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: prometheus-operator-crds
+    namespace: ${NS_OBSERVABILITY}
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cert-manager
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 10s
+  path: ./flux/clusters/20261102-011155-namespace-custom-2df984/cert-manager
+  prune: true
+  timeout: 15m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: monitoring-crds
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: cert-manager
+    namespace: ${NS_CERTIFICATES}
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: pki-issuer
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 10s
+  path: ./flux/clusters/20261102-011155-namespace-custom-2df984/pki-issuer
+  prune: true
+  timeout: 15m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: cert-manager
+  healthChecks:
+  - apiVersion: cert-manager.io/v1
+    kind: Certificate
+    name: platform-root
+    namespace: ${NS_CERTIFICATES}
+  - apiVersion: cert-manager.io/v1
+    kind: ClusterIssuer
+    name: platform-workload-ca
+  healthCheckExprs:
+  - apiVersion: cert-manager.io/v1
+    kind: Certificate
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
+      && c.status == 'True')
+  - apiVersion: cert-manager.io/v1
+    kind: ClusterIssuer
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
+      && c.status == 'True')
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: trust-manager
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 10s
+  path: ./flux/clusters/20261102-011155-namespace-custom-2df984/trust-manager
+  prune: true
+  timeout: 15m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: pki-issuer
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: trust-manager
+    namespace: ${NS_CERTIFICATES}
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: pki-trust
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 10s
+  path: ./flux/clusters/20261102-011155-namespace-custom-2df984/pki-trust
+  prune: true
+  timeout: 15m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: trust-manager
+  healthChecks:
+  - apiVersion: trust.cert-manager.io/v1alpha1
+    kind: Bundle
+    name: platform-ca
+  healthCheckExprs:
+  - apiVersion: trust.cert-manager.io/v1alpha1
+    kind: Bundle
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Synced'
+      && c.status == 'True')
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: openbao
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 10s
+  path: ./flux/clusters/20261102-011155-namespace-custom-2df984/openbao
+  prune: true
+  timeout: 15m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: pki-trust
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: openbao
+    namespace: ${NS_SECRETS}
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: external-secrets
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 10s
+  path: ./flux/clusters/20261102-011155-namespace-custom-2df984/external-secrets
+  prune: true
+  timeout: 15m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: pki-trust
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: external-secrets
+    namespace: ${NS_SECRETS}
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: credentials
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 10s
+  path: ./flux/clusters/20261102-011155-namespace-custom-2df984/credentials
+  prune: true
+  timeout: 15m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: openbao
+  - name: external-secrets
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cnpg-operator
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 10s
+  path: ./flux/clusters/20261102-011155-namespace-custom-2df984/cnpg-operator
+  prune: true
+  timeout: 15m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: monitoring-crds
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: cloudnative-pg-operator
+    namespace: ${NS_DATABASES}
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: database-certificates
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 10s
+  path: ./flux/clusters/20261102-011155-namespace-custom-2df984/database-certificates
+  prune: true
+  timeout: 15m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: pki-trust
+  healthChecks:
+  - apiVersion: cert-manager.io/v1
+    kind: Certificate
+    name: litellm-db-server-pki
+    namespace: ${NS_AI}
+  - apiVersion: cert-manager.io/v1
+    kind: Certificate
+    name: litellm-db-replication-pki
+    namespace: ${NS_AI}
+  healthCheckExprs:
+  - apiVersion: cert-manager.io/v1
+    kind: Certificate
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
+      && c.status == 'True')
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: database
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 10s
+  path: ./flux/clusters/20261102-011155-namespace-custom-2df984/database
+  prune: true
+  timeout: 15m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: cnpg-operator
+  - name: database-certificates
+  healthChecks:
+  - apiVersion: postgresql.cnpg.io/v1
+    kind: Cluster
+    name: litellm-db
+    namespace: ${NS_AI}
+  healthCheckExprs:
+  - apiVersion: postgresql.cnpg.io/v1
+    kind: Cluster
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
+      && c.status == 'True')
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: model-fixture
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 10s
+  path: ./flux/clusters/20261102-011155-namespace-custom-2df984/model-fixture
+  prune: true
+  timeout: 15m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: credentials
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: litellm
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 10s
+  path: ./flux/clusters/20261102-011155-namespace-custom-2df984/litellm
+  prune: true
+  timeout: 15m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: database
+  - name: credentials
+  - name: model-fixture
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: litellm
+    namespace: ${NS_AI}
+  - apiVersion: external-secrets.io/v1
+    kind: SecretStore
+    name: litellm-openbao
+    namespace: ${NS_AI}
+  - apiVersion: external-secrets.io/v1
+    kind: ExternalSecret
+    name: litellm-auth
+    namespace: ${NS_AI}
+  healthCheckExprs:
+  - apiVersion: external-secrets.io/v1
+    kind: SecretStore
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
+      && c.status == 'True')
+  - apiVersion: external-secrets.io/v1
+    kind: ExternalSecret
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
+      && c.status == 'True')
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: agent
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 10s
+  path: ./flux/clusters/20261102-011155-namespace-custom-2df984/agent
+  prune: true
+  timeout: 10m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: openbao
+  healthChecks:
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: api-application
+    namespace: ${NS_DEMO}

@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: sonarqube-postgresql-server-pki
-  namespace: quality
+  namespace: ${NS_QUALITY}
 spec:
   secretName: sonarqube-postgresql-server-pki
   commonName: sonarqube-postgresql-rw
@@ -21,23 +21,23 @@ spec:
     group: cert-manager.io
   dnsNames:
   - sonarqube-postgresql-rw
-  - sonarqube-postgresql-rw.quality
-  - sonarqube-postgresql-rw.quality.svc
-  - sonarqube-postgresql-rw.quality.svc.cluster.local
+  - sonarqube-postgresql-rw.${NS_QUALITY}
+  - sonarqube-postgresql-rw.${NS_QUALITY}.svc
+  - sonarqube-postgresql-rw.${NS_QUALITY}.svc.cluster.local
   - sonarqube-postgresql-r
-  - sonarqube-postgresql-r.quality
-  - sonarqube-postgresql-r.quality.svc
-  - sonarqube-postgresql-r.quality.svc.cluster.local
+  - sonarqube-postgresql-r.${NS_QUALITY}
+  - sonarqube-postgresql-r.${NS_QUALITY}.svc
+  - sonarqube-postgresql-r.${NS_QUALITY}.svc.cluster.local
   - sonarqube-postgresql-ro
-  - sonarqube-postgresql-ro.quality
-  - sonarqube-postgresql-ro.quality.svc
-  - sonarqube-postgresql-ro.quality.svc.cluster.local
+  - sonarqube-postgresql-ro.${NS_QUALITY}
+  - sonarqube-postgresql-ro.${NS_QUALITY}.svc
+  - sonarqube-postgresql-ro.${NS_QUALITY}.svc.cluster.local
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: sonarqube-postgresql-replication-pki
-  namespace: quality
+  namespace: ${NS_QUALITY}
 spec:
   secretName: sonarqube-postgresql-replication-pki
   commonName: streaming_replica

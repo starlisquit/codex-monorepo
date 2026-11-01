@@ -2,7 +2,7 @@ apiVersion: velero.io/v1
 kind: Backup
 metadata:
   name: application-metadata-smoke
-  namespace: velero
+  namespace: ${NS_VELERO}
 spec:
   includedNamespaces:
   - demo

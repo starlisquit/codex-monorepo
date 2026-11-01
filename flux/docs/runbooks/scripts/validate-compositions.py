@@ -7,11 +7,11 @@ import json
 import subprocess
 import tempfile
 import yaml
+from namespace_support import build, load_json, namespace_for
 
 
 flux=Path(__file__).resolve().parents[3];infra=flux/'infrastructure'
 kustomize=os.environ.get('KUSTOMIZE_BIN','kustomize')
-def build(path):return [o for o in yaml.safe_load_all(subprocess.check_output([kustomize,'build',str(path)],text=True)) if o]
 def matches(selector,labels):return all(labels.get(k)==v for k,v in selector.items())
 def check(objects):
  identities=[(o['apiVersion'],o['kind'],o['metadata'].get('namespace',''),o['metadata']['name']) for o in objects]
@@ -45,7 +45,7 @@ def check(objects):
   store=stores[(ns,spec['secretStoreRef']['name'])];assert spec['secretStoreRef']['kind']=='SecretStore'
   vault=store['spec']['provider']['vault'];auth=vault['auth']['kubernetes'];sa=auth['serviceAccountRef']['name']
   assert vault['caProvider']=={'type':'ConfigMap','name':'platform-ca','key':'ca.crt'}
-  assert vault['server']=='https://openbao-active.secrets.svc:8200'
+  assert vault['server']=='https://openbao-active.'+namespace_for('secrets')+'.svc:8200'
   assert auth['role']==sa and auth['serviceAccountRef']['audiences']==['openbao']
   assert any(o['kind']=='ServiceAccount' and o['metadata']['name']==sa and o['metadata']['namespace']==ns and o['automountServiceAccountToken'] is False for o in objects)
   consumers=[d for d in deployments if d['metadata']['namespace']==ns and any(e.get('secretRef',{}).get('name')==name for c in d['spec']['template']['spec']['containers'] for e in c.get('envFrom',[]))]
@@ -60,7 +60,7 @@ def check(objects):
   assert any(o['kind']=='ServiceAccount' and o['metadata']['name']==sa and o['metadata']['namespace']==ns and o['automountServiceAccountToken'] is False for o in objects)
   assert spec['automountServiceAccountToken'] is False
   assert annotations['vault.hashicorp.com/tls-skip-verify']=='false'
-  assert annotations['vault.hashicorp.com/service']=='https://openbao-active.secrets.svc:8200'
+  assert annotations['vault.hashicorp.com/service']=='https://openbao-active.'+namespace_for('secrets')+'.svc:8200'
   assert annotations['vault.hashicorp.com/agent-inject-token']=='false'
   assert annotations['vault.hashicorp.com/agent-inject-containers']=='application'
   assert annotations['vault.hashicorp.com/agent-run-as-user']==str(spec['securityContext']['runAsUser'])
@@ -95,7 +95,7 @@ def check(objects):
 
 for mode, purpose in [('external-secrets','environment'),('openbao-injector','files')]:
  directory=infra/'primitives/deployment/opt-in'/mode
- role=json.loads((directory/'role.example.json').read_text());identity='api-application-'+mode
+ role=load_json(directory/'role.example.json');identity='api-application-'+mode
  assert role=={'bound_service_account_names':[identity],'bound_service_account_namespaces':['demo'],'audience':'openbao','token_policies':[identity],'token_no_default_policy':True,'token_ttl':'15m','token_max_ttl':'1h'}
  policy=(directory/'policy.hcl').read_text()
  expected='path "kv/data/applications/application/'+purpose+'" {\n  capabilities = ["read"]\n}\n'

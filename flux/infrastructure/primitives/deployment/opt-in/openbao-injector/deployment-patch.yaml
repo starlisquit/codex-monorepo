@@ -6,7 +6,7 @@ spec:
         vault.hashicorp.com/agent-inject-containers: application
         vault.hashicorp.com/agent-pre-populate: 'true'
         vault.hashicorp.com/agent-pre-populate-only: 'false'
-        vault.hashicorp.com/service: https://openbao-active.secrets.svc:8200
+        vault.hashicorp.com/service: https://openbao-active.${NS_SECRETS}.svc:8200
         vault.hashicorp.com/tls-skip-verify: 'false'
         vault.hashicorp.com/auth-path: auth/kubernetes
         vault.hashicorp.com/role: application-openbao-injector

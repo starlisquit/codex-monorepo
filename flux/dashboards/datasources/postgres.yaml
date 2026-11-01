@@ -3,7 +3,7 @@ apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
   name: application-postgres
-  namespace: observability
+  namespace: ${NS_OBSERVABILITY}
 spec:
   instanceSelector:
     matchLabels:
@@ -13,7 +13,7 @@ spec:
     uid: application-postgres
     type: postgres
     access: proxy
-    url: application-db-rw.databases.svc.cluster.local:5432
+    url: application-db-rw.${NS_DATABASES}.svc.cluster.local:5432
     user: $username
     isDefault: false
     jsonData:

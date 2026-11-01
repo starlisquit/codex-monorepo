@@ -3,7 +3,7 @@
     "nui-external-secrets"
   ],
   "bound_service_account_namespaces": [
-    "broker"
+    "${NS_BROKER}"
   ],
   "audience": "openbao",
   "token_policies": [

@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: platform-root-bootstrap
-  namespace: certificates
+  namespace: ${NS_CERTIFICATES}
 spec:
   selfSigned: {}
 ---
@@ -10,7 +10,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: platform-root
-  namespace: certificates
+  namespace: ${NS_CERTIFICATES}
 spec:
   isCA: true
   commonName: openbao-injector-ca

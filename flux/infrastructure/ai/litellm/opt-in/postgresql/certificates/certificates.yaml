@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: litellm-db-server-pki
-  namespace: ai
+  namespace: ${NS_AI}
 spec:
   secretName: litellm-db-server-pki
   commonName: litellm-db-rw
@@ -21,23 +21,23 @@ spec:
     group: cert-manager.io
   dnsNames:
   - litellm-db-rw
-  - litellm-db-rw.ai
-  - litellm-db-rw.ai.svc
-  - litellm-db-rw.ai.svc.cluster.local
+  - litellm-db-rw.${NS_AI}
+  - litellm-db-rw.${NS_AI}.svc
+  - litellm-db-rw.${NS_AI}.svc.cluster.local
   - litellm-db-r
-  - litellm-db-r.ai
-  - litellm-db-r.ai.svc
-  - litellm-db-r.ai.svc.cluster.local
+  - litellm-db-r.${NS_AI}
+  - litellm-db-r.${NS_AI}.svc
+  - litellm-db-r.${NS_AI}.svc.cluster.local
   - litellm-db-ro
-  - litellm-db-ro.ai
-  - litellm-db-ro.ai.svc
-  - litellm-db-ro.ai.svc.cluster.local
+  - litellm-db-ro.${NS_AI}
+  - litellm-db-ro.${NS_AI}.svc
+  - litellm-db-ro.${NS_AI}.svc.cluster.local
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: litellm-db-replication-pki
-  namespace: ai
+  namespace: ${NS_AI}
 spec:
   secretName: litellm-db-replication-pki
   commonName: streaming_replica

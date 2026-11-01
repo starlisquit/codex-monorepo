@@ -6,6 +6,7 @@ import os
 import subprocess
 import tempfile
 import yaml
+from namespace_support import build, load_yaml, load_json, namespace_for
 
 flux = Path(__file__).resolve().parents[3]
 infra = flux / 'infrastructure'
@@ -22,9 +23,6 @@ contracts = {
     'databases/clickhouse/cluster/opt-in/external-secrets': ('databases', {'clickhouse-auth': {'password'}}),
     'backup/velero/opt-in/external-secrets': ('velero', {'velero-cloud-credentials': {'cloud'}}),
 }
-
-def build(directory):
-    return [o for o in yaml.safe_load_all(subprocess.check_output([kustomize, 'build', str(directory)], text=True)) if o]
 
 def compose(paths):
     with tempfile.TemporaryDirectory() as tmp:
@@ -44,7 +42,7 @@ found = {str(p.parent.relative_to(infra)) for p in infra.rglob('secretstore.yaml
 assert found == set(contracts), 'Credential opt-in contract coverage drift'
 # Check contracts against actual consumer configuration, not just the opt-in files.
 def values(relative):
-    return yaml.safe_load((infra / relative).read_text())
+    return load_yaml(infra / relative)
 
 litellm_values = values('ai/litellm/values.yaml')
 assert (litellm_values['masterkeySecretName'], litellm_values['masterkeySecretKey']) == ('litellm-auth', 'master-key')
@@ -66,29 +64,35 @@ clickhouse = list(yaml.safe_load_all((infra/'databases/clickhouse/cluster/cluste
 assert next(o for o in clickhouse if o['kind'] == 'ClickHouseCluster')['spec']['settings']['defaultUserPassword']['secret'] == {'name': 'clickhouse-auth', 'key': 'password'}
 assert values('backup/velero/opt-in/s3/values.example.yaml')['credentials']['existingSecret'] == 'velero-cloud-credentials'
 
+original_namespaces = {key: value[0] for key, value in contracts.items()}
+contracts = {key: (namespace_for(value[0]), value[1]) for key, value in contracts.items()}
 all_resources = set()
 targets = set()
 for relative, (namespace, expected) in contracts.items():
     directory = infra / relative
     owner = directory.parent.parent
     objects = build(directory)
-    assert {o['kind'] for o in objects} == {'ServiceAccount', 'SecretStore', 'ExternalSecret'}
+    assert {o['kind'] for o in objects} == {'ServiceAccount', 'SecretStore', 'ExternalSecret', 'ConfigMap'}
     assert all(o['metadata'].get('namespace') == namespace for o in objects)
     account, = [o for o in objects if o['kind'] == 'ServiceAccount']
     store, = [o for o in objects if o['kind'] == 'SecretStore']
     assert account['automountServiceAccountToken'] is False
     provider = store['spec']['provider']['vault']
-    assert provider['server'] == 'https://openbao-active.secrets.svc:8200'
+    assert provider['server'] == 'https://openbao-active.' + namespace_for('secrets') + '.svc:8200'
     assert provider['path'] == 'kv' and provider['version'] == 'v2'
     assert provider['caProvider'] == {'type': 'ConfigMap', 'name': 'platform-ca', 'key': 'ca.crt'}
     auth = provider['auth']['kubernetes']
     assert auth['mountPath'] == 'kubernetes'
     assert auth['serviceAccountRef'] == {'name': account['metadata']['name'], 'audiences': ['openbao']}
-    role = json.loads((directory / 'role.json').read_text())
+    role = load_json(directory / 'role.json')
     assert role == {'bound_service_account_names': [account['metadata']['name']],
                     'bound_service_account_namespaces': [namespace], 'audience': 'openbao',
                     'token_policies': [auth['role']], 'token_no_default_policy': True,
                     'token_ttl': '15m', 'token_max_ttl': '1h'}
+    descriptor, = [o for o in objects if o['kind'] == 'ConfigMap']
+    assert descriptor['metadata']['name'] == store['metadata']['name'] + '-bootstrap'
+    assert json.loads(descriptor['data']['role.json']) == role
+    assert descriptor['data']['policy.hcl'] == (directory / 'policy.hcl').read_text()
     observed = {}
     paths = []
     for secret in [o for o in objects if o['kind'] == 'ExternalSecret']:
@@ -107,7 +111,7 @@ for relative, (namespace, expected) in contracts.items():
         assert all(e['remoteRef']['property'] == e['secretKey'] for e in entries)
         for entry in entries:
             path = entry['remoteRef']['key']
-            assert path.startswith('infrastructure/' + namespace + '/')
+            assert path.startswith('infrastructure/' + original_namespaces[relative] + '/')
             if path not in paths:
                 paths.append(path)
         if target['name'] == 'gitlab-runner-auth':

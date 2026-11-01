@@ -1,7 +1,14 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: ci
+namespace: ${NS_CI}
 resources:
 - serviceaccount.yaml
 - secretstore.yaml
 - externalsecrets.yaml
+configMapGenerator:
+- name: renovate-openbao-bootstrap
+  files:
+  - role.json
+  - policy.hcl
+generatorOptions:
+  disableNameSuffixHash: true

@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: nui
-  namespace: broker
+  namespace: ${NS_BROKER}
 spec:
   interval: 30m
   timeout: 15m

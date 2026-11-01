@@ -2,7 +2,7 @@ apiVersion: clickhouse.com/v1alpha1
 kind: KeeperCluster
 metadata:
   name: clickhouse
-  namespace: databases
+  namespace: ${NS_DATABASES}
 spec:
   replicas: 3
   dataVolumeClaimSpec:
@@ -19,7 +19,7 @@ apiVersion: clickhouse.com/v1alpha1
 kind: ClickHouseCluster
 metadata:
   name: clickhouse
-  namespace: databases
+  namespace: ${NS_DATABASES}
 spec:
   replicas: 2
   dataVolumeClaimSpec:

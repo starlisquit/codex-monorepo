@@ -3,7 +3,7 @@
     "sonarqube-external-database-external-secrets"
   ],
   "bound_service_account_namespaces": [
-    "quality"
+    "${NS_QUALITY}"
   ],
   "audience": "openbao",
   "token_policies": [

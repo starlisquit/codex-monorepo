@@ -3,7 +3,7 @@
     "clickhouse-external-secrets"
   ],
   "bound_service_account_namespaces": [
-    "databases"
+    "${NS_DATABASES}"
   ],
   "audience": "openbao",
   "token_policies": [

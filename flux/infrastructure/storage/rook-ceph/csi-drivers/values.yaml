@@ -1,5 +1,5 @@
 operatorConfig:
-  namespace: rook-ceph
+  namespace: ${NS_ROOK_CEPH}
   driverSpecDefaults:
     imageSet:
       name: rook-csi-operator-image-set-configmap

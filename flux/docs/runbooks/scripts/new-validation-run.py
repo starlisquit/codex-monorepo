@@ -15,11 +15,14 @@ parser.add_argument('--play-id', required=True)
 parser.add_argument('--namespace', action='append', default=[])
 parser.add_argument('--source', action='append', default=[])
 parser.add_argument('--created-at')
+parser.add_argument('--git-ref', default='main')
 parser.add_argument('--git-url', default='https://github.com/starlisquit/codex-monorepo.git')
 args = parser.parse_args()
 for value in [args.name, args.play_id, *args.namespace, *args.source]:
     if not re.fullmatch(r'[a-z0-9][a-z0-9-]*', value):
         parser.error('Names and playground IDs must be lowercase slugs')
+if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._/-]*', args.git_ref) or '..' in args.git_ref:
+    parser.error('Use a plain Git branch name')
 url = urlsplit(args.git_url)
 if url.scheme != 'https' or not url.netloc or url.username or url.password or url.query or url.fragment:
     parser.error('Use an HTTPS repository URL without credentials, query or fragment')
@@ -40,11 +43,12 @@ relative = run.relative_to(flux_root.parent).as_posix()
 def write(path, documents):
     path.write_text(yaml.safe_dump_all(documents, sort_keys=False))
 config = {'apiVersion': 'kustomize.config.k8s.io/v1beta1', 'kind': 'Kustomization'}
-write(run / 'kustomization.yaml', [{**config, 'resources': ['flux-system', 'infrastructure.yaml']}])
+write(run / 'kustomization.yaml', [{**config, 'resources': ['flux-system', 'infrastructure.yaml'], 'components': ['../../bootstrap/namespace-config/opt-in/flux-substitution']}])
 write(run / 'foundation/kustomization.yaml', [{**config, 'resources': [f'../../../infrastructure/namespaces/{v}' for v in dict.fromkeys(args.namespace)] + [f'../../../infrastructure/sources/{v}' for v in dict.fromkeys(args.source)]}])
-write(run / 'flux-system/kustomization.yaml', [{**config, 'resources': ['../../../bootstrap/flux-system', 'gotk-sync.yaml']}])
+write(run / 'flux-system/kustomization.yaml', [{**config, 'resources': ['../../../bootstrap/flux-system', '../../../bootstrap/namespace-config', 'gotk-sync.yaml'], 'components': ['../../../bootstrap/namespace-config/opt-in/flux-substitution'], 'patches': [{'path': 'namespace-overrides.yaml'}]}])
+write(run / 'flux-system/namespace-overrides.yaml', [{'apiVersion': 'v1', 'kind': 'ConfigMap', 'metadata': {'name': 'cluster-namespaces', 'namespace': 'flux-system'}, 'data': {}}])
 write(run / 'flux-system/gotk-sync.yaml', [
-    {'apiVersion': 'source.toolkit.fluxcd.io/v1', 'kind': 'GitRepository', 'metadata': {'name': 'flux-system', 'namespace': 'flux-system'}, 'spec': {'interval': '1m', 'url': args.git_url, 'ref': {'branch': 'main'}}},
+    {'apiVersion': 'source.toolkit.fluxcd.io/v1', 'kind': 'GitRepository', 'metadata': {'name': 'flux-system', 'namespace': 'flux-system'}, 'spec': {'interval': '1m', 'url': args.git_url, 'ref': {'branch': args.git_ref}}},
     {'apiVersion': 'kustomize.toolkit.fluxcd.io/v1', 'kind': 'Kustomization', 'metadata': {'name': 'flux-system', 'namespace': 'flux-system'}, 'spec': {'interval': '1m', 'path': './' + relative, 'prune': True, 'sourceRef': {'kind': 'GitRepository', 'name': 'flux-system'}}}])
 write(run / 'infrastructure.yaml', [{'apiVersion': 'kustomize.toolkit.fluxcd.io/v1', 'kind': 'Kustomization', 'metadata': {'name': 'foundation', 'namespace': 'flux-system'}, 'spec': {'interval': '1m', 'retryInterval': '20s', 'path': './' + relative + '/foundation', 'prune': True, 'sourceRef': {'kind': 'GitRepository', 'name': 'flux-system'}, 'wait': True, 'timeout': '5m'}}])
 (run / 'run.json').write_text(json.dumps({'play_id': args.play_id, 'created_at': created.isoformat(), 'timezone': 'Europe/Istanbul', 'purpose': args.name, 'flux_path': './' + relative, 'status': 'preparing'}, indent=2) + '\n')

@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: ceph-csi-drivers
-  namespace: rook-ceph
+  namespace: ${NS_ROOK_CEPH}
 spec:
   interval: 30m
   timeout: 15m
@@ -24,7 +24,7 @@ spec:
     optional: true
   dependsOn:
   - name: rook-ceph-operator
-    namespace: rook-ceph
+    namespace: ${NS_ROOK_CEPH}
   install:
     remediation:
       retries: 3

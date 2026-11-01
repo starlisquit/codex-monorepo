@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ${NS_DEMO}
+namePrefix: api-
+resources:
+- ../../../infrastructure/primitives/deployment
+components:
+- ../../../infrastructure/primitives/deployment/opt-in/openbao-injector
+patches:
+- target:
+    kind: Deployment
+    name: application
+  patch: "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: application\n\
+    spec:\n  replicas: 1\n  template:\n    spec:\n      containers:\n      - args:\
+    \ []\n        command:\n        - python\n        - -c\n        - \"import http.server,json,pathlib\\\
+    nclass H(http.server.BaseHTTPRequestHandler):\\n\\\n          \\ def do_GET(self):\\\
+    n  try:\\n   ok=json.loads(pathlib.Path('/vault/secrets/config.json').read_text())['status']=='namespace-verified';self.send_response(200\\\
+    \n          \\ if ok else 503)\\n  except Exception:self.send_response(503)\\\
+    n  self.end_headers();self.wfile.write(b'namespace-verified')\\n\\\n         \
+    \ \\ def log_message(self,*args):pass\\nhttp.server.ThreadingHTTPServer(('0.0.0.0',8080),H).serve_forever()\\\
+    n\"\n        image: python:3.13.9-slim\n        name: application\n"
