@@ -10,7 +10,9 @@ It is a starting scaffold, not a deployment-ready cluster configuration.
 - Each chart directory contains a HelmRelease, `values.yaml`, and a Kustomize build.
 - `databases/cloudnative-pg/operator/`: PostgreSQL operator release.
 - `databases/cloudnative-pg/clusters/application/`: example managed PostgreSQL cluster.
-- `observability/dashboards/`: starter GrafanaDashboard resources with one panel each.
+- `observability/dashboards/`: category subfolders, each with a starter
+  `overview.yaml` and its own `kustomization.yaml`. Add more dashboard files to
+  a category and list them in that category's Kustomization.
 - `policy/cluster-policies/`: example Kyverno policies in Audit mode, scoped to `applications`.
 - `policy/network-policies/`: example policies scoped to `applications`.
 
