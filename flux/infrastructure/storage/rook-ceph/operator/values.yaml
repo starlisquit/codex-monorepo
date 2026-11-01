@@ -3,4 +3,5 @@ monitoring:
 csi:
   serviceMonitor:
     enabled: true
+  createCsiOperatorResources: true
 operatorMetricsBindAddress: 0.0.0.0:8080
