@@ -1,0 +1,10 @@
+dataStorage:
+  enabled: true
+  requestedSize: 1Gi
+  className: ceph-block
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    memory: 256Mi

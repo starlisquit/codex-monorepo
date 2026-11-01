@@ -10,3 +10,20 @@ patches:
     name: valkey
   patch: "apiVersion: helm.toolkit.fluxcd.io/v2\nkind: HelmRelease\nmetadata:\n  name:\
     \ valkey\n  namespace: databases\nspec:\n  suspend: false\n  timeout: 15m\n"
+- target:
+    group: helm.toolkit.fluxcd.io
+    version: v2
+    kind: HelmRelease
+    name: valkey
+  patch: "- op: add\n  path: /spec/valuesFrom/-\n  value:\n    kind: ConfigMap\n \
+    \   name: valkey-cluster-values\n    valuesKey: values.yaml\n"
+configMapGenerator:
+- name: valkey-cluster-values
+  namespace: databases
+  files:
+  - values.yaml
+  options:
+    labels:
+      reconcile.fluxcd.io/watch: Enabled
+generatorOptions:
+  disableNameSuffixHash: true
