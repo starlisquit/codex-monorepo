@@ -46,3 +46,10 @@ neither deletes workloads nor reverses previous admission decisions.
 Evaluation errors use `failurePolicy: Ignore` in these starter templates. Review
 policy Ready conditions and errors as well as violation reports. Before enforcing,
 consider `Fail` after testing so evaluation failures cannot silently skip checks.
+
+The templates match Pod CREATE/UPDATE, not debug-container subresource admission.
+Background scanning can still evaluate saved ephemeral containers for image and
+isolation checks. Listing `pods/ephemeralcontainers` as a reporting resource made
+the current Kyverno controller request unsupported list/watch permissions and
+left policies unready; match the parent Pod instead. Resource budgets exclude
+ephemeral containers, whose API does not support resource requests/limits.

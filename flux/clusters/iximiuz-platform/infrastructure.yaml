@@ -698,3 +698,17 @@ spec:
   dependsOn:
   - name: kyverno
   timeout: 5m
+  healthChecks:
+  - apiVersion: policies.kyverno.io/v1
+    kind: ValidatingPolicy
+    name: platform-container-isolation
+  - apiVersion: policies.kyverno.io/v1
+    kind: ValidatingPolicy
+    name: platform-resource-requests
+  - apiVersion: policies.kyverno.io/v1
+    kind: ValidatingPolicy
+    name: platform-image-tags
+  healthCheckExprs:
+  - apiVersion: policies.kyverno.io/v1
+    kind: ValidatingPolicy
+    current: has(status.conditionStatus) && status.conditionStatus.ready == true

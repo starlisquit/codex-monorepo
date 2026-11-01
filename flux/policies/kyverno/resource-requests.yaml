@@ -27,7 +27,6 @@ spec:
       - UPDATE
       resources:
       - pods
-      - pods/ephemeralcontainers
   variables:
   - name: containers
     expression: 'object.spec.containers + (has(object.spec.initContainers) ? object.spec.initContainers
