@@ -22,6 +22,21 @@ or crash-looping Pods, Bound workload PVCs, and no kube-proxy resources. Complet
 bootstrap Jobs are expected. An OpenBao wait before initialization is expected;
 an uninvestigated failed resource is not.
 
+## Kubernetes resource Metrics API
+
+```sh
+kubectl wait --for=condition=Available apiservice/v1beta1.metrics.k8s.io --timeout=3m
+kubectl get --raw /apis/metrics.k8s.io/v1beta1/nodes
+kubectl top nodes
+kubectl top pods -A
+```
+
+Metrics Server is separate from VictoriaMetrics and KEDA. Allow initial samples
+to arrive. If `Metrics API not available` persists, inspect the APIService and
+`kubectl -n observability logs deployment/metrics-server --tail=100`. See the
+[component guide](../../infrastructure/observability/metrics-server/README.md)
+for certificate, kubelet TLS, and deployment dependencies.
+
 ## Storage, database, and secrets
 
 ```sh

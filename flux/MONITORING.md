@@ -46,6 +46,7 @@ continues through the VM stack's built-in native scrape integrations.
 | Grafana Operator | ServiceMonitor |
 | VictoriaTraces agent | ServiceMonitor and configured VTSingle remoteWrite destination |
 | Flux Web UI | Standalone web-server metrics ServiceMonitor; no Flux lifecycle operator |
+| Metrics Server | Metrics API for Kubernetes consumers; its own ServiceMonitor is collected by VictoriaMetrics |
 | KEDA | Operator, metrics adapter, and admission-webhook ServiceMonitors; workload scaling can query the VM API |
 | OpenTelemetry Demo | SDK metrics via VMAgent; OTLP logs via VLAgent; OTLP traces via VTAgent; Collector retained for protocol compatibility |
 | Blackbox Exporter | Exporter self-monitoring and a probe of the existing VictoriaMetrics `/health` endpoint |
@@ -139,3 +140,11 @@ and forwards through native VMAgent, VLAgent, and VTAgent rather than directly t
 storage. Span-to-metrics conversion and the associated dashboard are removed.
 VLAgent is enabled in push mode within the existing VM stack, with Kubernetes log
 tailing disabled. VLSingle, VTSingle, and their Grafana datasources remain enabled.
+
+## Kubernetes Metrics API
+
+[Metrics Server](infrastructure/observability/metrics-server/README.md) supplies
+`metrics.k8s.io` for `kubectl top` and CPU/memory resource autoscaling. This is
+complementary to VictoriaMetrics and separate from KEDA external metrics. The
+platform waits for its APIService Available condition; an installed chart alone
+is not sufficient. See the component README for the lab-only kubelet TLS setting.

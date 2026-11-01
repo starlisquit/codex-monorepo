@@ -1,0 +1,16 @@
+replicas: 1
+resources:
+  requests:
+    cpu: 100m
+    memory: 200Mi
+apiService:
+  create: true
+  insecureSkipTLSVerify: false
+tls:
+  type: cert-manager
+  certManager:
+    addInjectorAnnotations: true
+metrics:
+  enabled: true
+serviceMonitor:
+  enabled: true

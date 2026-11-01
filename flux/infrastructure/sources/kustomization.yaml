@@ -18,3 +18,4 @@ resources:
 - keda.yaml
 - opentelemetry.yaml
 - ceph-csi.yaml
+- metrics-server.yaml

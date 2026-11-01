@@ -25,6 +25,7 @@ unfinished work separately, including the paused API slowness investigation.
   a category and list them in that category's Kustomization.
 - `observability/datasources/`: additional GrafanaDatasource resources and an
   excluded example; the VM chart retains ownership of its default datasources.
+- `observability/metrics-server/`: Kubernetes Metrics API for `kubectl top` and resource-based autoscaling, alongside VictoriaMetrics.
 - `observability/prometheus-operator-crds/`: monitoring CRDs only; see
   [monitoring setup](MONITORING.md) for collection and dependency details.
 - `ui/flux-ui/`: standalone Flux Web UI; Flux is bootstrapped separately, without
@@ -141,9 +142,10 @@ Kubernetes 1.35 profile. Live deployment subsequently exposed additional runtime
 requirements and a Helm 4 Collector rendering failure that the Helm 3 render did
 not catch. See [deployment findings](docs/findings/deployment-findings.md).
 
-The current local validation covers 65 Kustomize builds, the platform dependency
-DAG and storage gates, and syntax checks for the runbook helpers. The four changed charts (Rook operator,
-CSI drivers, trust-manager, and demo) also render under Helm 3 and Helm 4.0.0. Run:
+The current local validation covers 67 Kustomize builds, the platform dependency
+DAG and storage gates, and syntax checks for the runbook helpers. The updated charts (Rook operator,
+CSI drivers, trust-manager, demo, and Metrics Server) also render under Helm 3
+and Helm 4.0.0. Run:
 
 ```sh
 flux/runbooks/scripts/validate.sh
@@ -169,6 +171,7 @@ These are chart versions, not application image versions.
 | valkey | `0.12.1` |
 | cilium | `1.20.4` |
 | prometheus-blackbox-exporter | `11.20.2` |
+| metrics-server | `3.14.0` |
 | victoria-metrics-k8s-stack | `0.97.0` |
 | victoria-traces-agent | `0.2.1` |
 | kyverno | `3.9.2` |

@@ -25,6 +25,8 @@ flowchart TD
   Monitoring --> Grafana[Grafana Operator]
   Monitoring --> Certs[cert-manager]
   Certs --> Trust[trust-manager]
+  Certs --> Metrics[Metrics Server / metrics.k8s.io]
+  Monitoring --> Metrics
   Storage --> VM[VictoriaMetrics stack]
   Grafana --> VM
   Storage --> PG[PostgreSQL after CNPG operator]
@@ -69,3 +71,7 @@ data. Replication and `prune: false` are not backups.
 
 The lab caps Kustomize controller reconciliation concurrency at four. This reduces
 bootstrap API bursts; it is not a substitute for sufficient control-plane capacity.
+
+Metrics Server is an independent, small Kubernetes API addon under observability.
+It waits for cert-manager and monitoring CRDs, not Ceph or the VictoriaMetrics
+backends. Its APIService must be Available before its Kustomization is Ready.

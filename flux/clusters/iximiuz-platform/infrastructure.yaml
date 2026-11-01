@@ -645,3 +645,34 @@ spec:
     current: has(status.conditions) && status.conditions.exists(c, c.type == 'Ready'
       && c.status == 'True')
   timeout: 5m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: metrics-server
+  namespace: flux-system
+spec:
+  interval: 10m
+  retryInterval: 30s
+  path: ./flux/clusters/iximiuz-platform/metrics-server
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+  - name: monitoring-crds
+  - name: cert-manager
+  healthChecks:
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: metrics-server
+    namespace: observability
+  - apiVersion: apiregistration.k8s.io/v1
+    kind: APIService
+    name: v1beta1.metrics.k8s.io
+  healthCheckExprs:
+  - apiVersion: apiregistration.k8s.io/v1
+    kind: APIService
+    current: has(status.conditions) && status.conditions.exists(c, c.type == 'Available'
+      && c.status == 'True')
+  timeout: 5m

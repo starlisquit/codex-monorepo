@@ -36,6 +36,11 @@ this overlay. No workloads or stored application data were migrated from it.
 6. VictoriaTraces agent, blackbox probing, and Grafana dashboards after the stack.
 7. OpenTelemetry demo after the observability stack and traces agent.
 
+Metrics Server independently follows cert-manager and monitoring CRDs. Its
+APIService readiness gates `kubectl top` and CPU/memory Metrics API availability;
+it does not depend on Ceph or VictoriaMetrics. See its
+[component guide](../../infrastructure/observability/metrics-server/README.md).
+
 Trust-manager waits for cert-manager. Every monitoring-enabled release waits
 for the monitoring CRDs. A release's dependencies are readiness gates, not just
 apply ordering. Cilium is initially installed with minimal Helm values before

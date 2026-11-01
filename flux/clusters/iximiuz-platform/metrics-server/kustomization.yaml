@@ -1,0 +1,32 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../../infrastructure/observability/metrics-server
+patches:
+- target:
+    kind: HelmRelease
+    name: metrics-server
+  patch: |
+    apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    metadata:
+      name: metrics-server
+      namespace: observability
+    spec:
+      suspend: false
+      timeout: 5m
+      values:
+        # Lab-only: kubeadm's default self-signed kubelet serving certificates.
+        # Prefer trusted serving certificates with matching SANs in other clusters.
+        args:
+        - --kubelet-insecure-tls
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                  - node-01
+                  - node-02
