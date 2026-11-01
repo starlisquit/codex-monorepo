@@ -57,7 +57,8 @@ focused playgrounds rather than deploying unrelated infrastructure.
 1. Chart versions are pinned to the latest stable releases verified on
    2026-11-01 (see the table below). Review Kubernetes compatibility and the
    supported chart values before enabling any release.
-2. Create the target namespaces: `observability`, `rook-ceph`, `databases`,
+2. Select `infrastructure/namespaces` once in a full-platform foundation, or
+   create only the target namespaces for a smaller installation: `observability`, `rook-ceph`, `databases`,
    `kyverno`, `certificates`, `secrets`, `broker`, `ui`, `autoscaling`, and `applications` as needed.
    The demo component creates its own `demo` namespace.
    Cilium targets the existing `kube-system` namespace; sources use `flux-system`.
@@ -76,6 +77,17 @@ focused playgrounds rather than deploying unrelated infrastructure.
 Source references assume Flux permits cross-namespace references. If your Flux
 installation disables them, place the source resources alongside their releases
 and adjust the references instead.
+
+Shared HelmRelease timeouts are explicit: 15 minutes by default, with the
+existing 5-minute Cilium and metrics-server behavior retained. Cluster overlays
+need no `suspend: false` or repeated standard timeout patch. Patch only a real
+cluster difference. Flux Kustomization reconciliation timeouts are a separate
+setting and remain part of the deployment orchestration.
+
+For OpenBao-backed External Secrets, select
+[`secrets/external-secrets/openbao-store`](infrastructure/secrets/external-secrets/openbao-store/README.md)
+after both controllers/backends are ready. The verification ExternalSecret is
+an opt-in subdirectory, and the official OpenBao chart owns token-review RBAC.
 
 ## Dependencies and cluster configuration
 

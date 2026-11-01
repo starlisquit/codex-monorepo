@@ -13,8 +13,6 @@ patches:
       name: metrics-server
       namespace: observability
     spec:
-      suspend: false
-      timeout: 5m
       values:
         # Lab-only: kubeadm's default self-signed kubelet serving certificates.
         # Prefer trusted serving certificates with matching SANs in other clusters.

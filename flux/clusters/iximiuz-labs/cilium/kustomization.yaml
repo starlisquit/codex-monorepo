@@ -10,9 +10,6 @@ patches:
     kind: HelmRelease
     name: cilium
   patch: |
-    - op: replace
-      path: /spec/suspend
-      value: false
     - op: remove
       path: /spec/dependsOn
     - op: add

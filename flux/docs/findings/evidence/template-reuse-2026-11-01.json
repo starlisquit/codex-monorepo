@@ -1,0 +1,45 @@
+{
+  "validation": "offline render comparison; no live cluster deployment",
+  "baseline_commit": "2129b828751b85ff380b946a6356381c9b9e9a37",
+  "kustomize_builds": 103,
+  "selected_flux_kustomizations": 37,
+  "selected_helm_releases": 25,
+  "all_shared_helm_releases_with_explicit_timeout": 31,
+  "moved_timeout_defaults": 23,
+  "removed_overlay_fields_or_json_patch_operations": 49,
+  "normalization": {
+    "HelmRelease.spec.suspend": "absent equals false",
+    "HelmRelease.spec.timeout": "absent equals 5m"
+  },
+  "selected_unique_objects_before": 143,
+  "selected_unique_objects_after": 142,
+  "removed_identities": [
+    "rbac.authorization.k8s.io/v1|ClusterRoleBinding||openbao-token-review"
+  ],
+  "added_identities": [],
+  "changed_normalized_identities": [
+    "v1|ConfigMap|secrets|openbao-values"
+  ],
+  "openbao_values_change": {
+    "server.authDelegator.enabled": true,
+    "chart_previous_default": true
+  },
+  "official_chart_token_review_binding": {
+    "name": "secrets-openbao-server-binding",
+    "roleRef": {
+      "apiGroup": "rbac.authorization.k8s.io",
+      "kind": "ClusterRole",
+      "name": "system:auth-delegator"
+    },
+    "subjects": [
+      {
+        "kind": "ServiceAccount",
+        "name": "openbao",
+        "namespace": "secrets"
+      }
+    ]
+  },
+  "smoke_test_excluded_from_default_store_component": true,
+  "minimal_iximiuz_labs_cilium_effective_config_unchanged": true,
+  "cluster_dependency_and_health_gates_changed": false
+}

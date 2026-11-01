@@ -9,20 +9,6 @@ patches:
     kind: HelmRelease
     name: openbao
   patch: |
-    apiVersion: helm.toolkit.fluxcd.io/v2
-    kind: HelmRelease
-    metadata:
-      name: openbao
-      namespace: secrets
-    spec:
-      suspend: false
-      timeout: 15m
-- target:
-    group: helm.toolkit.fluxcd.io
-    version: v2
-    kind: HelmRelease
-    name: openbao
-  patch: |
     - op: add
       path: /spec/valuesFrom/-
       value:

@@ -13,17 +13,6 @@ patches:
       name: ceph-csi-drivers
       namespace: rook-ceph
     spec:
-      suspend: false
-- target:
-    kind: HelmRelease
-    name: ceph-csi-drivers
-  patch: |
-    apiVersion: helm.toolkit.fluxcd.io/v2
-    kind: HelmRelease
-    metadata:
-      name: ceph-csi-drivers
-      namespace: rook-ceph
-    spec:
       values:
         operatorConfig:
           driverSpecDefaults:

@@ -5,6 +5,7 @@ metadata:
   namespace: ui
 spec:
   interval: 30m
+  timeout: 15m
   valuesFrom:
   - kind: ConfigMap
     name: flux-ui-values

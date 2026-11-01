@@ -5,6 +5,7 @@ metadata:
   namespace: autoscaling
 spec:
   interval: 30m
+  timeout: 15m
   valuesFrom:
   - kind: ConfigMap
     name: keda-values

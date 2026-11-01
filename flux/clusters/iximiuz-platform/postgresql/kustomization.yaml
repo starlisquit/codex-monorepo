@@ -16,8 +16,3 @@ patches:
     spec:
       storage:
         size: 1Gi
-      certificates:
-        serverTLSSecret: application-db-server-pki
-        serverCASecret: application-db-server-pki
-        replicationTLSSecret: application-db-replication-pki
-        clientCASecret: application-db-replication-pki

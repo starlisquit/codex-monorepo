@@ -5,6 +5,7 @@ metadata:
   namespace: observability
 spec:
   interval: 30m
+  timeout: 15m
   valuesFrom:
   - kind: ConfigMap
     name: grafana-operator-values
