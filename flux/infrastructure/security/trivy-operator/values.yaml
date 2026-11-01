@@ -2,7 +2,8 @@ targetNamespaces: ''
 operator:
   scanJobsConcurrentLimit: 2
   scanJobTimeout: 10m
-  scanJobTTL: 30m
+  # Retained completed Jobs count against the upstream concurrency limit.
+  scanJobTTL: ""
   scanSecretTTL: 30m
   scannerReportTTL: 24h
   clusterSbomCacheEnabled: false
@@ -25,6 +26,9 @@ trivyOperator:
             operator: DoesNotExist
   scanJobAutomountServiceAccountToken: false
 trivy:
+  configFile:
+    cache:
+      backend: memory
   slow: false
   timeout: 10m0s
   ignoreUnfixed: false

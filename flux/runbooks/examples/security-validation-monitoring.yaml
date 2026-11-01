@@ -1,0 +1,87 @@
+# Lab-only override merged after the shared VM stack values. No Ceph/PKI prerequisite.
+defaultDashboards:
+  enabled: false
+victoria-metrics-operator:
+  admissionWebhooks:
+    certManager:
+      enabled: false
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      memory: 512Mi
+vmsingle:
+  spec:
+    retentionPeriod: 1d
+    nodeSelector:
+      kubernetes.io/hostname: node-01
+    storage:
+      storageClassName: local-path
+      resources:
+        requests:
+          storage: 1Gi
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        memory: 512Mi
+vlsingle:
+  spec:
+    retentionPeriod: 1d
+    nodeSelector:
+      kubernetes.io/hostname: node-01
+    storage:
+      storageClassName: local-path
+      resources:
+        requests:
+          storage: 1Gi
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        memory: 512Mi
+vtsingle:
+  enabled: false
+alertmanager:
+  enabled: false
+vmalert:
+  enabled: false
+vmauth:
+  enabled: false
+grafana:
+  nodeSelector:
+    kubernetes.io/hostname: node-02
+  persistence:
+    enabled: false
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+    limits:
+      memory: 1Gi
+vmagent:
+  spec:
+    scrapeInterval: 15s
+    nodeSelector:
+      kubernetes.io/hostname: node-01
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        memory: 512Mi
+kubeApiServer:
+  enabled: false
+kubeControllerManager:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeEtcd:
+  enabled: false
+kubeProxy:
+  enabled: false
+kubelet:
+  enabled: false

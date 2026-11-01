@@ -1,0 +1,614 @@
+{
+  "verification": {
+    "timestamp": "2026-11-01T09:44:25.650406+00:00",
+    "checks": [
+      {
+        "name": "controlled vulnerability report count",
+        "actual": 3,
+        "expected": 3
+      },
+      {
+        "name": "two independent nginx reports",
+        "actual": 2,
+        "expected": 2
+      },
+      {
+        "name": "vulnerability total matches CRs",
+        "actual": 1656,
+        "expected": 1656
+      },
+      {
+        "name": "represented reports",
+        "actual": 3,
+        "expected": 3
+      },
+      {
+        "name": "distinct image identities",
+        "actual": 2,
+        "expected": 2
+      },
+      {
+        "name": "ready Trivy operator",
+        "actual": 1,
+        "expected": 1
+      },
+      {
+        "name": "workload ranking sum",
+        "actual": 1656,
+        "expected": 1656
+      },
+      {
+        "name": "image ranking deduplicates report copies",
+        "actual": 828,
+        "expected": 828
+      },
+      {
+        "name": "configuration severity total",
+        "actual": 42,
+        "expected": 42
+      },
+      {
+        "name": "exposed-secret total matches reports",
+        "actual": 0,
+        "expected": 0
+      },
+      {
+        "name": "image/severity filtered vulnerability count",
+        "actual": 42,
+        "expected": 42
+      },
+      {
+        "name": "image/severity filtered report count",
+        "actual": 2,
+        "expected": 2
+      },
+      {
+        "name": "image/severity filtered distinct image count",
+        "actual": 1,
+        "expected": 1
+      },
+      {
+        "name": "image/severity filtered deduplicated ranking",
+        "actual": 21,
+        "expected": 21
+      },
+      {
+        "name": "nonexistent namespace stays No data",
+        "actual": [],
+        "expected": []
+      },
+      {
+        "name": "reported image digests match actual workload images",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "ready Tetragon agents",
+        "actual": 3,
+        "expected": 3
+      },
+      {
+        "name": "desired Tetragon agents",
+        "actual": 3,
+        "expected": 3
+      },
+      {
+        "name": "workload metrics preserve observed namespace and node",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "real exec events reach VictoriaLogs",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "process/parent arguments remain redacted",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "runtime dashboard messages are real events from selected node",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "runtime dashboard retains redaction",
+        "actual": true,
+        "expected": true
+      },
+      {
+        "name": "security ServiceMonitor target count",
+        "actual": 5,
+        "expected": 5
+      },
+      {
+        "name": "security ServiceMonitor targets healthy",
+        "actual": true,
+        "expected": true
+      }
+    ],
+    "report_summaries": [
+      {
+        "name": "replicaset-process-probe-544cf5944-probe",
+        "summary": {
+          "criticalCount": 0,
+          "highCount": 0,
+          "lowCount": 0,
+          "mediumCount": 0,
+          "noneCount": 0,
+          "unknownCount": 0
+        },
+        "artifact": {
+          "digest": "sha256:a7dbc319b1438115a207e11930dc4bb3e643dcb3ec0bdd694bb36cd8fad289ec",
+          "repository": "library/busybox",
+          "tag": "1.37.0"
+        },
+        "scanner": {
+          "name": "Trivy",
+          "vendor": "Aqua Security",
+          "version": "0.76.1"
+        },
+        "updated": "2026-11-01T09:30:43Z"
+      },
+      {
+        "name": "replicaset-scan-one-77fcffdcf4-nginx",
+        "summary": {
+          "criticalCount": 21,
+          "highCount": 83,
+          "lowCount": 150,
+          "mediumCount": 80,
+          "noneCount": 0,
+          "unknownCount": 494
+        },
+        "artifact": {
+          "digest": "sha256:a484819eb60211f5299034ac80f6a681b06f89e65866ce91f356ed7c72af059c",
+          "repository": "library/nginx",
+          "tag": "1.25.5"
+        },
+        "scanner": {
+          "name": "Trivy",
+          "vendor": "Aqua Security",
+          "version": "0.76.1"
+        },
+        "updated": "2026-11-01T09:34:48Z"
+      },
+      {
+        "name": "replicaset-scan-two-69cfd47779-nginx",
+        "summary": {
+          "criticalCount": 21,
+          "highCount": 83,
+          "lowCount": 150,
+          "mediumCount": 80,
+          "noneCount": 0,
+          "unknownCount": 494
+        },
+        "artifact": {
+          "digest": "sha256:a484819eb60211f5299034ac80f6a681b06f89e65866ce91f356ed7c72af059c",
+          "repository": "library/nginx",
+          "tag": "1.25.5"
+        },
+        "scanner": {
+          "name": "Trivy",
+          "vendor": "Aqua Security",
+          "version": "0.76.1"
+        },
+        "updated": "2026-11-01T09:37:52Z"
+      }
+    ],
+    "scope_total": 1656,
+    "deduplicated_total": 828,
+    "critical_total": 42
+  },
+  "dashboard_panels": {
+    "security-trivy-overview": [
+      {
+        "id": 1,
+        "title": "Reported vulnerabilities",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 1,
+            "values": 2
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 2,
+        "title": "Image reports represented",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 1,
+            "values": 2
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 3,
+        "title": "Distinct image identities represented",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 1,
+            "values": 2
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 4,
+        "title": "Trivy Operator ready replicas",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 1,
+            "values": 2
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 5,
+        "title": "Vulnerabilities by severity",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 5,
+            "values": 410
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 6,
+        "title": "Namespaces with most reported vulnerabilities",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 4,
+            "values": 324
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 7,
+        "title": "Workloads and containers with most findings",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 20,
+            "values": 40
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 8,
+        "title": "Images with most findings (deduplicated report copies)",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 20,
+            "values": 40
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 9,
+        "title": "Configuration findings by severity",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 4,
+            "values": 328
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 10,
+        "title": "Exposed-secret findings by namespace",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 4,
+            "values": 324
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 11,
+        "title": "Namespaced RBAC findings by severity",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 4,
+            "values": 328
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 12,
+        "title": "ClusterRole findings by severity (global)",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 4,
+            "values": 328
+          }
+        },
+        "http_error": null
+      }
+    ],
+    "security-tetragon-overview": [
+      {
+        "id": 1,
+        "title": "Ready agents",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 1,
+            "values": 2
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 2,
+        "title": "Desired agents",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 1,
+            "values": 2
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 3,
+        "title": "Observed events over selected range",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 1,
+            "values": 2
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 4,
+        "title": "Exported events over selected range",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 1,
+            "values": 2
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 5,
+        "title": "Event rate by type",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 2,
+            "values": 164
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 6,
+        "title": "Most active workloads",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 24,
+            "values": 820
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 7,
+        "title": "Export rate by node",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 3,
+            "values": 246
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 8,
+        "title": "Time since last export",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 3,
+            "values": 246
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 9,
+        "title": "Kernel and userspace event loss",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 1,
+            "values": 0
+          },
+          "B": {
+            "status": 200,
+            "error": null,
+            "frames": 3,
+            "values": 246
+          },
+          "C": {
+            "status": 200,
+            "error": null,
+            "frames": 3,
+            "values": 246
+          },
+          "D": {
+            "status": 200,
+            "error": null,
+            "frames": 3,
+            "values": 246
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 10,
+        "title": "Export failures and rate-limit drops",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 3,
+            "values": 246
+          },
+          "B": {
+            "status": 200,
+            "error": null,
+            "frames": 3,
+            "values": 246
+          },
+          "C": {
+            "status": 200,
+            "error": null,
+            "frames": 3,
+            "values": 246
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 11,
+        "title": "Agent internal errors",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 15,
+            "values": 1230
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 12,
+        "title": "Process cache utilization",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 3,
+            "values": 246
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 13,
+        "title": "Process cache misses and evictions",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 3,
+            "values": 246
+          },
+          "B": {
+            "status": 200,
+            "error": null,
+            "frames": 3,
+            "values": 246
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 14,
+        "title": "Missing process information",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 3,
+            "values": 246
+          }
+        },
+        "http_error": null
+      },
+      {
+        "id": 15,
+        "title": "Runtime event logs (selected nodes)",
+        "results": {
+          "A": {
+            "status": 200,
+            "error": null,
+            "frames": 1,
+            "values": 1932
+          }
+        },
+        "http_error": null
+      }
+    ]
+  },
+  "browser": [
+    {
+      "dashboard": "security-trivy-overview",
+      "title": "Security / Trivy findings - observability - Dashboards - Grafana",
+      "expected_panels_missing": [],
+      "render_errors": [],
+      "datasource_requests": 12,
+      "datasource_errors": []
+    },
+    {
+      "dashboard": "security-tetragon-overview",
+      "title": "Security / Tetragon runtime - observability - Dashboards - Grafana",
+      "expected_panels_missing": [],
+      "render_errors": [],
+      "datasource_requests": 15,
+      "datasource_errors": []
+    }
+  ]
+}

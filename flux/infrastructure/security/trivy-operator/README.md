@@ -13,12 +13,21 @@ workloads across all namespaces. Scan Jobs run in `trivy-system`, not
 inside target namespaces; they therefore do not conflict with the application's
 image allowlist. Review access to the operator namespace independently.
 
-The operator uses upstream scan concurrency (ten Jobs for the pinned chart),
-normal-speed image scanning and current-revision scan selection. Reports expire
-after 24 hours; Jobs/scan Secrets have 30-minute retention. Operator/scan affinity
-excludes labelled control-plane/master nodes. Each scan requests 512 MiB RAM and
-2 GiB ephemeral storage with limits of 2 GiB RAM and 8 GiB ephemeral storage.
-These are normal workload budgets, not activation gates.
+The operator uses two concurrent Jobs, normal-speed image scanning and
+current-revision scan selection. Reports expire after 24 hours; scan Secrets have
+30-minute retention. Completed Jobs are removed immediately: the pinned operator's
+concurrency checker counts retained completed Jobs too, so a nonempty `scanJobTTL`
+can stall the queue until those Jobs expire. Operator/scan affinity excludes
+labelled control-plane/master nodes. These are workload budgets, not activation gates.
+
+The Trivy scan cache uses the per-process in-memory backend. Multiple containers
+in a scan Job share the downloaded vulnerability DB, but must not contend for the
+same filesystem scan-cache lock. The previous default filesystem cache caused a
+real multi-container scan failure. This setting retains vulnerability/secret scans
+and HTTPS verification; it does not disable scanning or share a persistent cache.
+After changing these settings on an existing installation, inspect and remove only
+its obsolete completed/failed scan Jobs if they still occupy the queue. Do not
+delete report CRs as a generic retry.
 
 Image vulnerability, configuration, RBAC assessment, exposed-secret scanning and
 SBOM generation use the upstream enabled defaults. Node/infra and cluster-compliance

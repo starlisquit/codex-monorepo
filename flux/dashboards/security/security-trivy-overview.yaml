@@ -57,7 +57,7 @@ spec:
               "uid": "VictoriaMetrics"
             },
             "query": {
-              "query": "label_values(trivy_image_vulnerabilities{namespace=~\"${namespace:regex}\"}, resource_kind)",
+              "query": "label_values(trivy_image_vulnerabilities{namespace=~\"${namespace}\"}, resource_kind)",
               "refId": "kind"
             },
             "refresh": 2,
@@ -80,7 +80,7 @@ spec:
               "uid": "VictoriaMetrics"
             },
             "query": {
-              "query": "label_values(trivy_image_vulnerabilities{namespace=~\"${namespace:regex}\"}, image_repository)",
+              "query": "label_values(trivy_image_vulnerabilities{namespace=~\"${namespace}\"}, image_repository)",
               "refId": "image"
             },
             "refresh": 2,
@@ -129,7 +129,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "sum(trivy_image_vulnerabilities{namespace=~\"${namespace:regex}\",resource_kind=~\"${kind:regex}\",image_repository=~\"${image:regex}\",severity=~\"${severity:regex}\"})",
+              "expr": "sum(trivy_image_vulnerabilities{namespace=~\"${namespace}\",resource_kind=~\"${kind}\",image_repository=~\"${image}\",severity=~\"${severity}\"})",
               "legendFormat": "__auto",
               "range": false,
               "instant": true,
@@ -173,7 +173,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "count(count by (namespace, name) (trivy_image_vulnerabilities{namespace=~\"${namespace:regex}\",resource_kind=~\"${kind:regex}\",image_repository=~\"${image:regex}\",severity=~\"${severity:regex}\"}))",
+              "expr": "count(count by (namespace, name) (trivy_image_vulnerabilities{namespace=~\"${namespace}\",resource_kind=~\"${kind}\",image_repository=~\"${image}\",severity=~\"${severity}\"}))",
               "legendFormat": "__auto",
               "range": false,
               "instant": true,
@@ -217,7 +217,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "count(count by (image_registry, image_repository, image_tag, image_digest) (trivy_image_vulnerabilities{namespace=~\"${namespace:regex}\",resource_kind=~\"${kind:regex}\",image_repository=~\"${image:regex}\",severity=~\"${severity:regex}\"}))",
+              "expr": "count(count by (image_registry, image_repository, image_tag, image_digest) (trivy_image_vulnerabilities{namespace=~\"${namespace}\",resource_kind=~\"${kind}\",image_repository=~\"${image}\",severity=~\"${severity}\"}))",
               "legendFormat": "__auto",
               "range": false,
               "instant": true,
@@ -305,7 +305,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "sum by (severity) (trivy_image_vulnerabilities{namespace=~\"${namespace:regex}\",resource_kind=~\"${kind:regex}\",image_repository=~\"${image:regex}\",severity=~\"${severity:regex}\"})",
+              "expr": "sum by (severity) (trivy_image_vulnerabilities{namespace=~\"${namespace}\",resource_kind=~\"${kind}\",image_repository=~\"${image}\",severity=~\"${severity}\"})",
               "legendFormat": "{{severity}}",
               "range": true,
               "instant": false,
@@ -347,7 +347,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "topk(10, sum by (namespace) (trivy_image_vulnerabilities{namespace=~\"${namespace:regex}\",resource_kind=~\"${kind:regex}\",image_repository=~\"${image:regex}\",severity=~\"${severity:regex}\"}))",
+              "expr": "topk(10, sum by (namespace) (trivy_image_vulnerabilities{namespace=~\"${namespace}\",resource_kind=~\"${kind}\",image_repository=~\"${image}\",severity=~\"${severity}\"}))",
               "legendFormat": "{{namespace}}",
               "range": true,
               "instant": false,
@@ -389,7 +389,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "topk(20, sum by (namespace, resource_kind, resource_name, container_name, severity) (trivy_image_vulnerabilities{namespace=~\"${namespace:regex}\",resource_kind=~\"${kind:regex}\",image_repository=~\"${image:regex}\",severity=~\"${severity:regex}\"}))",
+              "expr": "topk(20, sum by (namespace, resource_kind, resource_name, container_name, severity) (trivy_image_vulnerabilities{namespace=~\"${namespace}\",resource_kind=~\"${kind}\",image_repository=~\"${image}\",severity=~\"${severity}\"}))",
               "legendFormat": "__auto",
               "range": false,
               "instant": true,
@@ -461,7 +461,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "topk(20, sum by (image_registry, image_repository, image_tag, image_digest) (max by (image_registry, image_repository, image_tag, image_digest, severity) (trivy_image_vulnerabilities{namespace=~\"${namespace:regex}\",resource_kind=~\"${kind:regex}\",image_repository=~\"${image:regex}\",severity=~\"${severity:regex}\"})))",
+              "expr": "topk(20, sum by (image_registry, image_repository, image_tag, image_digest) (max by (image_registry, image_repository, image_tag, image_digest, severity) (trivy_image_vulnerabilities{namespace=~\"${namespace}\",resource_kind=~\"${kind}\",image_repository=~\"${image}\",severity=~\"${severity}\"})))",
               "legendFormat": "__auto",
               "range": false,
               "instant": true,
@@ -533,7 +533,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "sum by (severity) (trivy_resource_configaudits{namespace=~\"${namespace:regex}\",severity=~\"${severity:regex}\"})",
+              "expr": "sum by (severity) (trivy_resource_configaudits{namespace=~\"${namespace}\",severity=~\"${severity}\"})",
               "legendFormat": "{{severity}}",
               "range": true,
               "instant": false,
@@ -575,7 +575,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "sum by (namespace) (trivy_image_exposedsecrets{namespace=~\"${namespace:regex}\",resource_kind=~\"${kind:regex}\",image_repository=~\"${image:regex}\",severity=~\"${severity:regex}\"})",
+              "expr": "sum by (namespace) (trivy_image_exposedsecrets{namespace=~\"${namespace}\",resource_kind=~\"${kind}\",image_repository=~\"${image}\",severity=~\"${severity}\"})",
               "legendFormat": "{{namespace}}",
               "range": true,
               "instant": false,
@@ -617,7 +617,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "sum by (severity) (trivy_role_rbacassessments{namespace=~\"${namespace:regex}\",severity=~\"${severity:regex}\"})",
+              "expr": "sum by (severity) (trivy_role_rbacassessments{namespace=~\"${namespace}\",severity=~\"${severity}\"})",
               "legendFormat": "{{severity}}",
               "range": true,
               "instant": false,
@@ -659,7 +659,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "expr": "sum by (severity) (trivy_clusterrole_clusterrbacassessments{severity=~\"${severity:regex}\"})",
+              "expr": "sum by (severity) (trivy_clusterrole_clusterrbacassessments{severity=~\"${severity}\"})",
               "legendFormat": "{{severity}}",
               "range": true,
               "instant": false,

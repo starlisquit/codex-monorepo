@@ -15,8 +15,8 @@ No extra CVE/binary label collection, scan policy, enforcement action, or scanne
 configuration is enabled by these dashboards. Dependencies are the security
 components' existing ServiceMonitors, the stack's kube-state-metrics, and vlagent
 for runtime logs. They can be imported before those emit data, but empty panels
-must not be interpreted as a healthy/clean result. The destroyed playground means
-these dashboards are locally validated templates, not live ingestion results.
+must not be interpreted as a healthy/clean result. Live verification and its exact
+scope are recorded in [the security validation report](../../docs/findings/security-validation-2026-11-01.md).
 
 ## Trivy interpretation
 
@@ -61,8 +61,12 @@ than added together as distinct dropped events.
 The log panel selects the `tetragon` stdout-exporter container. Its outer Kubernetes
 labels identify the collector Pod, while nested event JSON identifies the observed
 application. Therefore the workload namespace/name filters intentionally do not
-filter raw logs. Rows stay single-line with inline labels hidden and details
-expandable. Use the container-log-browser link for further investigation.
+filter raw logs. Native collection flattens Tetragon's event JSON without an
+original message field. The query packs `node_name` and `process_*` fields into
+`_msg`, preserving every original field for expanded details and avoiding the
+missing-message placeholder. Configured argument redaction remains in effect.
+Rows stay single-line with inline labels hidden and details expandable. Use the
+container-log-browser link for further investigation.
 
 ## Verify after bootstrap
 

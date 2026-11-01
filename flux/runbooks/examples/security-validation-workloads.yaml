@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: security-validation
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: process-probe
+  namespace: security-validation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: process-probe
+  template:
+    metadata:
+      labels:
+        app: process-probe
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: node-01
+      automountServiceAccountToken: false
+      containers:
+      - name: probe
+        image: docker.io/library/busybox:1.37.0
+        command: [sleep, "7200"]
+        resources:
+          requests:
+            cpu: 1m
+            memory: 8Mi
+          limits:
+            memory: 32Mi
+---
+# Intentionally old official image for positive scan findings; no Service/Ingress.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scan-one
+  namespace: security-validation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scan-one
+  template:
+    metadata:
+      labels:
+        app: scan-one
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: node-02
+      automountServiceAccountToken: false
+      containers:
+      - name: nginx
+        image: docker.io/library/nginx:1.25.5
+        resources:
+          requests:
+            cpu: 1m
+            memory: 16Mi
+          limits:
+            memory: 128Mi
+---
+# A separate controller with the same image exercises report-copy deduplication.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scan-two
+  namespace: security-validation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scan-two
+  template:
+    metadata:
+      labels:
+        app: scan-two
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: node-02
+      automountServiceAccountToken: false
+      containers:
+      - name: nginx
+        image: docker.io/library/nginx:1.25.5
+        resources:
+          requests:
+            cpu: 1m
+            memory: 16Mi
+          limits:
+            memory: 128Mi
