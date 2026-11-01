@@ -1,6 +1,6 @@
 # Standalone UI only: no Flux Operator reconciliation or Flux installation.
 fullnameOverride: flux-ui
-installCRDs: false
+installCRDs: true
 web:
   enabled: true
   serverOnly: true

@@ -3,7 +3,7 @@
 Uses the official `flux-operator` chart `0.62.1` in **web-server-only mode**:
 
 ```yaml
-installCRDs: false
+installCRDs: true
 web:
   enabled: true
   serverOnly: true
@@ -11,7 +11,9 @@ web:
 
 The chart/image name is shared with Flux Operator, but this release only runs the
 Web UI. It does not install Flux controllers, reconcile FluxInstances, manage
-Flux upgrades, or install the operator's CRDs. No FluxInstance is included.
+Flux upgrades. The API CRDs are installed because the standalone server still
+requires the FluxInstance API for discovery; no FluxInstance or lifecycle
+controller is created.
 
 Bootstrap Flux separately using your chosen method, such as `flux bootstrap`.
 Then create the `ui` namespace, reconcile shared chart sources and monitoring
@@ -34,5 +36,5 @@ kubectl -n ui port-forward service/flux-ui 9080:9080
 
 The ServiceMonitor stays enabled for collection by the VM stack. The release
 depends on `observability/prometheus-operator-crds` and keeps the chart's NetworkPolicy
-allowing the web and metrics ports. Bootstrap or UI deployment has not been
-performed against a cluster; Helm/Kustomize renders validate these templates.
+allowing the web and metrics ports. Live deployment in the iximiuz platform
+revealed the API discovery dependency, which is why CRD installation is enabled.
