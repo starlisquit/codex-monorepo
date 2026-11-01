@@ -1,0 +1,787 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: security-tetragon-overview
+  namespace: observability
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: platform
+  json: |
+    {
+      "uid": "security-tetragon-overview",
+      "title": "Security / Tetragon runtime",
+      "description": "Workload activity and runtime-telemetry pipeline health. Observed events are not automatically security detections. Agent health and export panels use node filtering; workload filters apply only to activity panels.",
+      "tags": [
+        "platform",
+        "security"
+      ],
+      "schemaVersion": 39,
+      "version": 1,
+      "refresh": "1m",
+      "time": {
+        "from": "now-6h",
+        "to": "now"
+      },
+      "templating": {
+        "list": [
+          {
+            "name": "node",
+            "label": "Node",
+            "type": "query",
+            "datasource": {
+              "type": "prometheus",
+              "uid": "VictoriaMetrics"
+            },
+            "query": {
+              "query": "label_values(tetragon_process_cache_size, node)",
+              "refId": "node"
+            },
+            "refresh": 2,
+            "multi": true,
+            "includeAll": true,
+            "allValue": ".*",
+            "current": {
+              "text": "All",
+              "value": "$__all"
+            },
+            "options": [],
+            "sort": 1
+          },
+          {
+            "name": "namespace",
+            "label": "Namespace",
+            "type": "query",
+            "datasource": {
+              "type": "prometheus",
+              "uid": "VictoriaMetrics"
+            },
+            "query": {
+              "query": "label_values(tetragon_events_total{node=~\"${node:regex}\"}, namespace)",
+              "refId": "namespace"
+            },
+            "refresh": 2,
+            "multi": true,
+            "includeAll": true,
+            "allValue": ".*",
+            "current": {
+              "text": "All",
+              "value": "$__all"
+            },
+            "options": [],
+            "sort": 1
+          },
+          {
+            "name": "workload",
+            "label": "Workload",
+            "type": "query",
+            "datasource": {
+              "type": "prometheus",
+              "uid": "VictoriaMetrics"
+            },
+            "query": {
+              "query": "label_values(tetragon_events_total{node=~\"${node:regex}\",namespace=~\"${namespace:regex}\"}, workload)",
+              "refId": "workload"
+            },
+            "refresh": 2,
+            "multi": true,
+            "includeAll": true,
+            "allValue": ".*",
+            "current": {
+              "text": "All",
+              "value": "$__all"
+            },
+            "options": [],
+            "sort": 1
+          }
+        ]
+      },
+      "panels": [
+        {
+          "id": 1,
+          "title": "Ready agents",
+          "description": "Cluster-wide readiness; filters do not change this value. Compare with desired agents.",
+          "type": "stat",
+          "gridPos": {
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum(kube_daemonset_status_number_ready{namespace=\"tetragon\",daemonset=\"tetragon\"})",
+              "legendFormat": "__auto",
+              "range": false,
+              "instant": true,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "colorMode": "value",
+            "graphMode": "none"
+          }
+        },
+        {
+          "id": 2,
+          "title": "Desired agents",
+          "description": "Expected node coverage from Kubernetes. Includes control-plane agents.",
+          "type": "stat",
+          "gridPos": {
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum(kube_daemonset_status_desired_number_scheduled{namespace=\"tetragon\",daemonset=\"tetragon\"})",
+              "legendFormat": "__auto",
+              "range": false,
+              "instant": true,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "colorMode": "value",
+            "graphMode": "none"
+          }
+        },
+        {
+          "id": 3,
+          "title": "Observed events over selected range",
+          "description": "Counter increase for selected workloads, not a count of attacks or exported records.",
+          "type": "stat",
+          "gridPos": {
+            "x": 12,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum(increase(tetragon_events_total{node=~\"${node:regex}\",namespace=~\"${namespace:regex}\",workload=~\"${workload:regex}\"}[$__range]))",
+              "legendFormat": "__auto",
+              "range": false,
+              "instant": true,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "colorMode": "value",
+            "graphMode": "none"
+          }
+        },
+        {
+          "id": 4,
+          "title": "Exported events over selected range",
+          "description": "Node filter only. Export filters can make this differ from observed event counts.",
+          "type": "stat",
+          "gridPos": {
+            "x": 18,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum(increase(tetragon_events_exported_total{node=~\"${node:regex}\"}[$__range]))",
+              "legendFormat": "__auto",
+              "range": false,
+              "instant": true,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "colorMode": "value",
+            "graphMode": "none"
+          }
+        },
+        {
+          "id": 5,
+          "title": "Event rate by type",
+          "description": "Selected observed workload events; normal execution is not evidence of an incident.",
+          "type": "timeseries",
+          "gridPos": {
+            "x": 0,
+            "y": 4,
+            "w": 12,
+            "h": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum by (event_type) (rate(tetragon_events_total{node=~\"${node:regex}\",namespace=~\"${namespace:regex}\",workload=~\"${workload:regex}\"}[$__rate_interval]))",
+              "legendFormat": "{{event_type}}",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        },
+        {
+          "id": 6,
+          "title": "Most active workloads",
+          "description": "Uses retained namespace/workload labels; no binary labels are required.",
+          "type": "timeseries",
+          "gridPos": {
+            "x": 12,
+            "y": 4,
+            "w": 12,
+            "h": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "topk(10, sum by (namespace, workload) (rate(tetragon_events_total{node=~\"${node:regex}\",namespace=~\"${namespace:regex}\",workload=~\"${workload:regex}\"}[$__rate_interval])))",
+              "legendFormat": "{{namespace}} / {{workload}}",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        },
+        {
+          "id": 7,
+          "title": "Export rate by node",
+          "description": "Agent export health: node filter only.",
+          "type": "timeseries",
+          "gridPos": {
+            "x": 0,
+            "y": 12,
+            "w": 12,
+            "h": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum by (node) (rate(tetragon_events_exported_total{node=~\"${node:regex}\"}[$__rate_interval]))",
+              "legendFormat": "{{node}}",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        },
+        {
+          "id": 8,
+          "title": "Time since last export",
+          "description": "Node filter only. Quiet/filtered workloads can produce an old timestamp without an agent failure; no series before first export.",
+          "type": "timeseries",
+          "gridPos": {
+            "x": 12,
+            "y": 12,
+            "w": 12,
+            "h": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "time() - max by (node) (tetragon_events_last_exported_timestamp{node=~\"${node:regex}\"} > 0)",
+              "legendFormat": "{{node}}",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        },
+        {
+          "id": 9,
+          "title": "Kernel and userspace event loss",
+          "description": "Different pipeline loss counters; investigate individually rather than summing as distinct lost events. Node filter only.",
+          "type": "timeseries",
+          "gridPos": {
+            "x": 0,
+            "y": 20,
+            "w": 12,
+            "h": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum by (node) (rate(tetragon_bpf_missed_events_total{node=~\"${node:regex}\"}[$__rate_interval]))",
+              "legendFormat": "{{node}} / bpf_missed_events_total",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            },
+            {
+              "refId": "B",
+              "expr": "sum by (node) (rate(tetragon_observer_ringbuf_events_lost_total{node=~\"${node:regex}\"}[$__rate_interval]))",
+              "legendFormat": "{{node}} / observer_ringbuf_events_lost_total",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            },
+            {
+              "refId": "C",
+              "expr": "sum by (node) (rate(tetragon_observer_ringbuf_queue_events_lost_total{node=~\"${node:regex}\"}[$__rate_interval]))",
+              "legendFormat": "{{node}} / observer_ringbuf_queue_events_lost_total",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            },
+            {
+              "refId": "D",
+              "expr": "sum by (node) (rate(tetragon_notify_overflowed_events_total{node=~\"${node:regex}\"}[$__rate_interval]))",
+              "legendFormat": "{{node}} / notify_overflowed_events_total",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        },
+        {
+          "id": 10,
+          "title": "Export failures and rate-limit drops",
+          "description": "Node filter only; a missing lazily-created counter is not proof of zero failures.",
+          "type": "timeseries",
+          "gridPos": {
+            "x": 12,
+            "y": 20,
+            "w": 12,
+            "h": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum by (node) (rate(tetragon_events_export_failed_total{node=~\"${node:regex}\"}[$__rate_interval]))",
+              "legendFormat": "{{node}} / events_export_failed_total",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            },
+            {
+              "refId": "B",
+              "expr": "sum by (node) (rate(tetragon_export_ratelimit_events_dropped_total{node=~\"${node:regex}\"}[$__rate_interval]))",
+              "legendFormat": "{{node}} / export_ratelimit_events_dropped_total",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            },
+            {
+              "refId": "C",
+              "expr": "sum by (node) (rate(tetragon_field_filter_failed_total{node=~\"${node:regex}\"}[$__rate_interval]))",
+              "legendFormat": "{{node}} / field_filter_failed_total",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        },
+        {
+          "id": 11,
+          "title": "Agent internal errors",
+          "description": "Internal processing errors, not application log severity. Node filter only.",
+          "type": "timeseries",
+          "gridPos": {
+            "x": 0,
+            "y": 28,
+            "w": 12,
+            "h": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum by (node, error) (rate(tetragon_errors_total{node=~\"${node:regex}\"}[$__rate_interval]))",
+              "legendFormat": "{{node}} / {{error}}",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        },
+        {
+          "id": 12,
+          "title": "Process cache utilization",
+          "description": "Node filter only. High utilization should be interpreted with cache eviction/miss counters.",
+          "type": "timeseries",
+          "gridPos": {
+            "x": 12,
+            "y": 28,
+            "w": 12,
+            "h": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "max by (node) (tetragon_process_cache_size{node=~\"${node:regex}\"}) / max by (node) (tetragon_process_cache_capacity{node=~\"${node:regex}\"})",
+              "legendFormat": "{{node}}",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percentunit",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        },
+        {
+          "id": 13,
+          "title": "Process cache misses and evictions",
+          "description": "Node filter only; cache misses can reduce correlation completeness.",
+          "type": "timeseries",
+          "gridPos": {
+            "x": 0,
+            "y": 36,
+            "w": 12,
+            "h": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum by (node) (rate(tetragon_process_cache_misses_total{node=~\"${node:regex}\"}[$__rate_interval]))",
+              "legendFormat": "{{node}} / process_cache_misses_total",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            },
+            {
+              "refId": "B",
+              "expr": "sum by (node) (rate(tetragon_process_cache_evictions_total{node=~\"${node:regex}\"}[$__rate_interval]))",
+              "legendFormat": "{{node}} / process_cache_evictions_total",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        },
+        {
+          "id": 14,
+          "title": "Missing process information",
+          "description": "Node filter only. Inspect agent logs and process correlation when rising.",
+          "type": "timeseries",
+          "gridPos": {
+            "x": 12,
+            "y": 36,
+            "w": 12,
+            "h": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum by (node) (rate(tetragon_events_missing_process_info_total{node=~\"${node:regex}\"}[$__rate_interval]))",
+              "legendFormat": "{{node}}",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        },
+        {
+          "id": 15,
+          "title": "Runtime event logs (selected nodes)",
+          "description": "Raw stdout-exporter records from VictoriaLogs. Node filter only; namespace/workload filters above apply to event metrics, not these outer collector labels. Expand JSON for the observed application identity. Empty output can mean no recent exported events.",
+          "type": "logs",
+          "gridPos": {
+            "x": 0,
+            "y": 44,
+            "w": 24,
+            "h": 14
+          },
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "VictoriaLogs"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "kubernetes.pod_namespace:=\"tetragon\" AND kubernetes.container_name:=\"export-stdout\" AND kubernetes.pod_node_name:~\"^${node:regex}$\"",
+              "queryType": "instant",
+              "editorMode": "code",
+              "maxLines": 500
+            }
+          ],
+          "options": {
+            "showTime": true,
+            "showLabels": false,
+            "showCommonLabels": false,
+            "wrapLogMessage": false,
+            "enableLogDetails": true,
+            "sortOrder": "Descending",
+            "dedupStrategy": "none"
+          }
+        }
+      ],
+      "links": [
+        {
+          "title": "Container log browser",
+          "type": "link",
+          "url": "/d/platform-container-logs?var-namespace=tetragon&var-container=export-stdout",
+          "targetBlank": false
+        }
+      ]
+    }

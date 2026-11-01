@@ -1,0 +1,687 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: security-trivy-overview
+  namespace: observability
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: platform
+  json: |
+    {
+      "uid": "security-trivy-overview",
+      "title": "Security / Trivy findings",
+      "description": "Report-backed gauges, scan coverage and controller readiness. No data is unknown, not a clean result. Counts generally represent findings across report copies rather than globally unique CVEs.",
+      "tags": [
+        "platform",
+        "security"
+      ],
+      "schemaVersion": 39,
+      "version": 1,
+      "refresh": "1m",
+      "time": {
+        "from": "now-6h",
+        "to": "now"
+      },
+      "templating": {
+        "list": [
+          {
+            "name": "namespace",
+            "label": "Namespace",
+            "type": "query",
+            "datasource": {
+              "type": "prometheus",
+              "uid": "VictoriaMetrics"
+            },
+            "query": {
+              "query": "label_values(trivy_image_vulnerabilities, namespace)",
+              "refId": "namespace"
+            },
+            "refresh": 2,
+            "multi": true,
+            "includeAll": true,
+            "allValue": ".*",
+            "current": {
+              "text": "All",
+              "value": "$__all"
+            },
+            "options": [],
+            "sort": 1
+          },
+          {
+            "name": "kind",
+            "label": "Kind",
+            "type": "query",
+            "datasource": {
+              "type": "prometheus",
+              "uid": "VictoriaMetrics"
+            },
+            "query": {
+              "query": "label_values(trivy_image_vulnerabilities{namespace=~\"${namespace:regex}\"}, resource_kind)",
+              "refId": "kind"
+            },
+            "refresh": 2,
+            "multi": true,
+            "includeAll": true,
+            "allValue": ".*",
+            "current": {
+              "text": "All",
+              "value": "$__all"
+            },
+            "options": [],
+            "sort": 1
+          },
+          {
+            "name": "image",
+            "label": "Image",
+            "type": "query",
+            "datasource": {
+              "type": "prometheus",
+              "uid": "VictoriaMetrics"
+            },
+            "query": {
+              "query": "label_values(trivy_image_vulnerabilities{namespace=~\"${namespace:regex}\"}, image_repository)",
+              "refId": "image"
+            },
+            "refresh": 2,
+            "multi": true,
+            "includeAll": true,
+            "allValue": ".*",
+            "current": {
+              "text": "All",
+              "value": "$__all"
+            },
+            "options": [],
+            "sort": 1
+          },
+          {
+            "name": "severity",
+            "label": "Severity",
+            "type": "custom",
+            "query": "Critical,High,Medium,Low,Unknown",
+            "multi": true,
+            "includeAll": true,
+            "allValue": ".*",
+            "current": {
+              "text": "All",
+              "value": "$__all"
+            },
+            "options": []
+          }
+        ]
+      },
+      "panels": [
+        {
+          "id": 1,
+          "title": "Reported vulnerabilities",
+          "description": "Selected findings summed across resource/container report copies; not globally unique CVEs.",
+          "type": "stat",
+          "gridPos": {
+            "x": 0,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum(trivy_image_vulnerabilities{namespace=~\"${namespace:regex}\",resource_kind=~\"${kind:regex}\",image_repository=~\"${image:regex}\",severity=~\"${severity:regex}\"})",
+              "legendFormat": "__auto",
+              "range": false,
+              "instant": true,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "colorMode": "value",
+            "graphMode": "none"
+          }
+        },
+        {
+          "id": 2,
+          "title": "Image reports represented",
+          "description": "Reports represented in metrics, including reports with zero matching findings. Missing metrics do not establish clean scans.",
+          "type": "stat",
+          "gridPos": {
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "count(count by (namespace, name) (trivy_image_vulnerabilities{namespace=~\"${namespace:regex}\",resource_kind=~\"${kind:regex}\",image_repository=~\"${image:regex}\",severity=~\"${severity:regex}\"}))",
+              "legendFormat": "__auto",
+              "range": false,
+              "instant": true,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "colorMode": "value",
+            "graphMode": "none"
+          }
+        },
+        {
+          "id": 3,
+          "title": "Distinct image identities represented",
+          "description": "Distinct identities with reports in the selection; this is not the number of images expected to be scanned.",
+          "type": "stat",
+          "gridPos": {
+            "x": 12,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "count(count by (image_registry, image_repository, image_tag, image_digest) (trivy_image_vulnerabilities{namespace=~\"${namespace:regex}\",resource_kind=~\"${kind:regex}\",image_repository=~\"${image:regex}\",severity=~\"${severity:regex}\"}))",
+              "legendFormat": "__auto",
+              "range": false,
+              "instant": true,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "colorMode": "value",
+            "graphMode": "none"
+          }
+        },
+        {
+          "id": 4,
+          "title": "Trivy Operator ready replicas",
+          "description": "Controller readiness, independent of finding filters. Does not prove successful scans.",
+          "type": "stat",
+          "gridPos": {
+            "x": 18,
+            "y": 0,
+            "w": 6,
+            "h": 4
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum(kube_deployment_status_replicas_available{namespace=\"trivy-system\",deployment=\"trivy-operator\"})",
+              "legendFormat": "__auto",
+              "range": false,
+              "instant": true,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "colorMode": "value",
+            "graphMode": "none"
+          }
+        },
+        {
+          "id": 5,
+          "title": "Vulnerabilities by severity",
+          "description": "Gauge history: changes reflect report updates/expiry and workload changes, not a finding arrival rate.",
+          "type": "timeseries",
+          "gridPos": {
+            "x": 0,
+            "y": 4,
+            "w": 12,
+            "h": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum by (severity) (trivy_image_vulnerabilities{namespace=~\"${namespace:regex}\",resource_kind=~\"${kind:regex}\",image_repository=~\"${image:regex}\",severity=~\"${severity:regex}\"})",
+              "legendFormat": "{{severity}}",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        },
+        {
+          "id": 6,
+          "title": "Namespaces with most reported vulnerabilities",
+          "description": "Counts include repeated image/CVE findings across workloads.",
+          "type": "timeseries",
+          "gridPos": {
+            "x": 12,
+            "y": 4,
+            "w": 12,
+            "h": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "topk(10, sum by (namespace) (trivy_image_vulnerabilities{namespace=~\"${namespace:regex}\",resource_kind=~\"${kind:regex}\",image_repository=~\"${image:regex}\",severity=~\"${severity:regex}\"}))",
+              "legendFormat": "{{namespace}}",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        },
+        {
+          "id": 7,
+          "title": "Workloads and containers with most findings",
+          "description": "Top 20 selected resource/container/severity groups. Inspect VulnerabilityReport CRs for package/CVE details.",
+          "type": "table",
+          "gridPos": {
+            "x": 0,
+            "y": 12,
+            "w": 24,
+            "h": 9
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "topk(20, sum by (namespace, resource_kind, resource_name, container_name, severity) (trivy_image_vulnerabilities{namespace=~\"${namespace:regex}\",resource_kind=~\"${kind:regex}\",image_repository=~\"${image:regex}\",severity=~\"${severity:regex}\"}))",
+              "legendFormat": "__auto",
+              "range": false,
+              "instant": true,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "cellHeight": "sm"
+          },
+          "transformations": [
+            {
+              "id": "labelsToFields",
+              "options": {
+                "mode": "columns"
+              }
+            },
+            {
+              "id": "merge",
+              "options": {}
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "__name__": true
+                },
+                "renameByName": {
+                  "Value": "findings"
+                }
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "sort": [
+                  {
+                    "field": "findings",
+                    "desc": true
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "title": "Images with most findings (deduplicated report copies)",
+          "description": "Maximum severity count per image identity, then summed across selected severities. Avoids summing copies; not a unique-CVE union.",
+          "type": "table",
+          "gridPos": {
+            "x": 0,
+            "y": 21,
+            "w": 24,
+            "h": 9
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "topk(20, sum by (image_registry, image_repository, image_tag, image_digest) (max by (image_registry, image_repository, image_tag, image_digest, severity) (trivy_image_vulnerabilities{namespace=~\"${namespace:regex}\",resource_kind=~\"${kind:regex}\",image_repository=~\"${image:regex}\",severity=~\"${severity:regex}\"})))",
+              "legendFormat": "__auto",
+              "range": false,
+              "instant": true,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "showHeader": true,
+            "cellHeight": "sm"
+          },
+          "transformations": [
+            {
+              "id": "labelsToFields",
+              "options": {
+                "mode": "columns"
+              }
+            },
+            {
+              "id": "merge",
+              "options": {}
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "__name__": true
+                },
+                "renameByName": {
+                  "Value": "findings"
+                }
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "sort": [
+                  {
+                    "field": "findings",
+                    "desc": true
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "title": "Configuration findings by severity",
+          "description": "Namespace/severity filters only; image and kind filters do not apply to these non-image summaries.",
+          "type": "timeseries",
+          "gridPos": {
+            "x": 0,
+            "y": 30,
+            "w": 12,
+            "h": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum by (severity) (trivy_resource_configaudits{namespace=~\"${namespace:regex}\",severity=~\"${severity:regex}\"})",
+              "legendFormat": "{{severity}}",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        },
+        {
+          "id": 10,
+          "title": "Exposed-secret findings by namespace",
+          "description": "Image report summary counts only; no secret values or high-cardinality detail metrics are queried.",
+          "type": "timeseries",
+          "gridPos": {
+            "x": 12,
+            "y": 30,
+            "w": 12,
+            "h": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum by (namespace) (trivy_image_exposedsecrets{namespace=~\"${namespace:regex}\",resource_kind=~\"${kind:regex}\",image_repository=~\"${image:regex}\",severity=~\"${severity:regex}\"})",
+              "legendFormat": "{{namespace}}",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        },
+        {
+          "id": 11,
+          "title": "Namespaced RBAC findings by severity",
+          "description": "Namespace/severity filters only. These are namespaced Roles, not cluster-wide roles.",
+          "type": "timeseries",
+          "gridPos": {
+            "x": 0,
+            "y": 38,
+            "w": 12,
+            "h": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum by (severity) (trivy_role_rbacassessments{namespace=~\"${namespace:regex}\",severity=~\"${severity:regex}\"})",
+              "legendFormat": "{{severity}}",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        },
+        {
+          "id": 12,
+          "title": "ClusterRole findings by severity (global)",
+          "description": "Cluster-scoped findings: severity filter only; namespace/image/kind filters do not apply.",
+          "type": "timeseries",
+          "gridPos": {
+            "x": 12,
+            "y": 38,
+            "w": 12,
+            "h": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "VictoriaMetrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum by (severity) (trivy_clusterrole_clusterrbacassessments{severity=~\"${severity:regex}\"})",
+              "legendFormat": "{{severity}}",
+              "range": true,
+              "instant": false,
+              "format": "time_series"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "min": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          }
+        }
+      ]
+    }

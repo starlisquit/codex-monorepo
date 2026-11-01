@@ -21,7 +21,8 @@ installed. Review policies independently from observation/scanning.
 Both expose ServiceMonitors for the existing VictoriaMetrics stack. Tetragon
 exports events through a stdout sidecar, which vlagent can collect into
 VictoriaLogs. Trivy reports are Kubernetes custom resources and summary metrics
-can be queried in Grafana. No new Grafana dashboard is supplied here.
+can be queried in Grafana. The [security dashboards](../../dashboards/security/README.md)
+provide findings and runtime-health views through the existing dashboard selection.
 
 ## Deployment
 

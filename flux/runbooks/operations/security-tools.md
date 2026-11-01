@@ -71,3 +71,12 @@ operators or scan Jobs**. It only stops reconciliation. To stop running componen
 make an explicit Git removal/disablement and review Helm/CRD retention behavior;
 coordinate deleting active scan Jobs and retaining reports as appropriate. Restore
 Git settings after any temporary manual scaling so Flux does not undo it.
+
+
+## Grafana views
+
+Open **Security / Trivy findings** and **Security / Tetragon runtime** after the
+existing dashboard Kustomization reconciles. See the
+[dashboard guide](../../dashboards/security/README.md) for metric/filter semantics.
+Check actual scan completion and event generation before treating empty panels
+as clean results. These views do not enable extra enforcement or per-CVE labels.
