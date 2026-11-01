@@ -2,7 +2,7 @@ import grpc,json,socket,ssl,sys,urllib.request
 from grpc_health.v1 import health_pb2,health_pb2_grpc
 host=sys.argv[1];out={}
 r=urllib.request.Request('http://'+host+':18080/',headers={'Host':'app.example.com'});out['http']=urllib.request.urlopen(r,timeout=10).read().decode().strip();assert out['http']=='http:primitive-runtime-ok'
-with grpc.insecure_channel(host+':15051') as channel:
+with grpc.insecure_channel(host+':15051', options=[('grpc.default_authority', 'grpc.example.com')]) as channel:
  r=health_pb2_grpc.HealthStub(channel).Check(health_pb2.HealthCheckRequest(service='primitive-runtime'),timeout=10);out['grpc']=health_pb2.HealthCheckResponse.ServingStatus.Name(r.status);assert out['grpc']=='SERVING'
 ctx=ssl.create_default_context(cafile='/tls/tls.crt')
 with ctx.wrap_socket(socket.create_connection((host,18443),timeout=10),server_hostname='app.example.com') as s:

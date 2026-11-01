@@ -22,8 +22,10 @@ the matching listener to the Gateway. No backend Service or workload is created.
 | `tcproute` | v1 | TCP 5432 (`tcp`) | 5432 | L4 CRDs; TCPRoute support |
 | `udproute` | v1 | UDP 5353 (`udp`) | 5353 | L4 CRDs; UDPRoute support |
 
-HTTP and TLS examples use hostname `app.example.com`; patch it and configure DNS.
-The gRPC example matches all gRPC requests on its dedicated listener. Its backend
+HTTP and TLS examples use hostname `app.example.com`; gRPC uses
+`grpc.example.com`. Patch these and configure DNS/client authority. Explicit
+gRPC host matching avoids a wildcard gRPC route catching unmatched HTTP hosts
+when a controller shares an HTTP routing configuration across listeners. Its backend
 must serve HTTP/2; set Service `appProtocol: kubernetes.io/h2c` for cleartext
 backends where required by the controller. HTTP/gRPC
 listeners use cleartext; configure HTTPS listeners and certificate references for

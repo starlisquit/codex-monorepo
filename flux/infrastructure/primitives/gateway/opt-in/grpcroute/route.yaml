@@ -10,3 +10,5 @@ spec:
   - backendRefs:
     - name: application
       port: 50051
+  hostnames:
+  - grpc.example.com
