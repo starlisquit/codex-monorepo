@@ -5,6 +5,7 @@ kustomize_bin=${KUSTOMIZE_BIN:-kustomize}
 command -v "$kustomize_bin" >/dev/null
 python3 "$repo_root/flux/docs/runbooks/scripts/validate-platform.py"
 python3 "$repo_root/flux/docs/runbooks/scripts/validate-compositions.py"
+python3 "$repo_root/flux/docs/runbooks/scripts/validate-external-secrets.py"
 count=0
 while IFS= read -r -d '' manifest; do
   # Every Component is validated in owner compositions by validate-compositions.py.

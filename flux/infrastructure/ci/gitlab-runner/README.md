@@ -49,3 +49,8 @@ For Flux, include the source and component in the consuming overlay and use a
 HelmRelease health check. Do not have Helm CLI and Flux manage the same release
 concurrently. Verify an actual tagged pipeline, the generated config's concurrency,
 and job Pod RBAC/security context. Chart readiness alone does not prove job execution.
+
+## Optional OpenBao credentials (gitlab-runner)
+
+Select [the credential opt-in](opt-in/external-secrets/README.md) to supply its
+existing Secret references through External Secrets instead of manual provisioning.

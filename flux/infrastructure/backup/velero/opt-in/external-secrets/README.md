@@ -1,0 +1,29 @@
+# velero: OpenBao credentials opt-in
+
+Select this directory as a **resource** in a cluster-owned credentials stage.
+It is a standalone Kustomization, not a Component; selecting the application
+alone does not enable it. Namespace: `velero`. Store: `velero-openbao`.
+
+| Kubernetes Secret | OpenBao KV v2 key (under `kv`) | Required properties |
+|---|---|---|
+| `velero-cloud-credentials` | `infrastructure/velero/velero/s3` | `cloud` |
+
+Store an AWS shared-credentials file in property `cloud`. Select and configure the S3 provider override separately, including bucket, endpoint, region and AWS plugin. This opt-in alone does not enable backups or create a bucket.
+
+Read the [shared setup, ownership and rotation contract](../../../../../docs/operations/application-external-secrets.md) first.
+With an independently authenticated, TLS-verified OpenBao administrator session,
+apply the narrowly scoped backend configuration from this directory:
+
+```sh
+bao policy write eso-velero-velero policy.hcl
+bao write auth/kubernetes/role/eso-velero-velero @role.json
+```
+
+These files contain no credential values. Populate the listed KV keys through
+your secure administrative workflow before deployment. Paths are relative to
+the KV mount; policies intentionally use the API's `kv/data/` prefix. Override
+store endpoint/mount/role and policy paths together when isolating environments.
+
+Wait for `SecretStore/velero-openbao` and each ExternalSecret to report `Ready=True`
+before reconciling the application. No certificates, root/unseal material or
+operator-generated passwords are managed by this opt-in.

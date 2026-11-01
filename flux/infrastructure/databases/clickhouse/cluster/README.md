@@ -34,3 +34,8 @@ schemas. The earlier [live verification](../../../../docs/findings/clickhouse-op
 tested these images with one ClickHouse and one Keeper replica, SQL and pod
 replacement persistence. The larger topology, Ceph storage and password Secret
 configuration in this reusable base have not been live-tested.
+
+## Optional OpenBao credentials (clickhouse)
+
+Select [the credential opt-in](opt-in/external-secrets/README.md) to supply its
+existing Secret references through External Secrets instead of manual provisioning.

@@ -58,3 +58,13 @@ with Helm CLI concurrently. Service access is internal HTTP by default; configur
 your intended TLS ingress separately. Change the initial administrator password,
 check `/api/system/status`, submit a real disposable analysis and verify its compute
 task before calling validation complete. A Pod Ready check is insufficient.
+
+## Optional OpenBao credentials (sonarqube)
+
+Select [the credential opt-in](opt-in/external-secrets/README.md) to supply its
+existing Secret references through External Secrets instead of manual provisioning.
+
+## Optional OpenBao credentials (sonarqube-external-database)
+
+Select [the credential opt-in](opt-in/external-database-secrets/README.md) to supply its
+existing Secret references through External Secrets instead of manual provisioning.

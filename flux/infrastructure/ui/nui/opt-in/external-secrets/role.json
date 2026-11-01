@@ -1,0 +1,15 @@
+{
+  "bound_service_account_names": [
+    "nui-external-secrets"
+  ],
+  "bound_service_account_namespaces": [
+    "broker"
+  ],
+  "audience": "openbao",
+  "token_policies": [
+    "eso-broker-nui"
+  ],
+  "token_no_default_policy": true,
+  "token_ttl": "15m",
+  "token_max_ttl": "1h"
+}

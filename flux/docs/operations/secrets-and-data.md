@@ -33,3 +33,11 @@ PostgreSQL, Ceph, NATS, and OpenBao replication do not protect against all logic
 deletions or loss of the playground. Configure and test independent PostgreSQL
 backups, Ceph data protection, and OpenBao Raft snapshots before relying on them.
 Neither Git nor an owner-only initialization file is a database backup.
+
+## Application credential opt-ins
+
+Application-specific OpenBao/External Secrets integrations now provide optional
+scoped stores, service accounts, backend policies/roles and exact Secret key
+mappings. See [application credential management](application-external-secrets.md)
+for setup, coverage, readiness gates, ownership transfer and rotation boundaries.
+Operator-generated credentials and PKI remain under their existing controllers.

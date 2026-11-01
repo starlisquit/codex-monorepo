@@ -45,3 +45,8 @@ provisioning. CronJob creation does not prove authentication or extraction:
 require a completed Job with authenticated repository processing and inspect
 warnings/errors and extracted dependency counts. No write-mode or MR-creation
 claim follows from a dry run. Remove temporary manual Jobs after verification.
+
+## Optional OpenBao credentials (renovate)
+
+Select [the credential opt-in](opt-in/external-secrets/README.md) to supply its
+existing Secret references through External Secrets instead of manual provisioning.

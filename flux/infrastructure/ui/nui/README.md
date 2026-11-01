@@ -57,3 +57,8 @@ image's writable frontend directory and current entrypoint privilege model.
 See [browser verification](../../../docs/findings/redis-nui-ui-validation-2026-11-01.md)
 for the corrected UI results. The [original findings](../../../docs/findings/redis-nui-validation-2026-11-01.md)
 retain the failures observed before these fixes.
+
+## Optional OpenBao credentials (nui)
+
+Select [the credential opt-in](opt-in/external-secrets/README.md) to supply its
+existing Secret references through External Secrets instead of manual provisioning.

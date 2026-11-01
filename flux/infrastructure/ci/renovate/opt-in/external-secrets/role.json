@@ -1,0 +1,15 @@
+{
+  "bound_service_account_names": [
+    "renovate-external-secrets"
+  ],
+  "bound_service_account_namespaces": [
+    "ci"
+  ],
+  "audience": "openbao",
+  "token_policies": [
+    "eso-ci-renovate"
+  ],
+  "token_no_default_policy": true,
+  "token_ttl": "15m",
+  "token_max_ttl": "1h"
+}

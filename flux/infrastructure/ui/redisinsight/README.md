@@ -38,3 +38,8 @@ See [browser verification](../../../docs/findings/redis-nui-ui-validation-2026-1
 for onboarding, connection and real browser read/write checks. The
 [original API validation](../../../docs/findings/redis-nui-validation-2026-11-01.md)
 records the earlier run and installation-method limitation.
+
+## Optional OpenBao credentials (redisinsight)
+
+Select [the credential opt-in](opt-in/external-secrets/README.md) to supply its
+existing Secret references through External Secrets instead of manual provisioning.

@@ -78,3 +78,8 @@ claim of recoverable database, secrets-engine or PVC data is made here.
 References: [Velero documentation](https://velero.io/docs/v1.18/),
 [AWS plugin compatibility](https://github.com/vmware-tanzu/velero-plugin-for-aws#compatibility),
 [Helm chart](https://github.com/vmware-tanzu/helm-charts/tree/main/charts/velero).
+
+## Optional OpenBao credentials (velero)
+
+Select [the credential opt-in](opt-in/external-secrets/README.md) to supply its
+existing Secret references through External Secrets instead of manual provisioning.

@@ -76,3 +76,7 @@ live helm-controller; a Helm 3 render did not detect the Helm 4 Collector failur
 If using an MCP command tool with a sub-minute timeout, run long jobs detached,
 redirect stdin/stdout/stderr, then poll the log. The normal interactive shell
 commands below may legitimately take minutes.
+
+Application credential opt-ins and their backend contracts are checked by
+`validate-external-secrets.py`, called by the routine `validate.sh`. See
+[application credential management](../operations/application-external-secrets.md).

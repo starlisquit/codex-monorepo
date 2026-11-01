@@ -58,3 +58,8 @@ full-platform overlay. Do not manage the same release with Helm CLI concurrently
 Verify authenticated model discovery, unauthorized rejection and an actual routed
 completion/stream. A local OpenAI-compatible fixture verifies the proxy path without
 proving access to, model quality from, or billing behavior of a real provider.
+
+## Optional OpenBao credentials (litellm)
+
+Select [the credential opt-in](opt-in/external-secrets/README.md) to supply its
+existing Secret references through External Secrets instead of manual provisioning.
