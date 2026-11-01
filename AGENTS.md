@@ -8,3 +8,9 @@ Use focused iximiuz Labs playgrounds containing only the components needed for
 each validation. Multiple playgrounds are allowed. When a playground has served
 its purpose, commit findings and configuration updates to both remotes, then
 destroy it. Do not retain unused playgrounds in a stopped state.
+
+For every new playground run, create a new folder under flux/clusters with
+runbooks/scripts/new-validation-run.py and the playground ID. Never reuse an
+old run folder. Bootstrap Flux against that exact folder, selecting only needed
+namespace/source bases and workloads. Preserve completed run configurations and
+findings, then destroy the playground after publishing to both remotes.

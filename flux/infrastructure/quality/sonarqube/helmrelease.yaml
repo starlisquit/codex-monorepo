@@ -19,6 +19,10 @@ spec:
     name: sonarqube-values
     valuesKey: values.yaml
   - kind: ConfigMap
+    name: sonarqube-postgresql-values
+    valuesKey: values.yaml
+    optional: true
+  - kind: ConfigMap
     name: sonarqube-cluster-values
     valuesKey: values.yaml
     optional: true

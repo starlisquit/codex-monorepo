@@ -2,7 +2,7 @@
 # Run from a checkout on the new cluster's dev-machine.
 set -euo pipefail
 repo_root=$(git rev-parse --show-toplevel)
-cluster_dir=${1:-flux/clusters/iximiuz-platform}
+cluster_dir=${1:?Usage: pass the explicit flux/clusters/<run-folder> path}
 api_host=${2:-172.16.0.2}
 api_port=${3:-6443}
 for executable in kubectl helm; do command -v "$executable" >/dev/null; done
