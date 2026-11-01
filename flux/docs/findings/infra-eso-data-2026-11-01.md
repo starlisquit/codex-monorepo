@@ -4,6 +4,9 @@
 three other focused infrastructure runs. Flux path:
 `flux/clusters/20261101-235339-infra-eso-data-921fed`. Final selected configuration
 is `d18e8d7819bf921edb84c52df0205c49627a7086`; policy correction is `b394d1e`.
+Final application verification completed at 2026-11-01 21:19:40 UTC; evidence
+was captured at 21:21:00 UTC (2026-11-02 00:21:00 Europe/Istanbul), with all
+selected Flux stages and HelmReleases Ready.
 
 ## Actual application results
 
@@ -77,5 +80,8 @@ continues to use HTTPS. An external production bucket remains separately unverif
 
 ## Teardown
 
-Publish the findings/configuration to both remotes before destroying this final
-verified playground. Record confirmed destruction afterwards.
+Findings/configuration were published to both remotes in
+`437e01e252462f045a4eb2e55f3f238a5ad953bb` before teardown. The destroy API
+confirmed destruction at `2026-11-01T21:21:18Z`
+(2026-11-02 00:21:18 Europe/Istanbul). All four infrastructure verification
+playgrounds were destroyed after their findings were published.
