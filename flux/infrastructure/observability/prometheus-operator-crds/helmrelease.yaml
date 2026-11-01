@@ -18,6 +18,10 @@ spec:
   - kind: ConfigMap
     name: prometheus-operator-crds-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: prometheus-operator-crds-cluster-values
+    valuesKey: values.yaml
+    optional: true
   install:
     remediation:
       retries: 3

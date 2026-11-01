@@ -18,6 +18,10 @@ spec:
   - kind: ConfigMap
     name: rook-ceph-operator-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: rook-ceph-operator-cluster-values
+    valuesKey: values.yaml
+    optional: true
   install:
     remediation:
       retries: 3

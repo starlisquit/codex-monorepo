@@ -18,6 +18,10 @@ spec:
   - kind: ConfigMap
     name: gitlab-runner-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: gitlab-runner-cluster-values
+    valuesKey: values.yaml
+    optional: true
   install:
     remediation:
       retries: 3

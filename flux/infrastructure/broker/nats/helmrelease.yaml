@@ -18,6 +18,10 @@ spec:
   - kind: ConfigMap
     name: nats-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: nats-cluster-values
+    valuesKey: values.yaml
+    optional: true
   install:
     remediation:
       retries: 3

@@ -18,6 +18,10 @@ spec:
   - kind: ConfigMap
     name: cilium-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: cilium-cluster-values
+    valuesKey: values.yaml
+    optional: true
   install:
     remediation:
       retries: 3

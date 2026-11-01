@@ -2,19 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
 - ../../../infrastructure/databases/valkey
-patches:
-- target:
-    group: helm.toolkit.fluxcd.io
-    version: v2
-    kind: HelmRelease
-    name: valkey
-  patch: |
-    - op: add
-      path: /spec/valuesFrom/-
-      value:
-        kind: ConfigMap
-        name: valkey-cluster-values
-        valuesKey: values.yaml
 configMapGenerator:
 - name: valkey-cluster-values
   namespace: databases

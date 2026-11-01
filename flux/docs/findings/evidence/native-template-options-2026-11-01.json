@@ -1,0 +1,33 @@
+{
+  "baseline_commit": "e6a9d7e50ac1daa9515341546db21c63abc40dc2",
+  "validation": "offline Kustomize rendering, native CRD schema inspection, effective reference comparison",
+  "shared_templates_with_optional_cluster_values": 31,
+  "kustomize_builds": 103,
+  "selected_flux_kustomizations": 37,
+  "selected_helm_releases": 25,
+  "selected_unique_object_identities": 142,
+  "identities_unchanged": true,
+  "effective_selected_resources_unchanged": true,
+  "minimal_iximiuz_labs_effective_resources_unchanged": true,
+  "native_reference_contract": {
+    "kind": "ConfigMap",
+    "name": "<HelmRelease.metadata.name>-cluster-values",
+    "namespace": "same as HelmRelease",
+    "valuesKey": "values.yaml",
+    "optional": true
+  },
+  "merge_order": [
+    "shared values ConfigMap",
+    "optional cluster values ConfigMap",
+    "inline spec.values"
+  ],
+  "default_cilium_dependency_retained": true,
+  "bootstrap_component_removes_dependency_only_when_selected": true,
+  "bootstrap_consumers": [
+    "iximiuz-labs/cilium",
+    "iximiuz-platform/cilium"
+  ],
+  "optional_reference_schema_present_in_vendored_helmrelease_v2_crd": true,
+  "missing_key_or_other_reference_error_still_fails": true,
+  "live_controller_deployment_performed": false
+}

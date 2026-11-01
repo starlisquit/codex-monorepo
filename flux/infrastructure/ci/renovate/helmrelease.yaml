@@ -18,6 +18,10 @@ spec:
   - kind: ConfigMap
     name: renovate-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: renovate-cluster-values
+    valuesKey: values.yaml
+    optional: true
   install:
     remediation:
       retries: 3

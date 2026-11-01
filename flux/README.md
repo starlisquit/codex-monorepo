@@ -84,6 +84,20 @@ need no `suspend: false` or repeated standard timeout patch. Patch only a real
 cluster difference. Flux Kustomization reconciliation timeouts are a separate
 setting and remain part of the deployment orchestration.
 
+Every shared HelmRelease natively references an optional
+`<HelmRelease-name>-cluster-values` ConfigMap in its own namespace, using key
+`values.yaml`. Generate that ConfigMap with a stable name and watch label when
+cluster overrides are needed; no `valuesFrom` patch is required. Flux merges
+shared values first, cluster values second, and inline `spec.values` last.
+Missing optional ConfigMaps are ignored; missing keys, invalid YAML and other
+errors still fail. Removing the ConfigMap drops that override layer.
+
+For Cilium bootstrap, select
+[`components/cilium-bootstrap`](components/cilium-bootstrap/README.md) in the
+consumer's `components` list rather than repeating a `dependsOn` deletion patch.
+Omitting the component retains normal Helm dependencies. A boolean inside Helm
+values cannot change the containing HelmRelease's dependency graph.
+
 For OpenBao-backed External Secrets, select
 [`secrets/external-secrets/openbao-store`](infrastructure/secrets/external-secrets/openbao-store/README.md)
 after both controllers/backends are ready. The verification ExternalSecret is

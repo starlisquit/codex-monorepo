@@ -18,6 +18,10 @@ spec:
   - kind: ConfigMap
     name: cert-manager-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: cert-manager-cluster-values
+    valuesKey: values.yaml
+    optional: true
   install:
     remediation:
       retries: 3

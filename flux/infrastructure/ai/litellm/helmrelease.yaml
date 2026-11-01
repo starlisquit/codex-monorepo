@@ -10,6 +10,10 @@ spec:
   - kind: ConfigMap
     name: litellm-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: litellm-cluster-values
+    valuesKey: values.yaml
+    optional: true
   install:
     crds: CreateReplace
     remediation:

@@ -18,6 +18,10 @@ spec:
   - kind: ConfigMap
     name: victoria-metrics-k8s-stack-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: victoria-metrics-k8s-stack-cluster-values
+    valuesKey: values.yaml
+    optional: true
   install:
     remediation:
       retries: 3

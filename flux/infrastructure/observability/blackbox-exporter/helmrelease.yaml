@@ -18,6 +18,10 @@ spec:
   - kind: ConfigMap
     name: blackbox-exporter-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: blackbox-exporter-cluster-values
+    valuesKey: values.yaml
+    optional: true
   install:
     remediation:
       retries: 3

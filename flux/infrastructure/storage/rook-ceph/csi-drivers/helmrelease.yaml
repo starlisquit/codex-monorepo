@@ -18,6 +18,10 @@ spec:
   - kind: ConfigMap
     name: ceph-csi-drivers-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: ceph-csi-drivers-cluster-values
+    valuesKey: values.yaml
+    optional: true
   dependsOn:
   - name: rook-ceph-operator
     namespace: rook-ceph

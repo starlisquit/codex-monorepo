@@ -18,6 +18,10 @@ spec:
   - kind: ConfigMap
     name: metrics-server-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: metrics-server-cluster-values
+    valuesKey: values.yaml
+    optional: true
   install:
     remediation:
       retries: 3

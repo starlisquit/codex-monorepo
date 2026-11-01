@@ -18,6 +18,10 @@ spec:
   - kind: ConfigMap
     name: sonarqube-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: sonarqube-cluster-values
+    valuesKey: values.yaml
+    optional: true
   install:
     remediation:
       retries: 3

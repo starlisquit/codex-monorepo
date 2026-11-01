@@ -10,6 +10,10 @@ spec:
   - kind: ConfigMap
     name: keda-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: keda-cluster-values
+    valuesKey: values.yaml
+    optional: true
   install:
     remediation:
       retries: 3

@@ -42,19 +42,9 @@ generatorOptions:
   disableNameSuffixHash: true
 ```
 
-Append this reference to the existing HelmRelease patch's `spec.valuesFrom`;
-it follows the inherited base entry and overrides its values:
-
-```yaml
-spec:
-  valuesFrom:
-  - kind: ConfigMap
-    name: velero-values
-    valuesKey: values.yaml
-  - kind: ConfigMap
-    name: velero-cluster-values
-    valuesKey: values.yaml
-```
+The shared Velero template already references optional `velero-cluster-values`.
+Generating this ConfigMap is enough: its values merge after the shared defaults,
+with no HelmRelease patch required. Keep the stable name and watch label above.
 
 Build the resulting overlay. The platform already selects Velero with normal
 reconciliation; no suspension flag needs changing. Commit/push configuration,

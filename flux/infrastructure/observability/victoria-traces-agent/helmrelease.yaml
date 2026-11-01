@@ -18,6 +18,10 @@ spec:
   - kind: ConfigMap
     name: victoria-traces-agent-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: victoria-traces-agent-cluster-values
+    valuesKey: values.yaml
+    optional: true
   install:
     remediation:
       retries: 3

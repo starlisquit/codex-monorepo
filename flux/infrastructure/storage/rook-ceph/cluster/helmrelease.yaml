@@ -18,6 +18,10 @@ spec:
   - kind: ConfigMap
     name: rook-ceph-cluster-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: rook-ceph-cluster-cluster-values
+    valuesKey: values.yaml
+    optional: true
   install:
     remediation:
       retries: 3

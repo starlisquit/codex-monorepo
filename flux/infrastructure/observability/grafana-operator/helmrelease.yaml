@@ -10,6 +10,10 @@ spec:
   - kind: ConfigMap
     name: grafana-operator-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: grafana-operator-cluster-values
+    valuesKey: values.yaml
+    optional: true
   install:
     remediation:
       retries: 3

@@ -10,6 +10,10 @@ spec:
   - kind: ConfigMap
     name: nginx-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: nginx-cluster-values
+    valuesKey: values.yaml
+    optional: true
   install:
     crds: CreateReplace
     remediation:

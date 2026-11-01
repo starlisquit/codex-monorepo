@@ -3,21 +3,6 @@ kind: Kustomization
 resources:
 - ../../../infrastructure/networking/cilium
 - source.yaml
-patches:
-- target:
-    group: helm.toolkit.fluxcd.io
-    version: v2
-    kind: HelmRelease
-    name: cilium
-  patch: |
-    - op: remove
-      path: /spec/dependsOn
-    - op: add
-      path: /spec/valuesFrom/-
-      value:
-        kind: ConfigMap
-        name: cilium-cluster-values
-        valuesKey: values.yaml
 configMapGenerator:
 - name: cilium-cluster-values
   namespace: kube-system
@@ -28,3 +13,5 @@ configMapGenerator:
       reconcile.fluxcd.io/watch: Enabled
 generatorOptions:
   disableNameSuffixHash: true
+components:
+- ../../../components/cilium-bootstrap

@@ -18,6 +18,10 @@ spec:
   - kind: ConfigMap
     name: velero-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: velero-cluster-values
+    valuesKey: values.yaml
+    optional: true
   install:
     crds: CreateReplace
     remediation:

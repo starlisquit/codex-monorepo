@@ -18,6 +18,10 @@ spec:
   - kind: ConfigMap
     name: opentelemetry-demo-values
     valuesKey: values.yaml
+  - kind: ConfigMap
+    name: opentelemetry-demo-cluster-values
+    valuesKey: values.yaml
+    optional: true
   install:
     remediation:
       retries: 3
