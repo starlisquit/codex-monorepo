@@ -171,6 +171,11 @@ spec:
     kind: CephCluster
     name: rook-ceph
     namespace: rook-ceph
+  healthCheckExprs:
+  - apiVersion: ceph.rook.io/v1
+    kind: CephCluster
+    current: has(status) && has(status.phase) && status.phase == 'Ready' && has(status.ceph)
+      && status.ceph.health == 'HEALTH_OK'
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization

@@ -11,3 +11,9 @@ patches:
   patch: "apiVersion: helm.toolkit.fluxcd.io/v2\nkind: HelmRelease\nmetadata:\n  name:\
     \ trust-manager\n  namespace: certificates\nspec:\n  suspend: false\n  timeout:\
     \ 15m\n"
+- target:
+    kind: HelmRelease
+    name: trust-manager
+  patch: "apiVersion: helm.toolkit.fluxcd.io/v2\nkind: HelmRelease\nmetadata:\n  name:\
+    \ trust-manager\n  namespace: certificates\nspec:\n  values:\n    app:\n     \
+    \ trust:\n        namespace: certificates\n"
