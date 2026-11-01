@@ -1,5 +1,8 @@
 # Redis Insight and NUI validation — 2026-11-01
 
+> Historical initial-run findings. The later [UI verification and fixes](redis-nui-ui-validation-2026-11-01.md)
+> supersede the browser failure and incomplete-onboarding status below.
+
 ## Result
 
 Redis Insight's authenticated Redis API operations and persisted credentials

@@ -1,8 +1,10 @@
 # Official chart is experimental. Pin the application instead of upstream latest.
 image:
   repository: ghcr.io/nats-nui/nui
-  tag: 0.10.0
+  tag: 0.10.0@sha256:879b64b2f2fa4c3298681ed0bebfbcfd80cae281ff787a10c404bbd62160d18a
   pullPolicy: IfNotPresent
+podAnnotations:
+  infrastructure.codex/nui-compatibility-patch: "2"
 service:
   type: ClusterIP
   port: 31311
@@ -26,9 +28,15 @@ contextsVolume:
 credsVolume:
   name: nui-creds
   items: []
-# The image defaults to root-owned /protoschemas and /cddlschemas.
-# Override paths after the entrypoint defaults and persist both under /db.
+# Apply the pinned-image session-default fix before starting the official entrypoint.
 command:
-- /entrypoint.sh
-- --proto-schemas-path=/db/protoschemas
-- --cddl-schemas-path=/db/cddlschemas
+- /bin/sh
+- /opt/nui-startup/start.sh
+volumes:
+- name: nui-startup
+  configMap:
+    name: nui-startup
+volumeMounts:
+- name: nui-startup
+  mountPath: /opt/nui-startup
+  readOnly: true

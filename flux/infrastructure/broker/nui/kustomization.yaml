@@ -11,5 +11,11 @@ configMapGenerator:
   options:
     labels:
       reconcile.fluxcd.io/watch: Enabled
+- name: nui-startup
+  files:
+  - start.sh
+  options:
+    labels:
+      reconcile.fluxcd.io/watch: Enabled
 generatorOptions:
   disableNameSuffixHash: true

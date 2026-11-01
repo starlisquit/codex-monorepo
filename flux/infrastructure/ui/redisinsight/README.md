@@ -30,5 +30,7 @@ its trusted CA and credentials. The validation fixture uses an isolated
 password-protected Redis server and does not validate platform Valkey TLS.
 Ingress is omitted; add access control before exposing this administrator UI.
 
-See [validation findings](../../../docs/findings/redis-nui-validation-2026-11-01.md)
-for tested behavior and limitations.
+See [browser verification](../../../docs/findings/redis-nui-ui-validation-2026-11-01.md)
+for onboarding, connection and real browser read/write checks. The
+[original API validation](../../../docs/findings/redis-nui-validation-2026-11-01.md)
+records the earlier run and installation-method limitation.

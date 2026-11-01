@@ -1,0 +1,236 @@
+{
+  "play_id": "6ae71991789ac234e3366509",
+  "created_at_utc": "2026-11-01T10:50:57Z",
+  "initial": {
+    "phase": "initial",
+    "passed": 16,
+    "checks": [
+      {
+        "name": "RedisInsight browser reads redis-cli write",
+        "passed": true
+      },
+      {
+        "name": "RedisInsight browser edit confirmed by redis-cli",
+        "passed": true
+      },
+      {
+        "name": "RedisInsight browser reload recovers without onboarding",
+        "passed": true
+      },
+      {
+        "name": "NUI fresh profile has no preloaded layout",
+        "passed": true
+      },
+      {
+        "name": "NUI browser publish succeeds",
+        "passed": true
+      },
+      {
+        "name": "NATS CLI confirms browser-published payload",
+        "passed": true
+      },
+      {
+        "name": "NUI fresh profile has no preloaded layout",
+        "passed": true
+      },
+      {
+        "name": "NUI browser lists persisted UI and CLI messages",
+        "passed": true
+      },
+      {
+        "name": "NUI fresh profile has no preloaded layout",
+        "passed": true
+      },
+      {
+        "name": "NUI browser creates KV entry",
+        "passed": true
+      },
+      {
+        "name": "NATS CLI confirms browser KV payload",
+        "passed": true
+      },
+      {
+        "name": "NUI fresh profile has no preloaded layout",
+        "passed": true
+      },
+      {
+        "name": "NUI browser reads CLI KV write",
+        "passed": true
+      },
+      {
+        "name": "NUI saved browser session reloads with KV detail",
+        "passed": true
+      },
+      {
+        "name": "No browser JavaScript errors",
+        "passed": true
+      },
+      {
+        "name": "No application API HTTP errors",
+        "passed": true
+      }
+    ],
+    "page_errors": [],
+    "application_http_errors": []
+  },
+  "after_pod_replacement": {
+    "phase": "after-pod-replacement",
+    "passed": 16,
+    "checks": [
+      {
+        "name": "RedisInsight browser reads redis-cli write",
+        "passed": true
+      },
+      {
+        "name": "RedisInsight browser edit confirmed by redis-cli",
+        "passed": true
+      },
+      {
+        "name": "RedisInsight browser reload recovers without onboarding",
+        "passed": true
+      },
+      {
+        "name": "NUI fresh profile has no preloaded layout",
+        "passed": true
+      },
+      {
+        "name": "NUI browser publish succeeds",
+        "passed": true
+      },
+      {
+        "name": "NATS CLI confirms browser-published payload",
+        "passed": true
+      },
+      {
+        "name": "NUI fresh profile has no preloaded layout",
+        "passed": true
+      },
+      {
+        "name": "NUI browser lists persisted UI and CLI messages",
+        "passed": true
+      },
+      {
+        "name": "NUI fresh profile has no preloaded layout",
+        "passed": true
+      },
+      {
+        "name": "NUI browser creates KV entry",
+        "passed": true
+      },
+      {
+        "name": "NATS CLI confirms browser KV payload",
+        "passed": true
+      },
+      {
+        "name": "NUI fresh profile has no preloaded layout",
+        "passed": true
+      },
+      {
+        "name": "NUI browser reads CLI KV write",
+        "passed": true
+      },
+      {
+        "name": "NUI saved browser session reloads with KV detail",
+        "passed": true
+      },
+      {
+        "name": "No browser JavaScript errors",
+        "passed": true
+      },
+      {
+        "name": "No application API HTTP errors",
+        "passed": true
+      }
+    ],
+    "page_errors": [],
+    "application_http_errors": []
+  },
+  "creation_checks": {
+    "redisinsight_browser_onboarding": true,
+    "redisinsight_browser_connection_test_and_save": true,
+    "redisinsight_browser_key_creation_cli_confirmed": true,
+    "redisinsight_browser_preferences_saved": true,
+    "nui_browser_connection_creation": true,
+    "nui_browser_stream_creation_cli_confirmed": true,
+    "nui_browser_first_kv_bucket_creation_without_page_error": true
+  },
+  "before_pod_uids": {
+    "nui": "6eb98f0b-6016-477a-8bad-bdabe66d683d",
+    "redisinsight": "91ba138c-2148-4451-8f5d-0b3765e6321e"
+  },
+  "file_sha256": {
+    "start.sh": "72ffe4310c169a2049c7ce6c1bf1310af16331a1c5da9db5a33fbc40a9f247ac",
+    "nui-values.yaml": "2f5027186ffa56f0d07470bed6ae2c1ebe50e1feadeaaf77200015b0ac792a65"
+  },
+  "configmap_script_sha256": "72ffe4310c169a2049c7ce6c1bf1310af16331a1c5da9db5a33fbc40a9f247ac",
+  "ui_pods": [
+    {
+      "name": "redis-validation-8547489b94-vrhvj",
+      "uid": "4ce35b54-c826-4246-8c12-41750e3700ee",
+      "containers": [
+        {
+          "image": "docker.io/library/redis:8.2.2-alpine",
+          "imageID": "docker.io/library/redis@sha256:59b6e694653476de2c992937ebe1c64182af4728e54bb49e9b7a6c26614d8933",
+          "ready": true,
+          "restartCount": 0
+        }
+      ]
+    },
+    {
+      "name": "redisinsight-5c6565b8cb-ns46w",
+      "uid": "b517419f-747c-4f96-83c6-67fcae4d8b01",
+      "containers": [
+        {
+          "image": "sha256:3e9a2017a4d4dfc36bec418245a88180970f09785c08ce840117b3518a850c86",
+          "imageID": "docker.io/redis/redisinsight@sha256:b5e19ee240abef6edb435871b90ff8a210995422e8e018ab61c0339d318a1f84",
+          "ready": true,
+          "restartCount": 0
+        }
+      ]
+    }
+  ],
+  "broker_pods": [
+    {
+      "name": "nats-0",
+      "uid": "ea23afff-f0f0-4f58-a76c-bf223e5c0f04",
+      "containers": [
+        {
+          "image": "docker.io/library/nats:2.15.2-alpine",
+          "imageID": "docker.io/library/nats@sha256:823e7f1d6d8ffe3b30dbd73d4a06bbb939acf94929f7fdf224404da7a05bafb5",
+          "ready": true,
+          "restartCount": 0
+        },
+        {
+          "image": "docker.io/natsio/nats-server-config-reloader:0.24.0",
+          "imageID": "docker.io/natsio/nats-server-config-reloader@sha256:d758a82a9c20337e46c2f7356a413faa52cf4d6b02497c3ad81f72f1ba106464",
+          "ready": true,
+          "restartCount": 0
+        }
+      ]
+    },
+    {
+      "name": "nats-box-684899cd7-kg5zc",
+      "uid": "8c2f3810-2db2-44b9-a7eb-949bbbe4503e",
+      "containers": [
+        {
+          "image": "docker.io/natsio/nats-box:0.20.0",
+          "imageID": "docker.io/natsio/nats-box@sha256:d2f04223f40e016f77922a8115d34b0cd5fad2ec10b19b39316ae92d07f3d295",
+          "ready": true,
+          "restartCount": 0
+        }
+      ]
+    },
+    {
+      "name": "nui-0",
+      "uid": "392bd201-d91a-4c12-9e88-d0ebabcb6a17",
+      "containers": [
+        {
+          "image": "ghcr.io/nats-nui/nui:0.10.0",
+          "imageID": "ghcr.io/nats-nui/nui@sha256:879b64b2f2fa4c3298681ed0bebfbcfd80cae281ff787a10c404bbd62160d18a",
+          "ready": true,
+          "restartCount": 0
+        }
+      ]
+    }
+  ]
+}
