@@ -1,6 +1,9 @@
 # Set k8sServiceHost and k8sServicePort to the real API server endpoint before enabling.
 # That endpoint must be reachable without kube-proxy (not the Kubernetes Service IP).
 kubeProxyReplacement: true
+encryption:
+  enabled: true
+  type: wireguard
 hubble:
   enabled: true
   relay:

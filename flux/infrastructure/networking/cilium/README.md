@@ -30,7 +30,15 @@ controller. A plaintext HTTP/2 backend can advertise its Service port as
 for TLS-terminating Gateways. ALPN alone does not create a TLS listener or issue a
 certificate. Supply the real `k8sServiceHost`/`k8sServicePort` before installation.
 
-This configuration does not turn on transparent encryption or automatic mesh mTLS.
+Transparent WireGuard encryption is enabled in the shared values, including the
+initial networking seed because `bootstrap-cilium.sh` reads those same values.
+It protects supported cross-node Pod traffic without changing application HTTP
+listeners. Cilium manages WireGuard keys; it does not use our X.509 PKI.
+Same-node traffic and optional node-to-node encryption are outside this setting;
+`encryption.nodeEncryption` is not enabled. Nodes need kernel WireGuard support
+and must permit Cilium's WireGuard UDP traffic (default port 51871) between nodes.
+No SPIRE or automatic mesh mTLS is enabled.
+
 Cilium's older mutual-authentication feature is deprecated in 1.20 and scheduled
 for removal in 1.21; it is not enabled as part of these L7 settings. Choose traffic
 encryption and workload identity separately if required.
@@ -56,6 +64,12 @@ Helm rendering verifies the Envoy DaemonSet and the resulting Cilium configurati
 flags, while Kustomize builds verify the Flux resources. A test-only API address
 is used for rendering. Live gRPC routing, HTTP/2 negotiation, and metric generation
 still require a running cluster and a configured workload.
+
+After deploying, check `cilium-dbg status --verbose` and
+`cilium-dbg encrypt status` inside each Cilium agent, then verify cross-node
+connectivity and encrypted traffic on the underlay. A successful chart render
+does not prove a working encrypted tunnel. No live encryption test was performed
+because the playground is destroyed.
 
 References (pinned version):
 
