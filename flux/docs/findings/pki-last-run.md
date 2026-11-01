@@ -44,7 +44,7 @@ See the more detailed historical [rebuild](rebuild-verification.md),
 | NATS / Valkey | Both central Certificate resources Ready in the final snapshot; pinned chart renders supported the selected TLS settings | TLS workload rollout, NATS cluster continuity, client verification, plaintext rejection and exporter checks were not completed |
 | Kyverno | Intermediate CA Certificates Ready; chart templates included `--disableCertManagerController=true` | Both leaf Certificates were **Ready=False** at the final snapshot; a stable issuer handover was not achieved |
 | Hubble / VM Operator | Chart-native cert-manager settings rendered successfully | Final live certificate-chain and connection verification was not completed |
-| PKI policy | `platform-pki-issuers` exists as an Audit/Ignore template | It is **excluded** from `policies/kyverno/kustomization.yaml`, so normal Flux reconciliation does not install it; it is not an enforcement guarantee |
+| PKI policy | `platform-pki-issuers` exists as an Audit/Ignore template | It is **excluded** from `policies/kyverno/kustomization.yaml`, so normal Flux reconciliation does not install it; it was not an enforcement guarantee; the template was subsequently removed |
 
 The final certificate listing contained 14 resources: 12 Ready and two unready
 Kyverno leaves. A legacy OpenBao CA Certificate was present again in that listing.
@@ -94,8 +94,9 @@ Investigate the control plane before another broad rollout.
 6. Test each migrated service with a verified connection and the intended hostname,
    then test wrong-CA rejection and any promised plaintext/mTLS rejection. Confirm
    replication, probes, metrics exporters and post-renewal reloads separately.
-7. Install and validate the PKI policy deliberately. Audit is not Deny, and issuer
-   references alone do not prove that an application loaded or uses its certificate.
+7. Protect issuer/key access through RBAC and verify actual TLS behavior. The
+   certificate-policy template was subsequently removed; issuer references alone
+   never proved that an application loaded or used its certificate.
 
 Central issuance does not imply all internal HTTP was converted to HTTPS. The
 selected design still allows internal HTTP; Kubernetes PKI and CNPG operator's

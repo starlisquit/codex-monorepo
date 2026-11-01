@@ -1,0 +1,24 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: rook-ceph-dashboard
+  namespace: rook-ceph
+spec:
+  secretName: rook-ceph-dashboard-tls
+  duration: 2160h
+  renewBefore: 360h
+  privateKey:
+    algorithm: RSA
+    size: 2048
+    rotationPolicy: Always
+  dnsNames:
+  - rook-ceph-mgr-dashboard
+  - rook-ceph-mgr-dashboard.rook-ceph
+  - rook-ceph-mgr-dashboard.rook-ceph.svc
+  - rook-ceph-mgr-dashboard.rook-ceph.svc.cluster.local
+  usages:
+  - server auth
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: platform-workload-ca

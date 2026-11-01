@@ -1,0 +1,50 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: platform-image-registries
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    namespaceSelector:
+      matchExpressions:
+      - key: kubernetes.io/metadata.name
+        operator: In
+        values:
+        - demo
+        - applications
+    resourceRules:
+    - apiGroups:
+      - ''
+      apiVersions:
+      - v1
+      operations:
+      - CREATE
+      - UPDATE
+      resources:
+      - pods
+      - pods/ephemeralcontainers
+  variables:
+  - name: allowedPrefixes
+    expression: '[''ghcr.io/open-telemetry/'', ''docker.io/library/'', ''docker.io/otel/'']'
+  - name: containers
+    expression: 'object.spec.containers + (has(object.spec.initContainers) ? object.spec.initContainers
+      : []) + (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers
+      : [])'
+  validations:
+  - expression: |-
+      variables.containers.all(c,
+        variables.allowedPrefixes.exists(prefix, c.image.startsWith(prefix)))
+    message: 'Images must use a fully qualified approved repository prefix: ghcr.io/open-telemetry/,
+      docker.io/library/, or docker.io/otel/. Short names and other registries/repository
+      namespaces are denied.'
+    reason: Forbidden
+  validationActions:
+  - Deny
+  evaluation:
+    admission:
+      enabled: true
+    background:
+      enabled: false
+  autogen:
+    validatingAdmissionPolicy:
+      enabled: false

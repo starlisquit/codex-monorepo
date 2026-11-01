@@ -3,4 +3,3 @@ kind: Kustomization
 resources:
 - kyverno
 - network
-- images

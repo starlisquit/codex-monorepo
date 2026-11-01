@@ -52,6 +52,10 @@ See the [complete template coverage and exceptions](../../docs/architecture/pki-
 - Kyverno uses cert-manager-controlled intermediate CAs signed by the root, with
   its chart-supported namespaced leaf issuers.
 - VictoriaMetrics Operator's webhook uses its chart-native cert-manager option.
+- External Secrets uses the central issuer through its chart-native integration;
+  its old certificate controller is disabled to avoid competing Secret writers.
+- Rook's dashboard uses a central RSA TLS Secret through `sslCertificateRef`;
+  `pki-ceph` gates the Ceph cluster on certificate readiness.
 - PostgreSQL server and replication leaf certificates use the central issuer;
   replication preserves the `streaming_replica` client identity. CNPG reload labels
   on generated Secrets let the operator observe renewal.
@@ -81,10 +85,9 @@ kubectl -n databases get cluster application-db
 Inspect public certificate chains and live TLS handshakes, not just Secret names.
 Admission configuration changes require checking APIService/webhook CA injection
 and representative server-side dry runs. Keep TLS verification enabled throughout.
-The policy template `platform-pki-issuers` audits permitted Certificate issuer
-references, including explicit bootstrap and Kyverno delegation exceptions. It
-cannot prove a server loaded a certificate or that an HTTP connection uses TLS.
-RBAC must separately protect issuers, signing keys and direct CertificateRequests.
+There is no certificate-policy template. RBAC must protect issuers, signing keys
+and direct CertificateRequests. Application listener settings are unchanged by
+these infrastructure issuer integrations.
 
 The templates define NATS and Valkey central server certificates in `pki/brokers`. The intended NATS
 client port 4222 uses TLS and its cluster routes use verified peer TLS. NATS Box
@@ -133,13 +136,15 @@ Avoid bootstrap cycles: Vault needs a listener certificate and reachable trusted
 endpoint before a Vault-backed cert-manager Issuer can depend on it. Keep that
 bootstrap issuer independent, or use an explicitly managed intermediate workflow.
 
-## Policy activation and renewal caveats
+## Renewal and access-control boundaries
 
-`flux/policies/kyverno/pki-issuers.yaml` is an excluded starter template. Add it to
-the policy Kustomization only after reviewing the allowlist and testing against
-existing Certificates. It currently uses Audit/Ignore, not Deny/Fail. Direct
-CertificateRequests, signing-key access, and issuer creation need separate RBAC
-controls. The policy does not enforce TLS on a network connection.
+The certificate-policy template was removed. Direct CertificateRequests,
+signing-key access and issuer creation need RBAC controls; certificate issuance
+is not itself TLS enforcement. For existing External Secrets installations,
+verify its old certificate controller has stopped before cert-manager owns the
+same Secret. Check CA injection and a representative webhook dry run. For Rook,
+verify the dashboard's live certificate chain and renewed serial after a Secret
+update; render success does not prove reload.
 
 NATS/Valkey issuance was observed, but live TLS rollout was not verified. Before
 another deployment, test NATS's rolling route-TLS transition without losing quorum,

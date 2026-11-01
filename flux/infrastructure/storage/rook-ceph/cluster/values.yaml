@@ -1,10 +1,13 @@
-# Supply explicit nodes and unused devices before deployment.
 operatorNamespace: rook-ceph
 cephClusterSpec:
   storage:
     useAllNodes: false
     useAllDevices: false
     nodes: []
+  dashboard:
+    enabled: true
+    ssl: true
+    sslCertificateRef: rook-ceph-dashboard-tls
 monitoring:
   metricsDisabled: false
   enabled: true

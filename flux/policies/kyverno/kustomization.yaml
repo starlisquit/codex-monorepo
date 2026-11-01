@@ -4,3 +4,4 @@ resources:
 - container-isolation.yaml
 - resource-requests.yaml
 - image-tags.yaml
+- image-registries.yaml

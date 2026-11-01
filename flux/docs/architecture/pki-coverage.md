@@ -21,7 +21,8 @@ operations. A Bundle does not make every client trust it automatically.
 | Valkey client endpoint | Central server certificate, TLS-only port and verified exporter connection configured; no client-certificate requirement |
 | CNPG PostgreSQL server and replication | Central server/client leaf Certificates and Cluster references configured; last live reference update failed on an unavailable webhook |
 | CNPG operator's own webhook | Operator-managed PKI; this is the CNPG exception, not its database endpoint |
-| External Secrets webhook | Default chart certificate controller remains enabled; not configured to use the central issuer |
+| External Secrets webhook | Chart-native cert-manager Certificate uses the central issuer; chart certificate controller disabled to avoid competing writers |
+| Rook/Ceph dashboard | RSA server Certificate from the central issuer, referenced through `cephClusterSpec.dashboard.sslCertificateRef` |
 | cert-manager's own bootstrap webhook | Independently managed bootstrap CA; not migrated to the application issuer it must bootstrap |
 | Kubernetes API, etcd, control-plane and kubelet identities | Existing Kubernetes/kubeadm PKI, intentionally independent |
 | Grafana, Headlamp, Flux UI and most telemetry ingestion/query/metrics endpoints | Internal HTTP or plaintext protocol endpoints; no application serving certificate is configured |
@@ -29,13 +30,12 @@ operations. A Bundle does not make every client trust it automatically.
 | Trivy Operator | HTTP metrics; registry/database HTTPS uses its configured trust, not automatically our Bundle |
 | Velero | HTTP metrics; object-store HTTPS trust is external-provider/default trust unless a BSL public CA reference is explicitly configured |
 
-Other operator-managed certificates (for example optional Rook/Ceph dashboard
-certificates) must not be assumed to use the central CA without a specific issuer
-integration and verification. This inventory does not claim every default chart
-Secret or listener has been enumerated or migrated.
+Additional operator-managed certificates must not be assumed to use the central
+CA without an explicit integration and verification. This inventory does not
+claim every default chart Secret or listener has been migrated. Kubernetes and
+cert-manager bootstrap PKI and CNPG's operator webhook stay independently managed.
 
-The PKI issuer policy remains an excluded Audit/Ignore template. It is not a TLS
-or mTLS enforcement mechanism, and certificate issuance alone does not prove
-successful reload, client verification or plaintext rejection. Keeping internal
-HTTP was an explicit architecture choice; centralizing existing certificates does
-not imply HTTPS everywhere.
+The certificate-policy template was removed. Certificate issuance alone does not
+prove successful reload, client verification or plaintext rejection. Application
+endpoint settings are unchanged: keeping internal HTTP was an explicit architecture
+choice, and centralizing infrastructure certificates does not imply HTTPS everywhere.
