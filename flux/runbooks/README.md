@@ -15,6 +15,7 @@ API address, or cluster domain, edit the corresponding references before applyin
 
 ## Operations and recovery
 
+- [Ingress NetworkPolicy templates and enforcement test](../policies/network/README.md)
 - [Reconcile and troubleshoot Flux](operations/reconciliation.md)
 - [Control-plane/API incident handling](recovery/control-plane.md)
 - [OpenBao unseal and data recovery boundaries](recovery/openbao.md)

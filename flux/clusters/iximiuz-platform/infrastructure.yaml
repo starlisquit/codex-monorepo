@@ -697,6 +697,7 @@ spec:
     name: flux-system
   dependsOn:
   - name: kyverno
+  - name: cilium
   timeout: 5m
   healthChecks:
   - apiVersion: policies.kyverno.io/v1

@@ -1,8 +1,13 @@
-# Kyverno policy templates
+# Policy templates
+
+- [NetworkPolicy templates and live test](network/README.md): opt-in ingress allowlists and an optional namespace baseline.
+- `kyverno/`: audit validation policies described below.
+
+## Kyverno
 
 These are `policies.kyverno.io/v1` **ValidatingPolicy custom resources**, not CRD definitions.
 Install the pinned Kyverno engine and its CRDs before reconciling this directory.
-The lab's `policies` Flux Kustomization depends on `kyverno`.
+The lab's `policies` Flux Kustomization depends on `kyverno` and `cilium`.
 
 All rules start in **Audit** mode with background scanning and scope only to Pods
 in `demo` and `applications`. Rules evaluate Pods, including those created by workload controllers. Infrastructure namespaces, storage agents and control-plane workloads
